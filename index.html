@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tahfidh Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="assets_icons/appicon-64.png" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="app-header">
+    <div style="width:40px;"></div>
+    <div style="text-align:center;">
+      <div class="app-title">إدارة حلقات التحفيظ</div>
+      <div style="font-size:0.75rem; opacity:0.85;">Tahfidh Tracker</div>
+    </div>
+    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+  </header>
+
+  <main class="main-content">
+    <h2 style="margin-bottom:16px; font-size:1rem; color:var(--text-muted);">الحلقات</h2>
+    <div id="classesContainer"></div>
+    <button class="btn btn-primary btn-full" onclick="goToAddClass()" style="margin-top:4px; padding:0.85rem; font-size:1rem;">
+      ➕ إضافة حلقة جديدة
+    </button>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active">
+      <div class="nav-icon">🏠</div><div class="nav-text">الرئيسية</div>
+    </button>
+    <button class="nav-btn" onclick="location.href='settings.html'">
+      <div class="nav-icon">⚙️</div><div class="nav-text">الإعدادات</div>
+    </button>
+    <button class="nav-btn" onclick="location.href='contact.html'">
+      <div class="nav-icon">📩</div><div class="nav-text">تواصل</div>
+    </button>
+  </nav>
+
+  <footer class="branding-footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
+
+  <script src="js/js/db.js"></script>
+  <script src="js/js/ui.js"></script>
+  <script src="js/js/home.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+
+</body>
+</html>

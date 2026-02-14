@@ -1,0 +1,275 @@
+/* =========================
+   Tahfidh Tracker – Style
+   Modern Islamic Design
+   ========================= */
+
+/* -------- Root Colors -------- */
+:root {
+  --primary: #0D2C54;        /* Deep Islamic blue */
+  --secondary: #0F766E;      /* Teal green */
+  --accent: #C9A24D;         /* Soft gold */
+  --bg: #F4F6F8;
+  --card-bg: #FFFFFF;
+  --text-main: #1F2937;
+  --text-muted: #6B7280;
+  --border: #E5E7EB;
+  --success: #16A34A;
+  --warning: #F59E0B;
+  --danger: #DC2626;
+  --radius: 18px;
+}
+
+/* -------- Reset -------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  direction: rtl;
+}
+
+/* -------- Header -------- */
+.app-header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.app-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.menu-btn,
+.lang-switcher {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  padding: 0.45rem 0.8rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* -------- Main -------- */
+.main-content {
+  padding: 1.25rem;
+  padding-bottom: 6rem;
+}
+
+/* -------- Cards -------- */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Islamic geometric pattern overlay */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(201,162,77,0.08) 2px, transparent 2px),
+    radial-gradient(circle at 75% 75%, rgba(201,162,77,0.08) 2px, transparent 2px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* -------- Forms -------- */
+.form-group {
+  margin-bottom: 0.9rem;
+}
+
+.form-label {
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+/* -------- Buttons -------- */
+.btn {
+  border: none;
+  border-radius: 14px;
+  padding: 0.65rem 1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #EEF2F7;
+  color: var(--text-main);
+}
+
+.btn-success {
+  background: var(--success);
+  color: #fff;
+}
+
+.btn-warning {
+  background: var(--warning);
+  color: #fff;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+/* -------- Grid -------- */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+
+/* -------- Bottom Nav -------- */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  display: flex;
+  justify-content: space-around;
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.nav-btn.active {
+  color: var(--primary);
+}
+
+.nav-icon {
+  font-size: 1.25rem;
+  display: block;
+}
+
+/* -------- Footer -------- */
+.branding-footer {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 2rem;
+}
+
+/* -------- Responsive -------- */
+@media (max-width: 640px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+.app-header{
+  background: linear-gradient(135deg,#0D2C54,#0F766E);
+  color:#fff;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky; top:0; z-index:100;
+}
+.header-center{ text-align:center; }
+.app-title{ font-weight:800; font-size:1.1rem; }
+.app-subtitle{ font-size:.8rem; opacity:.9; }
+
+.app-header::after{
+  content:"";
+  position:absolute; inset:0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(201,162,77,.08) 2px, transparent 2px),
+    radial-gradient(circle at 80% 70%, rgba(201,162,77,.08) 2px, transparent 2px);
+  background-size:40px 40px;
+  pointer-events:none;
+}
+
+.nav-text {
+  font-size: 0.68rem;
+  margin-top: 2px;
+}
+
+/* -------- Dark Mode -------- */
+html.dark {
+  --bg: #0F172A;
+  --card-bg: #1E293B;
+  --text-main: #F1F5F9;
+  --text-muted: #94A3B8;
+  --border: #334155;
+}
+
+html.dark body { background: var(--bg); color: var(--text-main); }
+
+html.dark .card {
+  background: var(--card-bg);
+  border-color: var(--border);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+html.dark .form-input,
+html.dark .form-select {
+  background: #0F172A;
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+html.dark .btn-secondary { background: #334155; color: var(--text-main); }
+
+html.dark .bottom-nav { background: #1E293B; border-color: var(--border); }
+html.dark .nav-btn { color: var(--text-muted); }
+html.dark .nav-btn.active { color: #60A5FA; }
+
+* { transition: background-color 0.25s, color 0.25s, border-color 0.25s; }

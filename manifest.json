@@ -1,0 +1,17 @@
+{
+  "name": "Tahfidh Tracker",
+  "short_name": "تحفيظ",
+  "description": "إدارة حلقات التحفيظ - برنامج الهدى",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0D2C54",
+  "theme_color": "#0D2C54",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    { "src": "assets_icons/appicon-64.png",   "sizes": "64x64",   "type": "image/png" },
+    { "src": "assets_icons/appicon-128.png",  "sizes": "128x128", "type": "image/png" },
+    { "src": "assets_icons/appicon-192.png",  "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "assets_icons/appicon-512.png",  "sizes": "512x512", "type": "image/png" }
+  ]
+}

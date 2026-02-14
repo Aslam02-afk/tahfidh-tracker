@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>طلاب الحلقة – Tahfidh Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="app-header">
+  <button class="menu-btn" onclick="location.href='index.html'">←</button>
+  <div style="text-align:center;">
+    <div id="className" class="app-title">الحلقة</div>
+    <div style="font-size:0.82rem; opacity:0.9;">المعلم: <span id="teacherName"></span></div>
+  </div>
+  <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+</header>
+
+<main class="main-content">
+
+  <!-- Summary card -->
+  <section class="card" style="background:linear-gradient(135deg,#0D2C54,#0F766E); color:#fff; border:none;">
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+      <div>
+        <div style="opacity:0.9; font-size:0.85rem;">عدد الطلاب</div>
+        <div id="studentCount" style="font-size:1.8rem; font-weight:900;">0</div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button id="weeklyReportBtn" class="btn btn-warning" style="font-size:0.82rem; padding:0.45rem 0.9rem;">📊 تقرير أسبوعي</button>
+        <button id="monthlyReportBtn" class="btn" style="font-size:0.82rem; padding:0.45rem 0.9rem; background:rgba(255,255,255,0.2); color:#fff;">📈 تقرير شهري</button>
+      </div>
+    </div>
+    <button id="exportBtn" class="btn btn-secondary" style="margin-top:12px; width:100%; font-size:0.85rem;">⬇️ تصدير Excel</button>
+  </section>
+
+  <!-- Search -->
+  <section class="card">
+    <div class="form-group" style="margin-bottom:0;">
+      <label class="form-label">بحث عن طالب</label>
+      <input id="searchInput" class="form-input" placeholder="اكتب اسم الطالب..." />
+    </div>
+  </section>
+
+  <!-- Students list -->
+  <div id="studentsContainer"></div>
+
+</main>
+
+<!-- Add student FAB -->
+<button class="btn btn-primary" aria-label="إضافة طالب"
+  onclick="location.href='add-student.html?classId='+new URLSearchParams(location.search).get('classId')"
+  style="position:fixed; bottom:5.6rem; left:1.25rem; width:58px; height:58px; border-radius:18px; padding:0; font-size:1.8rem; box-shadow:0 12px 24px rgba(0,0,0,0.2);">＋</button>
+
+<nav class="bottom-nav">
+  <button class="nav-btn" onclick="location.href='index.html'">
+    <div class="nav-icon">🏠</div><div class="nav-text">الرئيسية</div>
+  </button>
+  <button class="nav-btn active">
+    <div class="nav-icon">👥</div><div class="nav-text">الطلاب</div>
+  </button>
+  <button class="nav-btn">
+    <div class="nav-icon">📝</div><div class="nav-text">السجلات</div>
+  </button>
+  <button class="nav-btn" onclick="location.href='settings.html'">
+    <div class="nav-icon">⚙️</div><div class="nav-text">الإعدادات</div>
+  </button>
+</nav>
+
+<footer class="branding-footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="js/js/db.js"></script>
+<script src="js/js/ui.js"></script>
+<script src="js/js/reports.js"></script>
+<script src="js/js/export.js"></script>
+<script src="js/js/class.js"></script>
+</body>
+</html>
