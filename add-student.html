@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>إضافة طالب – Tahfidh Tracker</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,47 +15,51 @@
 
 <header class="app-header">
   <button class="menu-btn" onclick="history.back()">←</button>
-  <div class="app-title" id="pageTitle">إضافة طالب</div>
-  <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+  <div class="app-title" id="pageTitle" data-i18n="addStudent">إضافة طالب</div>
+  <div style="display:flex; gap:4px;">
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">EN</button>
+    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+  </div>
 </header>
 
 <main class="main-content">
   <section class="card">
     <div class="form-group">
-      <label class="form-label">اسم الطالب *</label>
-      <input id="studentName" class="form-input" placeholder="الاسم الكامل" required />
+      <label class="form-label" data-i18n="studentNameLabel">اسم الطالب *</label>
+      <input id="studentName" class="form-input" data-i18n-ph="studentNamePh" placeholder="الاسم الكامل" required />
     </div>
     <div class="form-group">
-      <label class="form-label">الجنس</label>
+      <label class="form-label" data-i18n="gender">الجنس</label>
       <select id="gender" class="form-input form-select">
-        <option value="ذكر">ذكر</option>
-        <option value="أنثى">أنثى</option>
+        <option value="ذكر" data-i18n="male">ذكر</option>
+        <option value="أنثى" data-i18n="female">أنثى</option>
       </select>
     </div>
     <div class="form-group">
-      <label class="form-label">رقم الهاتف (اختياري)</label>
+      <label class="form-label" data-i18n="phoneOptional">رقم الهاتف (اختياري)</label>
       <input id="phone" class="form-input" type="tel" placeholder="+966..." />
     </div>
     <div class="form-group">
-      <label class="form-label">آخر سورة محفوظة</label>
+      <label class="form-label" data-i18n="lastSurah">آخر سورة محفوظة</label>
       <div id="lastSurahWrap"></div>
     </div>
     <div class="form-group">
-      <label class="form-label">ملاحظات (اختياري)</label>
-      <textarea id="notes" class="form-input" rows="3" placeholder="أي معلومات إضافية..."></textarea>
+      <label class="form-label" data-i18n="notesOptional">ملاحظات (اختياري)</label>
+      <textarea id="notes" class="form-input" rows="3" data-i18n-ph="notesPh" placeholder="أي معلومات إضافية..."></textarea>
     </div>
-    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.05rem; padding:0.85rem; margin-top:6px;">
+    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.05rem; padding:0.85rem; margin-top:6px;" data-i18n="saveStudent">
       💾 حفظ الطالب
     </button>
-    <button id="btnDelete" class="btn btn-full" style="background:#FEE2E2; color:#DC2626; margin-top:10px; display:none;">
+    <button id="btnDelete" class="btn btn-full" style="background:#FEE2E2; color:#DC2626; margin-top:10px; display:none;" data-i18n="deleteStudent">
       🗑️ حذف الطالب
     </button>
   </section>
 </main>
 
-<footer class="branding-footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
+<footer class="branding-footer" data-i18n="footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
 
 <script src="js/js/db.js"></script>
+<script src="js/js/i18n.js"></script>
 <script src="js/js/ui.js"></script>
 <script src="js/js/add-student.js"></script>
 </body>

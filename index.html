@@ -5,54 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tahfidh Tracker</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" type="image/png" href="assets_icons/appicon-64.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
+  <link rel="apple-touch-icon" href="assets_icons/appicon-192.png" />
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
   <header class="app-header">
-    <div style="width:40px;"></div>
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); if(typeof renderClasses==='function') renderClasses();">EN</button>
     <div style="text-align:center;">
-      <div class="app-title">إدارة حلقات التحفيظ</div>
+      <div class="app-title" data-i18n="appTitle">إدارة حلقات التحفيظ</div>
       <div style="font-size:0.75rem; opacity:0.85;">Tahfidh Tracker</div>
     </div>
     <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
   </header>
 
   <main class="main-content">
-    <h2 style="margin-bottom:16px; font-size:1rem; color:var(--text-muted);">الحلقات</h2>
+    <h2 style="margin-bottom:16px; font-size:1rem; color:var(--text-muted);" data-i18n="classes">الحلقات</h2>
     <div id="classesContainer"></div>
-    <button class="btn btn-primary btn-full" onclick="goToAddClass()" style="margin-top:4px; padding:0.85rem; font-size:1rem;">
+    <button class="btn btn-primary btn-full" onclick="goToAddClass()" style="margin-top:4px; padding:0.85rem; font-size:1rem;" data-i18n="addNewClass">
       ➕ إضافة حلقة جديدة
     </button>
   </main>
 
   <nav class="bottom-nav">
     <button class="nav-btn active">
-      <div class="nav-icon">🏠</div><div class="nav-text">الرئيسية</div>
+      <div class="nav-icon">🏠</div><div class="nav-text" data-i18n="home">الرئيسية</div>
     </button>
     <button class="nav-btn" onclick="location.href='settings.html'">
-      <div class="nav-icon">⚙️</div><div class="nav-text">الإعدادات</div>
+      <div class="nav-icon">⚙️</div><div class="nav-text" data-i18n="settings">الإعدادات</div>
     </button>
     <button class="nav-btn" onclick="location.href='contact.html'">
-      <div class="nav-icon">📩</div><div class="nav-text">تواصل</div>
+      <div class="nav-icon">📩</div><div class="nav-text" data-i18n="contact">تواصل</div>
     </button>
   </nav>
 
-  <footer class="branding-footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
+  <!-- About Al Hudaa -->
+  <section style="padding:0 1.25rem;">
+    <div class="card" style="background:linear-gradient(135deg,#0D2C54,#123B6D); color:#fff; border:none; text-align:center; padding:1.5rem;">
+      <img src="assets_icons/appicon-128.png" alt="Al Hudaa" style="width:64px; height:64px; border-radius:16px; margin-bottom:10px;" />
+      <div style="font-size:1.1rem; font-weight:900;" data-i18n="aboutTitle">برنامج الهدى</div>
+      <div style="font-size:0.75rem; opacity:0.85; margin-top:2px;" data-i18n="aboutSub">Al Hudaa Program</div>
+      <div style="margin-top:12px; font-size:0.85rem; line-height:1.7; opacity:0.95;" data-i18n="aboutDesc">
+        تطبيق إدارة حلقات التحفيظ مصمم لمساعدة المعلمين في متابعة بيانات الطلاب، تسجيل الحفظ والمراجعة اليومية، وإرسال التقارير للأولياء.
+      </div>
+      <div style="margin-top:8px; font-size:0.82rem; opacity:0.8;" data-i18n="aboutDescEn">
+        Designed to help Quran teachers track student progress, record daily memorization &amp; revision, and send reports to parents.
+      </div>
+    </div>
+    <div class="card" style="padding:1.2rem;">
+      <div style="font-weight:900; font-size:0.95rem; margin-bottom:10px;" data-i18n="whatsNew">🆕 ما الجديد | What's New</div>
+      <div style="font-size:0.82rem; line-height:1.8; color:var(--text-muted);">
+        <div style="display:flex; gap:8px; align-items:flex-start; margin-bottom:6px;">
+          <span style="background:var(--secondary); color:#fff; padding:2px 8px; border-radius:6px; font-size:0.72rem; white-space:nowrap;">v1.2</span>
+          <span>Arabic / English language toggle — English reports for parents</span>
+        </div>
+        <div style="display:flex; gap:8px; align-items:flex-start; margin-bottom:6px;">
+          <span style="background:var(--accent); color:#fff; padding:2px 8px; border-radius:6px; font-size:0.72rem; white-space:nowrap;">v1.1</span>
+          <span>114 surah list — weekly &amp; monthly reports — dark mode — backup — attendance</span>
+        </div>
+        <div style="display:flex; gap:8px; align-items:flex-start;">
+          <span style="background:var(--border); color:var(--text-main); padding:2px 8px; border-radius:6px; font-size:0.72rem; white-space:nowrap;">v1.0</span>
+          <span>First release: class &amp; student management, Excel export</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="branding-footer" data-i18n="footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
 
   <script src="js/js/db.js"></script>
+  <script src="js/js/i18n.js"></script>
   <script src="js/js/ui.js"></script>
   <script src="js/js/home.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
-    }
-  </script>
-
+  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
 </body>
 </html>

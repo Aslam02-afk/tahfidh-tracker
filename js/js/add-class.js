@@ -6,17 +6,17 @@
   if (isEdit) {
     const h = getHalaqahById(classId);
     if (h) {
-      qs("pageTitle").textContent    = "تعديل الحلقة";
-      qs("className").value          = h.name;
-      qs("teacherName").value        = h.teacher || "";
-      qs("notes").value              = h.notes   || "";
-      qs("btnDelete").style.display  = "block";
+      qs("pageTitle").textContent   = t('editClassTitle');
+      qs("className").value         = h.name;
+      qs("teacherName").value       = h.teacher || "";
+      qs("notes").value             = h.notes   || "";
+      qs("btnDelete").style.display = "block";
     }
   }
 
   qs("btnSave").onclick = () => {
     const name = qs("className").value.trim();
-    if (!name) { alert("يرجى إدخال اسم الحلقة"); return; }
+    if (!name) { alert(t('enterClassName')); return; }
 
     const halaqah = {
       id:      isEdit ? classId : uid(),
@@ -31,7 +31,7 @@
 
   qs("btnDelete").onclick = () => {
     const h = getHalaqahById(classId);
-    if (confirm('حذف حلقة "' + (h ? h.name : '') + '"؟\nسيتم حذف جميع الطلاب والسجلات.')) {
+    if (confirm(t('confirmDeleteClassFull').replace('$1', h ? h.name : ''))) {
       deleteClass(classId);
       location.href = "index.html";
     }

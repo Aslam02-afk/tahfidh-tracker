@@ -46,5 +46,5 @@ function surahOptions(selected) {
 }
 
 function surahSelect(id, selected) {
-  return `<select id="${id}" class="form-input form-select"><option value="">-- اختر السورة --</option>${surahOptions(selected)}</select>`;
+  return `<select id="${id}" class="form-input form-select"><option value="">${t('chooseSurah')}</option>${surahOptions(selected)}</select>`;
 }

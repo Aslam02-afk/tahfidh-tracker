@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>الإعدادات – Tahfidh Tracker</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,21 +15,38 @@
 
 <header class="app-header">
   <button class="menu-btn" onclick="location.href='index.html'">←</button>
-  <div class="app-title">الإعدادات</div>
-  <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+  <div class="app-title" data-i18n="settings">الإعدادات</div>
+  <div style="display:flex; gap:4px;">
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">EN</button>
+    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+  </div>
 </header>
 
 <main class="main-content">
 
-  <!-- Dark mode -->
+  <!-- Language -->
   <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;">🌙 المظهر</div>
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="languageSection">🌐 اللغة</div>
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div>
-        <div style="font-weight:700;">الوضع الليلي</div>
-        <div style="font-size:0.82rem; color:var(--text-muted); margin-top:2px;">خلفية داكنة تريح العيون</div>
+        <div style="font-weight:700;" data-i18n="languageLabel">لغة التطبيق</div>
+        <div style="font-size:0.82rem; color:var(--text-muted); margin-top:2px;" data-i18n="languageDesc">عربي أو إنجليزي</div>
       </div>
-      <button id="darkModeBtn" class="btn btn-secondary" onclick="toggleDarkMode(); updateDarkBtn()" style="min-width:80px;">
+      <button id="langBtn" class="btn btn-secondary" onclick="switchLang()" style="min-width:80px;">
+        English
+      </button>
+    </div>
+  </section>
+
+  <!-- Dark mode -->
+  <section class="card">
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="appearanceSection">🌙 المظهر</div>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div style="font-weight:700;" data-i18n="darkModeLabel">الوضع الليلي</div>
+        <div style="font-size:0.82rem; color:var(--text-muted); margin-top:2px;" data-i18n="darkModeDesc">خلفية داكنة تريح العيون</div>
+      </div>
+      <button id="darkModeBtn" class="btn btn-secondary" onclick="toggleDarkMode(); updateDarkBtn()" style="min-width:80px;" data-i18n="enable">
         تفعيل
       </button>
     </div>
@@ -36,66 +54,93 @@
 
   <!-- Backup & Restore -->
   <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;">💾 النسخ الاحتياطي</div>
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="backupSection">💾 النسخ الاحتياطي</div>
 
-    <button class="btn btn-primary btn-full" onclick="exportDB()" style="margin-bottom:10px;">
+    <button class="btn btn-primary btn-full" onclick="exportDB()" style="margin-bottom:10px;" data-i18n="exportData">
       ⬇️ تصدير البيانات (JSON)
     </button>
 
     <div class="form-group" style="margin-bottom:0;">
-      <label class="form-label">استيراد نسخة احتياطية</label>
+      <label class="form-label" data-i18n="importBackup">استيراد نسخة احتياطية</label>
       <input id="importFile" type="file" accept=".json" class="form-input" style="padding:0.5rem;" />
     </div>
-    <button class="btn btn-warning btn-full" onclick="doImport()" style="margin-top:10px;">
+    <button class="btn btn-warning btn-full" onclick="doImport()" style="margin-top:10px;" data-i18n="importData">
       ⬆️ استيراد البيانات
     </button>
   </section>
 
   <!-- Clear data -->
   <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;">⚠️ خطر</div>
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="dangerSection">⚠️ خطر</div>
     <button class="btn btn-full" onclick="clearAllData()"
-      style="background:#FEE2E2; color:#DC2626; font-weight:700;">
+      style="background:#FEE2E2; color:#DC2626; font-weight:700;" data-i18n="clearAllData">
       🗑️ مسح جميع البيانات
     </button>
-    <div style="font-size:0.78rem; color:var(--text-muted); margin-top:8px; text-align:center;">
+    <div style="font-size:0.78rem; color:var(--text-muted); margin-top:8px; text-align:center;" data-i18n="clearWarning">
       سيتم حذف جميع الحلقات والطلاب والسجلات بشكل نهائي
     </div>
   </section>
 
   <!-- Contact -->
   <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;">📩 التواصل</div>
-    <button class="btn btn-secondary btn-full" onclick="location.href='contact.html'">
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="contactSection">📩 التواصل</div>
+    <button class="btn btn-secondary btn-full" onclick="location.href='contact.html'" data-i18n="contactAlHudaa">
       تواصل مع برنامج الهدى
     </button>
   </section>
 
-  <!-- Version -->
-  <div style="text-align:center; font-size:0.78rem; color:var(--text-muted); margin-top:1rem;">
-    Tahfidh Tracker v1.1 | برنامج الهدى
-  </div>
+  <!-- What's New -->
+  <section class="card">
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="whatsNew">🆕 ما الجديد | What's New</div>
+    <div style="font-size:0.82rem; line-height:1.8; color:var(--text-muted);">
+      <div style="display:flex; gap:8px; align-items:flex-start; margin-bottom:8px;">
+        <span style="background:var(--primary); color:#fff; padding:2px 8px; border-radius:6px; font-size:0.72rem; white-space:nowrap;">v1.2</span>
+        <span data-i18n="v12notes">دعم اللغة الإنجليزية — تقارير ثنائية اللغة للأولياء</span>
+      </div>
+      <div style="display:flex; gap:8px; align-items:flex-start; margin-bottom:8px;">
+        <span style="background:var(--secondary); color:#fff; padding:2px 8px; border-radius:6px; font-size:0.72rem; white-space:nowrap;">v1.1</span>
+        <span data-i18n="v11notes">حفظ ومراجعة مع قائمة 114 سورة — تقارير أسبوعية وشهرية — الوضع الليلي — نسخ احتياطي — تسجيل الحضور</span>
+      </div>
+      <div style="display:flex; gap:8px; align-items:flex-start;">
+        <span style="background:var(--border); color:var(--text-main); padding:2px 8px; border-radius:6px; font-size:0.72rem; white-space:nowrap;">v1.0</span>
+        <span data-i18n="v10notes">الإصدار الأول: إدارة الحلقات والطلاب وتصدير Excel</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="card" style="text-align:center;">
+    <img src="assets_icons/appicon-64.png" alt="Al Hudaa" style="width:48px; height:48px; border-radius:12px; margin-bottom:8px;" />
+    <div style="font-weight:900;" data-i18n="aboutTitle">برنامج الهدى | Al Hudaa Program</div>
+    <div style="font-size:0.82rem; color:var(--text-muted); margin-top:6px; line-height:1.6;" data-i18n="aboutDesc">
+      تطبيق لمساعدة معلمي القرآن في متابعة بيانات الطلاب وتسجيل الحفظ والمراجعة اليومية
+    </div>
+    <div style="font-size:0.78rem; color:var(--text-muted); margin-top:10px;">
+      Tahfidh Tracker v1.2
+    </div>
+  </section>
 
 </main>
 
 <nav class="bottom-nav">
   <button class="nav-btn" onclick="location.href='index.html'">
-    <div class="nav-icon">🏠</div><div class="nav-text">الرئيسية</div>
+    <div class="nav-icon">🏠</div><div class="nav-text" data-i18n="home">الرئيسية</div>
   </button>
   <button class="nav-btn">
-    <div class="nav-icon">👥</div><div class="nav-text">الطلاب</div>
+    <div class="nav-icon">👥</div><div class="nav-text" data-i18n="students">الطلاب</div>
   </button>
   <button class="nav-btn">
-    <div class="nav-icon">📝</div><div class="nav-text">السجلات</div>
+    <div class="nav-icon">📝</div><div class="nav-text" data-i18n="records">السجلات</div>
   </button>
-  <button class="nav-btn active">
-    <div class="nav-icon">⚙️</div><div class="nav-text">الإعدادات</div>
+  <button class="nav-btn active" onclick="location.href='settings.html'">
+    <div class="nav-icon">⚙️</div><div class="nav-text" data-i18n="settings">الإعدادات</div>
   </button>
 </nav>
 
-<footer class="branding-footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
+<footer class="branding-footer" data-i18n="footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
 
 <script src="js/js/db.js"></script>
+<script src="js/js/i18n.js"></script>
 <script src="js/js/ui.js"></script>
 <script src="js/js/settings.js"></script>
 </body>

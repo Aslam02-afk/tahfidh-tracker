@@ -14,8 +14,8 @@ function renderClasses() {
     container.innerHTML = `
       <div class="card" style="text-align:center; padding:2rem; color:var(--text-muted);">
         <div style="font-size:2.5rem; margin-bottom:10px;">📚</div>
-        <div style="font-weight:700;">لا توجد حلقات بعد</div>
-        <div style="font-size:0.85rem; margin-top:6px;">اضغط الزر أدناه لإضافة أول حلقة</div>
+        <div style="font-weight:700;">${t('noClassesYet')}</div>
+        <div style="font-size:0.85rem; margin-top:6px;">${t('noClassesHint')}</div>
       </div>`;
     return;
   }
@@ -30,16 +30,16 @@ function renderClasses() {
         <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
           <div style="flex:1;">
             <div style="font-size:1.1rem; font-weight:900;">${h.name}</div>
-            <div style="margin-top:4px; color:var(--text-muted); font-size:0.9rem;">المعلم: ${h.teacher || '—'}</div>
+            <div style="margin-top:4px; color:var(--text-muted); font-size:0.9rem;">${t('teacher')}: ${h.teacher || '—'}</div>
           </div>
           <div style="text-align:center; background:var(--bg); padding:8px 14px; border-radius:12px; min-width:54px;">
             <div style="font-size:1.3rem; font-weight:900; color:var(--primary);">${students.length}</div>
-            <div style="font-size:0.7rem; color:var(--text-muted);">طالب</div>
+            <div style="font-size:0.7rem; color:var(--text-muted);">${t('student')}</div>
           </div>
         </div>
         <div style="margin-top:10px;">
           <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
-            <span>تقدم اليوم</span>
+            <span>${t('progressToday')}</span>
             <span style="font-weight:700;">${doneToday} / ${students.length}</span>
           </div>
           <div style="background:var(--border); border-radius:6px; height:6px;">
@@ -48,7 +48,7 @@ function renderClasses() {
         </div>
         <div style="display:flex; gap:8px; margin-top:12px;">
           <button class="btn btn-secondary" style="padding:0.35rem 0.8rem; font-size:0.82rem; flex:1;"
-            onclick="event.stopPropagation(); location.href='add-class.html?classId=${h.id}'">✏️ تعديل</button>
+            onclick="event.stopPropagation(); location.href='add-class.html?classId=${h.id}'">${t('edit')}</button>
           <button class="btn" style="padding:0.35rem 0.8rem; font-size:0.82rem; background:#FEE2E2; color:#DC2626;"
             onclick="event.stopPropagation(); confirmDeleteClass('${h.id}', \`${h.name}\`)">🗑️</button>
         </div>
@@ -57,7 +57,7 @@ function renderClasses() {
 }
 
 function confirmDeleteClass(id, name) {
-  if (confirm('حذف حلقة "' + name + '"؟\nسيتم حذف جميع الطلاب والسجلات نهائياً.')) {
+  if (confirm(t('confirmDeleteClass').replace('$1', name))) {
     deleteClass(id);
     renderClasses();
   }

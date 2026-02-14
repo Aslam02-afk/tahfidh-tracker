@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>سجل الطالب – Tahfidh Tracker</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,19 +16,21 @@
 <header class="app-header">
   <button class="menu-btn" onclick="history.back()">←</button>
   <div style="text-align:center;">
-    <div class="app-title">سجل الطالب</div>
+    <div class="app-title" data-i18n="studentRecord">سجل الطالب</div>
     <div id="studentNameDisplay" style="font-size:0.85rem; opacity:0.9;"></div>
   </div>
-  <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+  <div style="display:flex; gap:4px;">
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">EN</button>
+    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+  </div>
 </header>
 
 <main class="main-content">
 
-  <!-- Date -->
   <section class="card">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div>
-        <div style="font-weight:800;">التاريخ</div>
+        <div style="font-weight:800;" data-i18n="date">التاريخ</div>
         <div id="recordDateDisplay" style="color:var(--text-muted); margin-top:4px;"></div>
       </div>
       <div style="font-size:1.4rem;">🗓️</div>
@@ -36,30 +39,28 @@
 
   <!-- TAHFIDH -->
   <section class="card">
-    <div style="font-size:1.1rem; font-weight:900; margin-bottom:12px;">📘 الحفظ (Tahfidh)</div>
-
+    <div style="font-size:1.1rem; font-weight:900; margin-bottom:12px;" data-i18n="tahfidh">📘 الحفظ (Tahfidh)</div>
     <div class="grid-2">
       <div class="form-group">
-        <label class="form-label">من سورة</label>
+        <label class="form-label" data-i18n="fromSurah">من سورة</label>
         <div id="tSurahFromWrap"></div>
       </div>
       <div class="form-group">
-        <label class="form-label">إلى سورة</label>
+        <label class="form-label" data-i18n="toSurah">إلى سورة</label>
         <div id="tSurahToWrap"></div>
       </div>
       <div class="form-group">
-        <label class="form-label">من آية</label>
+        <label class="form-label" data-i18n="fromAyah">من آية</label>
         <input id="tAyahFrom" type="number" class="form-input" placeholder="1" min="1" />
       </div>
       <div class="form-group">
-        <label class="form-label">إلى آية</label>
+        <label class="form-label" data-i18n="toAyah">إلى آية</label>
         <input id="tAyahTo" type="number" class="form-input" placeholder="10" min="1" />
       </div>
     </div>
-
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px;">
       <div class="card" style="padding:0.75rem;">
-        <div style="font-weight:700; margin-bottom:8px;">عدد الأخطاء</div>
+        <div style="font-weight:700; margin-bottom:8px;" data-i18n="errors">عدد الأخطاء</div>
         <div style="display:flex; align-items:center; gap:12px;">
           <button id="tErrMinus" class="btn btn-secondary" style="padding:0.4rem 0.9rem;">−</button>
           <div id="tErrors" style="font-size:1.3rem; font-weight:900; min-width:24px; text-align:center;">0</div>
@@ -67,12 +68,12 @@
         </div>
       </div>
       <div class="card" style="padding:0.75rem;">
-        <div style="font-weight:700; margin-bottom:8px;">التقييم</div>
+        <div style="font-weight:700; margin-bottom:8px;" data-i18n="rating">التقييم</div>
         <select id="tRating" class="form-input form-select">
-          <option value="ممتاز">ممتاز ⭐⭐⭐⭐⭐</option>
-          <option value="جيد جدًا">جيد جدًا ⭐⭐⭐⭐</option>
-          <option value="جيد">جيد ⭐⭐⭐</option>
-          <option value="ضعيف">ضعيف ⭐⭐</option>
+          <option value="ممتاز" data-i18n="excellent">ممتاز</option>
+          <option value="جيد جدًا" data-i18n="veryGood">جيد جدًا</option>
+          <option value="جيد" data-i18n="good">جيد</option>
+          <option value="ضعيف" data-i18n="weak">ضعيف</option>
         </select>
       </div>
     </div>
@@ -80,30 +81,28 @@
 
   <!-- MURAJAAH -->
   <section class="card">
-    <div style="font-size:1.1rem; font-weight:900; margin-bottom:12px;">🔁 المراجعة (Murājaʿah)</div>
-
+    <div style="font-size:1.1rem; font-weight:900; margin-bottom:12px;" data-i18n="murajaah">🔁 المراجعة (Murājaʿah)</div>
     <div class="grid-2">
       <div class="form-group">
-        <label class="form-label">من سورة</label>
+        <label class="form-label" data-i18n="fromSurah">من سورة</label>
         <div id="mSurahFromWrap"></div>
       </div>
       <div class="form-group">
-        <label class="form-label">إلى سورة</label>
+        <label class="form-label" data-i18n="toSurah">إلى سورة</label>
         <div id="mSurahToWrap"></div>
       </div>
       <div class="form-group">
-        <label class="form-label">من آية</label>
+        <label class="form-label" data-i18n="fromAyah">من آية</label>
         <input id="mAyahFrom" type="number" class="form-input" placeholder="1" min="1" />
       </div>
       <div class="form-group">
-        <label class="form-label">إلى آية</label>
+        <label class="form-label" data-i18n="toAyah">إلى آية</label>
         <input id="mAyahTo" type="number" class="form-input" placeholder="10" min="1" />
       </div>
     </div>
-
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px;">
       <div class="card" style="padding:0.75rem;">
-        <div style="font-weight:700; margin-bottom:8px;">عدد الأخطاء</div>
+        <div style="font-weight:700; margin-bottom:8px;" data-i18n="errors">عدد الأخطاء</div>
         <div style="display:flex; align-items:center; gap:12px;">
           <button id="mErrMinus" class="btn btn-secondary" style="padding:0.4rem 0.9rem;">−</button>
           <div id="mErrors" style="font-size:1.3rem; font-weight:900; min-width:24px; text-align:center;">0</div>
@@ -111,44 +110,43 @@
         </div>
       </div>
       <div class="card" style="padding:0.75rem;">
-        <div style="font-weight:700; margin-bottom:8px;">التقييم</div>
+        <div style="font-weight:700; margin-bottom:8px;" data-i18n="rating">التقييم</div>
         <select id="mRating" class="form-input form-select">
-          <option value="ممتاز">ممتاز ⭐⭐⭐⭐⭐</option>
-          <option value="جيد جدًا">جيد جدًا ⭐⭐⭐⭐</option>
-          <option value="جيد">جيد ⭐⭐⭐</option>
-          <option value="ضعيف">ضعيف ⭐⭐</option>
+          <option value="ممتاز" data-i18n="excellent">ممتاز</option>
+          <option value="جيد جدًا" data-i18n="veryGood">جيد جدًا</option>
+          <option value="جيد" data-i18n="good">جيد</option>
+          <option value="ضعيف" data-i18n="weak">ضعيف</option>
         </select>
       </div>
     </div>
   </section>
 
-  <!-- SAVE -->
   <section class="card">
-    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.1rem; padding:0.9rem;">
+    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.1rem; padding:0.9rem;" data-i18n="saveRecord">
       💾 حفظ سجل اليوم
     </button>
   </section>
-
 </main>
 
 <nav class="bottom-nav">
   <button class="nav-btn" onclick="location.href='index.html'">
-    <div class="nav-icon">🏠</div><div class="nav-text">الرئيسية</div>
+    <div class="nav-icon">🏠</div><div class="nav-text" data-i18n="home">الرئيسية</div>
   </button>
   <button class="nav-btn" onclick="history.back()">
-    <div class="nav-icon">👥</div><div class="nav-text">الطلاب</div>
+    <div class="nav-icon">👥</div><div class="nav-text" data-i18n="students">الطلاب</div>
   </button>
   <button class="nav-btn active">
-    <div class="nav-icon">📝</div><div class="nav-text">السجل</div>
+    <div class="nav-icon">📝</div><div class="nav-text" data-i18n="record">السجل</div>
   </button>
   <button class="nav-btn" onclick="location.href='settings.html'">
-    <div class="nav-icon">⚙️</div><div class="nav-text">الإعدادات</div>
+    <div class="nav-icon">⚙️</div><div class="nav-text" data-i18n="settings">الإعدادات</div>
   </button>
 </nav>
 
-<footer class="branding-footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
+<footer class="branding-footer" data-i18n="footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
 
 <script src="js/js/db.js"></script>
+<script src="js/js/i18n.js"></script>
 <script src="js/js/ui.js"></script>
 <script src="js/js/records.js"></script>
 </body>

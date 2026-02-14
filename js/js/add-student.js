@@ -4,13 +4,12 @@
   const classId   = getQueryParam("classId");
   const isEdit    = !!studentId;
 
-  // Inject surah select
   qs("lastSurahWrap").innerHTML = surahSelect("lastSurah", "");
 
   if (isEdit) {
     const s = getStudentById(studentId);
     if (s) {
-      qs("pageTitle").textContent   = "تعديل بيانات الطالب";
+      qs("pageTitle").textContent   = t('editStudentTitle');
       qs("studentName").value       = s.name;
       qs("gender").value            = s.gender    || "ذكر";
       qs("phone").value             = s.phone     || "";
@@ -22,7 +21,7 @@
 
   qs("btnSave").onclick = () => {
     const name = qs("studentName").value.trim();
-    if (!name) { alert("يرجى إدخال اسم الطالب"); return; }
+    if (!name) { alert(t('enterStudentName')); return; }
 
     const student = isEdit
       ? Object.assign(getStudentById(studentId) || {}, {
@@ -52,7 +51,7 @@
 
   qs("btnDelete").onclick = () => {
     const s = getStudentById(studentId);
-    if (confirm('حذف الطالب "' + (s ? s.name : '') + '"؟\nسيتم حذف جميع سجلاته.')) {
+    if (confirm(t('confirmDeleteStudentFull').replace('$1', s ? s.name : ''))) {
       deleteStudent(studentId);
       location.href = `class.html?classId=${classId}`;
     }

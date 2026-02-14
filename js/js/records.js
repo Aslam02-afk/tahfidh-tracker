@@ -3,38 +3,34 @@
   const studentId = getQueryParam("studentId");
   const classId   = getQueryParam("classId");
   const today     = new Date().toISOString().slice(0, 10);
+  const lang      = getLang();
 
-  // Show student name in header
   const student = getStudentById(studentId);
   if (student && qs("studentNameDisplay")) {
     qs("studentNameDisplay").textContent = student.name;
   }
 
-  // Show date
   if (qs("recordDateDisplay")) {
     const d = new Date(today + 'T00:00:00');
-    qs("recordDateDisplay").textContent = d.toLocaleDateString('ar-SA', {
+    const locale = lang === 'en' ? 'en-US' : 'ar-SA';
+    qs("recordDateDisplay").textContent = d.toLocaleDateString(locale, {
       weekday:'long', year:'numeric', month:'long', day:'numeric'
     });
   }
 
-  // Inject surah selects
   if (qs("tSurahFromWrap")) qs("tSurahFromWrap").innerHTML = surahSelect("tSurahFrom", "");
   if (qs("tSurahToWrap"))   qs("tSurahToWrap").innerHTML   = surahSelect("tSurahTo",   "");
   if (qs("mSurahFromWrap")) qs("mSurahFromWrap").innerHTML = surahSelect("mSurahFrom", "");
   if (qs("mSurahToWrap"))   qs("mSurahToWrap").innerHTML   = surahSelect("mSurahTo",   "");
 
-  // Error counter helpers
   function getErr(id) { return parseInt(qs(id).textContent) || 0; }
   function setErr(id, val) { qs(id).textContent = Math.max(0, val); }
 
-  // Wire counter buttons
   qs("tErrMinus").onclick = () => setErr("tErrors", getErr("tErrors") - 1);
   qs("tErrPlus").onclick  = () => setErr("tErrors", getErr("tErrors") + 1);
   qs("mErrMinus").onclick = () => setErr("mErrors", getErr("mErrors") - 1);
   qs("mErrPlus").onclick  = () => setErr("mErrors", getErr("mErrors") + 1);
 
-  // Load existing record
   const existing = getDailyRecord(studentId, today);
   if (existing) {
     qs("tSurahFrom").value = existing.tahfidh.surahFrom;
@@ -52,7 +48,6 @@
     qs("mRating").value    = existing.murajaah.rating;
   }
 
-  // Save
   qs("btnSave").onclick = () => {
     const record = {
       studentId, classId, date: today,
@@ -74,8 +69,7 @@
       }
     };
     upsertDailyRecord(record);
-    alert("تم حفظ السجل ✅");
+    alert(t('savedAlert'));
     location.href = `class.html?classId=${classId}`;
   };
-
 })();
