@@ -46,3 +46,24 @@ function clearAllData() {
     location.href = 'index.html';
   }
 }
+
+function sendContactMessage() {
+  const name = qs('contactTeacherName').value || t('notMentioned');
+  const subject = qs('contactSubject').value;
+  const message = qs('contactMessage').value;
+
+  if (!message.trim()) {
+    alert(t('pleaseWriteMessage'));
+    return;
+  }
+
+  const email = "markazalhudaa143@gmail.com";
+  const mailSubject = encodeURIComponent("Tahfidh Tracker – " + subject);
+  const body = encodeURIComponent(
+    t('teacherNameEmail') + ": " + name + "\n\n" +
+    t('messageEmail') + ":\n" + message + "\n\n" +
+    "— " + t('sentFromApp')
+  );
+
+  window.location.href = "mailto:" + email + "?subject=" + mailSubject + "&body=" + body;
+}

@@ -1,5 +1,25 @@
 // js/home.js
 
+// Display Hijri and Gregorian dates
+(function initDates() {
+  const now = new Date();
+  const lang = getLang();
+  const locale = lang === 'ar' ? 'ar-SA' : 'en-US';
+
+  const gregorian = new Intl.DateTimeFormat(locale, {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', calendar: 'gregory'
+  }).format(now);
+
+  const hijri = new Intl.DateTimeFormat(locale, {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', calendar: 'islamic-umalqura'
+  }).format(now);
+
+  const hijriEl = document.getElementById('hijriDate');
+  const gregEl  = document.getElementById('gregorianDate');
+  if (hijriEl) hijriEl.textContent = hijri;
+  if (gregEl)  gregEl.textContent  = gregorian;
+})();
+
 function goToAddClass() {
   location.href = 'add-class.html';
 }
@@ -24,6 +44,8 @@ function renderClasses() {
     const students = data.students.filter(s => s.classId === h.id);
     const doneToday = data.records.filter(r => r.classId === h.id && r.date === today).length;
     const pct = students.length ? Math.round(doneToday / students.length * 100) : 0;
+    const genderIcon = h.teacherGender === 'female' ? 'female teacher icon' : 'male teacher icon';
+    const timeIcon = h.classTime === 'evening' ? 'night time icon' : 'day time icon';
 
     return `
       <article class="card" style="cursor:pointer;" onclick="location.href='class.html?classId=${h.id}'">
@@ -31,6 +53,10 @@ function renderClasses() {
           <div style="flex:1;">
             <div style="font-size:1.1rem; font-weight:900;">${h.name}</div>
             <div style="margin-top:4px; color:var(--text-muted); font-size:0.9rem;">${t('teacher')}: ${h.teacher || '—'}</div>
+            <div style="display:flex; gap:8px; margin-top:6px; align-items:center;">
+              <img src="icons/${genderIcon}.svg" style="width:20px; height:20px; opacity:0.7;" alt="">
+              <img src="icons/${timeIcon}.svg" style="width:20px; height:20px; opacity:0.7;" alt="">
+            </div>
           </div>
           <div style="text-align:center; background:var(--bg); padding:8px 14px; border-radius:12px; min-width:54px;">
             <div style="font-size:1.3rem; font-weight:900; color:var(--primary);">${students.length}</div>

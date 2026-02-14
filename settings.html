@@ -7,9 +7,6 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -84,9 +81,33 @@
   <!-- Contact -->
   <section class="card">
     <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="contactSection">📩 التواصل</div>
-    <button class="btn btn-secondary btn-full" onclick="location.href='contact.html'" data-i18n="contactAlHudaa">
-      تواصل مع برنامج الهدى
+    <p style="color:var(--text-muted); line-height:1.7; margin-bottom:12px; font-size:0.85rem;" data-i18n="contactUsDesc">
+      إذا كان لديك اقتراح، مشكلة تقنية، أو طلب خاص، يسعدنا تواصلك مع برنامج الهدى.
+    </p>
+    <div class="form-group">
+      <label class="form-label" data-i18n="teacherNameOptional">اسم المعلم (اختياري)</label>
+      <input id="contactTeacherName" class="form-input" data-i18n-ph="teacherNameContactPh" placeholder="اكتب اسمك" />
+    </div>
+    <div class="form-group">
+      <label class="form-label" data-i18n="subject">الموضوع</label>
+      <select id="contactSubject" class="form-select">
+        <option data-i18n="subjectSuggestion">اقتراح تطوير</option>
+        <option data-i18n="subjectBug">مشكلة تقنية</option>
+        <option data-i18n="subjectDataInquiry">استفسار عن البيانات</option>
+        <option data-i18n="subjectSupport">طلب دعم</option>
+        <option data-i18n="subjectOther">أخرى</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label" data-i18n="message">الرسالة</label>
+      <textarea id="contactMessage" class="form-input" rows="4" data-i18n-ph="messagePh" placeholder="اكتب رسالتك هنا..."></textarea>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="sendContactMessage()" data-i18n="sendMessage">
+      ✉️ إرسال الرسالة
     </button>
+    <p style="font-size:0.82rem; color:var(--text-muted); margin-top:10px; text-align:center;">
+      📧 <b>markazalhudaa143@gmail.com</b>
+    </p>
   </section>
 
   <!-- What's New -->
@@ -138,10 +159,6 @@
   <button class="nav-btn active" onclick="location.href='settings.html'">
     <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
     <div class="nav-text" data-i18n="settings">الإعدادات</div>
-  </button>
-  <button class="nav-btn" onclick="location.href='contact.html'">
-    <div class="nav-icon"><img src="icons/edit icon.svg" alt=""></div>
-    <div class="nav-text" data-i18n="contact">تواصل</div>
   </button>
 </nav>
 

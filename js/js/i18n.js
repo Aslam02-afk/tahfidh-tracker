@@ -7,7 +7,7 @@ const LANG = {
     students: 'الطلاب', records: 'السجلات', record: 'السجل',
 
     // Home
-    appTitle: 'إدارة حلقات التحفيظ', appSub: 'Tahfidh Tracker',
+    appTitle: 'إدارة التحفيظ', appSub: 'Tahfidh Tracker',
     classes: 'الحلقات', addNewClass: '➕ إضافة حلقة جديدة',
     noClassesYet: 'لا توجد حلقات بعد',
     noClassesHint: 'اضغط الزر أدناه لإضافة أول حلقة',
@@ -40,6 +40,8 @@ const LANG = {
     // Add class
     addClassTitle: 'إضافة حلقة جديدة', editClassTitle: 'تعديل الحلقة',
     className: 'اسم الحلقة', teacherName: 'اسم المعلم',
+    teacherGender: 'جنس المعلم', teacherGenderMale: 'معلم', teacherGenderFemale: 'معلمة',
+    classTime: 'وقت الحلقة', classTimeMorning: 'صباحي', classTimeEvening: 'مسائي',
     notes: 'ملاحظات (اختياري)',
     classNamePh: 'مثال: الصفوف الأولية', teacherPh: 'مثال: عبدالله',
     notesPh: 'أي معلومات إضافية...',
@@ -127,9 +129,12 @@ const LANG = {
     teacherNameEmail: 'اسم المعلم', messageEmail: 'الرسالة',
     sentFromApp: 'تم الإرسال من تطبيق Tahfidh Tracker',
 
+    // Dates
+    hijriDate: 'التاريخ الهجري', gregorianDate: 'التاريخ الميلادي',
+
     // About
     aboutTitle: 'برنامج الهدى | Al Hudaa Program', aboutSub: 'Al Hudaa Program',
-    aboutDesc: 'تطبيق لمساعدة معلمي القرآن في متابعة بيانات الطلاب وتسجيل الحفظ والمراجعة اليومية',
+    aboutDesc: 'تطبيق إدارة التحفيظ لمساعدة معلمي القرآن في متابعة بيانات الطلاب وتسجيل الحفظ والمراجعة اليومية',
     aboutDescEn: 'Designed to help Quran teachers track student progress, record daily memorization & revision, and send reports to parents.',
     whatsNew: '🆕 ما الجديد | What\'s New',
     footer: 'Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى',
@@ -177,7 +182,7 @@ const LANG = {
     students: 'Students', records: 'Records', record: 'Record',
 
     // Home
-    appTitle: 'Tahfidh Circle Management', appSub: 'Tahfidh Tracker',
+    appTitle: 'Tahfidh Management', appSub: 'Tahfidh Tracker',
     classes: 'Classes', addNewClass: '➕ Add New Class',
     noClassesYet: 'No classes yet',
     noClassesHint: 'Tap the button below to add your first class',
@@ -210,6 +215,8 @@ const LANG = {
     // Add class
     addClassTitle: 'Add New Class', editClassTitle: 'Edit Class',
     className: 'Class Name', teacherName: 'Teacher Name',
+    teacherGender: 'Teacher Gender', teacherGenderMale: 'Male', teacherGenderFemale: 'Female',
+    classTime: 'Class Time', classTimeMorning: 'Morning', classTimeEvening: 'Evening',
     notes: 'Notes (optional)',
     classNamePh: 'e.g. Beginners Class', teacherPh: 'e.g. Abdullah',
     notesPh: 'Any additional info...',
@@ -296,6 +303,9 @@ const LANG = {
     pleaseWriteMessage: 'Please write a message before sending',
     teacherNameEmail: 'Teacher', messageEmail: 'Message',
     sentFromApp: 'Sent from Tahfidh Tracker app',
+
+    // Dates
+    hijriDate: 'Hijri Date', gregorianDate: 'Gregorian Date',
 
     // About
     aboutTitle: 'Al Hudaa Program | برنامج الهدى', aboutSub: 'برنامج الهدى',

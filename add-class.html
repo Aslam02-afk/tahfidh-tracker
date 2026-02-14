@@ -7,9 +7,6 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -31,6 +28,34 @@
     <div class="form-group">
       <label class="form-label" data-i18n="teacherNameLabel">اسم المعلم</label>
       <input id="teacherName" class="form-input" data-i18n-ph="teacherNamePh" placeholder="مثال: عبدالله" />
+    </div>
+    <div class="form-group">
+      <label class="form-label" data-i18n="teacherGender">جنس المعلم</label>
+      <div style="display:flex; gap:10px;">
+        <button type="button" id="genderMale" class="btn btn-primary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:0.6rem;" onclick="selectGender('male')">
+          <img src="icons/male teacher icon.svg" style="width:24px; height:24px;" alt="">
+          <span data-i18n="teacherGenderMale">معلم</span>
+        </button>
+        <button type="button" id="genderFemale" class="btn btn-secondary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:0.6rem;" onclick="selectGender('female')">
+          <img src="icons/female teacher icon.svg" style="width:24px; height:24px;" alt="">
+          <span data-i18n="teacherGenderFemale">معلمة</span>
+        </button>
+      </div>
+      <input type="hidden" id="teacherGender" value="male" />
+    </div>
+    <div class="form-group">
+      <label class="form-label" data-i18n="classTime">وقت الحلقة</label>
+      <div style="display:flex; gap:10px;">
+        <button type="button" id="timeMorning" class="btn btn-primary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:0.6rem;" onclick="selectTime('morning')">
+          <img src="icons/day time icon.svg" style="width:24px; height:24px;" alt="">
+          <span data-i18n="classTimeMorning">صباحي</span>
+        </button>
+        <button type="button" id="timeEvening" class="btn btn-secondary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:0.6rem;" onclick="selectTime('evening')">
+          <img src="icons/night time icon.svg" style="width:24px; height:24px;" alt="">
+          <span data-i18n="classTimeEvening">مسائي</span>
+        </button>
+      </div>
+      <input type="hidden" id="classTime" value="morning" />
     </div>
     <div class="form-group">
       <label class="form-label" data-i18n="notesOptional">ملاحظات (اختياري)</label>

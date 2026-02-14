@@ -41,7 +41,7 @@ html {
 }
 
 body {
-  font-family: "Amiri", "Roboto", "Segoe UI", Tahoma, sans-serif;
+  font-family: "Segoe UI", Tahoma, "Arial", sans-serif;
   background: var(--bg);
   color: var(--text-main);
   min-height: 100vh;
@@ -57,7 +57,7 @@ body {
 /* LTR (English) font override */
 html[lang="en"] body,
 html[dir="ltr"] body {
-  font-family: "Roboto", "Amiri", "Segoe UI", Tahoma, sans-serif;
+  font-family: "Roboto", "Segoe UI", Tahoma, sans-serif;
 }
 
 /* -------- Header -------- */
@@ -331,7 +331,7 @@ html.dark .nav-btn.active .nav-icon img {
 }
 
 .ayah-text {
-  font-family: 'KFGQPC Hafs', "Amiri", serif;
+  font-family: 'KFGQPC Hafs', serif;
   font-size: 1.5rem;
   line-height: 2.4;
   text-align: justify;
@@ -365,7 +365,7 @@ html.dark .nav-btn.active .nav-icon img {
 }
 
 .surah-header h2 {
-  font-family: "Amiri", serif;
+  font-family: serif;
   font-size: 1.6rem;
   font-weight: 700;
 }
