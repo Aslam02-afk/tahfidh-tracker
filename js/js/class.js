@@ -87,14 +87,14 @@
   if (weekBtn) weekBtn.onclick = () => {
     const students = getStudentsByClass(classId);
     if (!students.length) return alert(t('noStudentsAlert'));
-    students.forEach(s => generateWeeklyReport(s.id));
+    students.forEach(s => generateWeeklyReport(s.id, classId));
   };
 
   const monthBtn = qs('monthlyReportBtn');
   if (monthBtn) monthBtn.onclick = () => {
     const students = getStudentsByClass(classId);
     if (!students.length) return alert(t('noStudentsAlert'));
-    students.forEach(s => generateMonthlyReport(s.id));
+    students.forEach(s => generateMonthlyReport(s.id, classId));
   };
 
   const exportBtn = qs('exportBtn');

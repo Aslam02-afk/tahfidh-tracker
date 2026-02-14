@@ -108,6 +108,7 @@ const LANG = {
     backupSection: '💾 النسخ الاحتياطي', importBackup: 'استيراد نسخة احتياطية',
     dangerSection: '⚠️ خطر', clearAllData: '🗑️ مسح جميع البيانات',
     contactAlHudaa: 'تواصل مع برنامج الهدى',
+    v13notes: 'قارئ القرآن — اختبارات الطلاب — تقارير إسلامية محسّنة — أيقونات مخصصة',
     v12notes: 'دعم اللغة الإنجليزية — تقارير ثنائية اللغة للأولياء',
     v11notes: 'حفظ ومراجعة مع قائمة 114 سورة — تقارير أسبوعية وشهرية — الوضع الليلي — نسخ احتياطي — تسجيل الحضور',
     v10notes: 'الإصدار الأول: إدارة الحلقات والطلاب وتصدير Excel',
@@ -143,6 +144,31 @@ const LANG = {
     rptErrorsSuffix: 'أخطاء', rptSignature: '— Tahfidh Tracker | برنامج الهدى',
 
     noExportData: 'لا توجد بيانات للتصدير',
+
+    // Exam fields
+    examJuzCount: 'عدد أجزاء الاختبار',
+    examPercentage: 'نسبة الاختبار %',
+    examNotes: 'ملاحظات الاختبار',
+    examJuzPh: 'مثال: 3',
+    examPercentPh: 'مثال: 85',
+    examNotesPh: 'ملاحظات عن أداء الطالب في الاختبار...',
+
+    // Report format
+    rptGreeting: 'السلام عليكم ورحمة الله وبركاته',
+    rptIntro: 'يسرنا مشاركة التقرير الأسبوعي للطالب:',
+    rptNewMemorization: '🔹 الحفظ الجديد:',
+    rptRevision: '🔹 المراجعة:',
+    rptFrom: 'من',
+    rptTo: 'إلى',
+    rptWeeklyRating: '⭐ التقييم الأسبوعي:',
+    rptClosing: 'نسأل الله أن يبارك في حفظه ويثبته ويجعله من أهل القرآن.',
+    rptBarakallah: 'بارك الله فيكم.',
+    rptClassName: '—',
+
+    // Quran Reader
+    quran: 'القرآن', quranTitle: 'القرآن الكريم', quranSubtitle: 'تلاوة وقراءة',
+    allJuz: 'كل الأجزاء', ayahs: 'آية', loadingQuran: 'جاري تحميل القرآن...',
+    quranLoadError: 'فشل تحميل بيانات القرآن. يرجى المحاولة مرة أخرى.',
   },
 
   en: {
@@ -252,6 +278,7 @@ const LANG = {
     backupSection: '💾 Backup & Restore', importBackup: 'Import Backup',
     dangerSection: '⚠️ Danger Zone', clearAllData: '🗑️ Clear All Data',
     contactAlHudaa: 'Contact Al Hudaa Program',
+    v13notes: 'Quran reader — Student exams — Enhanced Islamic reports — Custom icons',
     v12notes: 'English language support — Bilingual reports for parents',
     v11notes: 'Tahfidh & revision with 114 surahs — Weekly & monthly reports — Dark mode — Backup — Attendance',
     v10notes: 'First release: Class & student management, Excel export',
@@ -287,6 +314,31 @@ const LANG = {
     rptErrorsSuffix: 'errors', rptSignature: '— Tahfidh Tracker | Al Hudaa Program',
 
     noExportData: 'No data to export',
+
+    // Exam fields
+    examJuzCount: 'Exam Juz Count',
+    examPercentage: 'Exam Percentage %',
+    examNotes: 'Exam Notes',
+    examJuzPh: 'e.g. 3',
+    examPercentPh: 'e.g. 85',
+    examNotesPh: 'Notes about exam performance...',
+
+    // Report format
+    rptGreeting: 'Assalamu \'alaykum wa rahmatullahi wa barakatuh,',
+    rptIntro: 'We are pleased to share the weekly progress report of the student:',
+    rptNewMemorization: '🔹 New Memorization (Tahfidh):',
+    rptRevision: '🔹 Revision (Muraja\'ah):',
+    rptFrom: 'From',
+    rptTo: 'to',
+    rptWeeklyRating: '⭐ Weekly Rating:',
+    rptClosing: 'Alhamdulillah, the student is showing good effort. We ask Allah to bless his learning and make him among Ahlul-Qur\'an.',
+    rptBarakallah: 'Barakallahu feekum.',
+    rptClassName: '—',
+
+    // Quran Reader
+    quran: 'Quran', quranTitle: 'The Noble Quran', quranSubtitle: 'Quran Reader',
+    allJuz: 'All Juz', ayahs: 'Ayahs', loadingQuran: 'Loading Quran...',
+    quranLoadError: 'Failed to load Quran data. Please try again.',
   }
 };
 
@@ -303,6 +355,7 @@ function toggleLang() {
   // Re-render dynamic content if functions exist
   if (typeof renderClasses === 'function') renderClasses();
   if (typeof renderPage === 'function') renderPage();
+  if (typeof renderQuranPage === 'function') renderQuranPage();
 }
 
 function applyLang() {

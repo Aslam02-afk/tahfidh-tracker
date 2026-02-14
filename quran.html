@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>القرآن الكريم – Tahfidh Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* -------- Quran Page Specific Styles -------- */
+    .quran-filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      align-items: center;
+    }
+    .quran-filter-bar select {
+      flex: 1;
+    }
+
+    .bismillah {
+      text-align: center;
+      font-family: "Amiri", serif;
+      font-size: 1.55rem;
+      color: var(--accent);
+      padding: 14px 0 10px;
+      line-height: 2;
+      font-weight: 700;
+    }
+
+    .ayah-container {
+      padding: 16px 12px;
+      line-height: 2.6;
+      text-align: justify;
+      direction: rtl;
+    }
+
+    .ayah-inline {
+      font-family: "Amiri", serif;
+      font-size: 1.5rem;
+      color: var(--text-main);
+      word-spacing: 2px;
+    }
+
+    .ayah-num-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 30px;
+      padding: 0 5px;
+      background: linear-gradient(135deg, #C9A24D, #D4AF61);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.68rem;
+      font-weight: 700;
+      font-family: "Roboto", sans-serif;
+      margin: 0 3px;
+      vertical-align: middle;
+      box-shadow: 0 2px 6px rgba(201,162,77,0.35);
+      line-height: 1;
+    }
+
+    .surah-header-card {
+      text-align: center;
+      padding: 20px 16px;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .surah-header-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(201,162,77,.12) 2px, transparent 2px),
+        radial-gradient(circle at 80% 70%, rgba(201,162,77,.12) 2px, transparent 2px);
+      background-size: 35px 35px;
+      pointer-events: none;
+    }
+
+    .surah-header-card .surah-name-ar {
+      font-family: "Amiri", serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
+    }
+
+    .surah-header-card .surah-name-en {
+      font-family: "Roboto", sans-serif;
+      font-size: 0.92rem;
+      opacity: 0.9;
+      margin-top: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .surah-header-card .surah-meta {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      margin-top: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .surah-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0;
+    }
+    .surah-divider::before,
+    .surah-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+    }
+    .surah-divider .ornament {
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    .quran-loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+    .quran-loading .spinner {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 12px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Juz label */
+    .juz-label {
+      display: inline-block;
+      background: var(--secondary);
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: "Roboto", sans-serif;
+      margin-bottom: 6px;
+    }
+
+    /* Page indicator */
+    .page-indicator {
+      display: inline-block;
+      background: var(--border);
+      color: var(--text-muted);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-family: "Roboto", sans-serif;
+      margin-inline-start: 8px;
+    }
+
+    html.dark .page-indicator {
+      background: #334155;
+    }
+
+    /* Quick scroll to top button */
+    .scroll-top-btn {
+      position: fixed;
+      bottom: 5.2rem;
+      left: 1rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      transition: opacity 0.3s;
+    }
+    .scroll-top-btn.visible {
+      display: flex;
+    }
+
+    html[dir="ltr"] .scroll-top-btn {
+      left: auto;
+      right: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<header class="app-header">
+  <button id="langToggle" class="lang-switcher" onclick="toggleLang(); if(typeof renderQuranPage==='function') renderQuranPage();">EN</button>
+  <div style="text-align:center;">
+    <div class="app-title" data-i18n="quranTitle">القرآن الكريم</div>
+    <div style="font-size:0.75rem; opacity:0.85;" data-i18n="quranSubtitle">Quran Reader</div>
+  </div>
+  <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+</header>
+
+<main class="main-content">
+  <!-- Filter Bar -->
+  <div class="card">
+    <div class="quran-filter-bar">
+      <select id="surahSelect" class="form-input form-select" aria-label="Select Surah">
+        <option value="" data-i18n="chooseSurah">-- اختر السورة --</option>
+      </select>
+      <select id="juzSelect" class="form-input form-select" style="max-width: 120px;" aria-label="Select Juz">
+        <option value="" data-i18n="allJuz">كل الأجزاء</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Surah Header -->
+  <div id="surahHeader"></div>
+
+  <!-- Quran Content -->
+  <div id="quranContent" class="card">
+    <div class="quran-loading">
+      <div class="spinner"></div>
+      <div data-i18n="loadingQuran">جاري تحميل القرآن...</div>
+    </div>
+  </div>
+</main>
+
+<!-- Scroll to top -->
+<button id="scrollTopBtn" class="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <button class="nav-btn" onclick="location.href='index.html'">
+    <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
+    <div class="nav-text" data-i18n="home">الرئيسية</div>
+  </button>
+  <button class="nav-btn" onclick="location.href='class.html'">
+    <div class="nav-icon"><img src="icons/students icon.svg" alt=""></div>
+    <div class="nav-text" data-i18n="students">الطلاب</div>
+  </button>
+  <button class="nav-btn active">
+    <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
+    <div class="nav-text" data-i18n="quran">القرآن</div>
+  </button>
+  <button class="nav-btn" onclick="location.href='settings.html'">
+    <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
+    <div class="nav-text" data-i18n="settings">الإعدادات</div>
+  </button>
+</nav>
+
+<footer class="branding-footer" data-i18n="footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
+
+<script src="js/js/db.js"></script>
+<script src="js/js/i18n.js"></script>
+<script src="js/js/ui.js"></script>
+<script src="js/js/quran.js"></script>
+</body>
+</html>

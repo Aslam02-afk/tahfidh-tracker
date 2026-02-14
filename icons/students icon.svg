@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   height="800"
+   width="800"
+   version="1.1"
+   id="Layer_1"
+   viewBox="0 0 512 512"
+   xml:space="preserve"
+   sodipodi:docname="students-student-svgrepo-com.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs3" /><sodipodi:namedview
+   id="namedview3"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"><inkscape:page
+     x="0"
+     y="0"
+     width="512"
+     height="512"
+     id="page2"
+     margin="0"
+     bleed="0" /></sodipodi:namedview>
+<g
+   id="g3"><circle
+     style="fill:#000000"
+     cx="256"
+     cy="220.67999"
+     r="69.103996"
+     id="circle1" /><path
+     style="fill:#000000"
+     d="M 365.408,423.912 C 364.208,357.896 315.728,304.776 256,304.776 c -59.728,0 -108.224,53.136 -109.408,119.136 z"
+     id="path1" /><circle
+     style="fill:#000000"
+     cx="94.991989"
+     cy="140.008"
+     r="51.919998"
+     id="circle2" /><path
+     style="fill:#000000"
+     d="m 177.2,292.696 c -0.896,-49.584 -37.312,-89.504 -82.208,-89.504 -44.896,0 -81.296,39.92 -82.192,89.504 z"
+     id="path2" /><circle
+     style="fill:#000000"
+     cx="422.112"
+     cy="140.008"
+     r="51.919998"
+     id="circle3" /><path
+     style="fill:#000000"
+     d="m 504.32,292.696 c -0.896,-49.584 -37.312,-89.504 -82.208,-89.504 -44.896,0 -81.296,39.92 -82.208,89.504 z"
+     id="path3" /></g>
+</svg>

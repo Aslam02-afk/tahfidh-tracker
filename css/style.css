@@ -5,15 +5,16 @@
 
 /* -------- Root Colors -------- */
 :root {
-  --primary: #0D2C54;        /* Deep Islamic blue */
-  --secondary: #0F766E;      /* Teal green */
-  --accent: #C9A24D;         /* Soft gold */
+  --primary: #0D2C54;
+  --secondary: #0F766E;
+  --accent: #C9A24D;
+  --green: #2A400D;
   --bg: #F4F6F8;
   --card-bg: #FFFFFF;
   --text-main: #1F2937;
   --text-muted: #6B7280;
   --border: #E5E7EB;
-  --success: #16A34A;
+  --success: #2A400D;
   --warning: #F59E0B;
   --danger: #DC2626;
   --radius: 18px;
@@ -31,7 +32,7 @@ html {
 }
 
 body {
-  font-family: "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  font-family: "Amiri", "Roboto", "Segoe UI", Tahoma, sans-serif;
   background: var(--bg);
   color: var(--text-main);
   min-height: 100vh;
@@ -44,11 +45,17 @@ body {
   background-attachment: fixed;
 }
 
+/* LTR (English) font override */
+html[lang="en"] body,
+html[dir="ltr"] body {
+  font-family: "Roboto", "Amiri", "Segoe UI", Tahoma, sans-serif;
+}
+
 /* -------- Header -------- */
 .app-header {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
-  padding: 1rem 1.25rem;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -58,11 +65,24 @@ body {
   box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
 
+.app-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(201,162,77,.08) 2px, transparent 2px),
+    radial-gradient(circle at 80% 70%, rgba(201,162,77,.08) 2px, transparent 2px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.header-center { text-align: center; }
 .app-title {
   font-size: 1.15rem;
   font-weight: 800;
   letter-spacing: 0.3px;
 }
+.app-subtitle { font-size: .8rem; opacity: .9; }
 
 .menu-btn,
 .lang-switcher {
@@ -73,6 +93,8 @@ body {
   border-radius: 12px;
   font-size: 1rem;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
 /* -------- Main -------- */
@@ -93,7 +115,6 @@ body {
   overflow: hidden;
 }
 
-/* Islamic geometric pattern overlay */
 .card::before {
   content: "";
   position: absolute;
@@ -150,7 +171,7 @@ body {
 }
 
 .btn-success {
-  background: var(--success);
+  background: var(--green);
   color: #fff;
 }
 
@@ -186,6 +207,7 @@ body {
   justify-content: space-around;
   padding: 0.4rem 0;
   border-top: 1px solid var(--border);
+  z-index: 100;
 }
 
 .nav-btn {
@@ -195,6 +217,7 @@ body {
   color: var(--text-muted);
   font-size: 0.7rem;
   cursor: pointer;
+  padding: 4px 8px;
 }
 
 .nav-btn.active {
@@ -203,7 +226,26 @@ body {
 
 .nav-icon {
   font-size: 1.25rem;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 28px;
+}
+
+.nav-icon img {
+  width: 22px;
+  height: 22px;
+  opacity: 0.55;
+}
+
+.nav-btn.active .nav-icon img {
+  opacity: 1;
+  filter: brightness(0) saturate(100%) invert(15%) sepia(62%) saturate(2168%) hue-rotate(196deg) brightness(92%) contrast(98%);
+}
+
+.nav-text {
+  font-size: 0.68rem;
+  margin-top: 2px;
 }
 
 /* -------- Footer -------- */
@@ -212,6 +254,7 @@ body {
   font-size: 0.7rem;
   color: var(--text-muted);
   margin-top: 2rem;
+  padding-bottom: 1rem;
 }
 
 /* -------- Responsive -------- */
@@ -219,33 +262,6 @@ body {
   .grid-2 {
     grid-template-columns: 1fr;
   }
-}
-.app-header{
-  background: linear-gradient(135deg,#0D2C54,#0F766E);
-  color:#fff;
-  padding:12px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky; top:0; z-index:100;
-}
-.header-center{ text-align:center; }
-.app-title{ font-weight:800; font-size:1.1rem; }
-.app-subtitle{ font-size:.8rem; opacity:.9; }
-
-.app-header::after{
-  content:"";
-  position:absolute; inset:0;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgba(201,162,77,.08) 2px, transparent 2px),
-    radial-gradient(circle at 80% 70%, rgba(201,162,77,.08) 2px, transparent 2px);
-  background-size:40px 40px;
-  pointer-events:none;
-}
-
-.nav-text {
-  font-size: 0.68rem;
-  margin-top: 2px;
 }
 
 /* -------- Dark Mode -------- */
@@ -285,4 +301,68 @@ html.dark .bottom-nav { background: #1E293B; border-color: var(--border); }
 html.dark .nav-btn { color: var(--text-muted); }
 html.dark .nav-btn.active { color: #60A5FA; }
 
+html.dark .nav-icon img {
+  filter: invert(0.6);
+}
+html.dark .nav-btn.active .nav-icon img {
+  filter: brightness(0) saturate(100%) invert(60%) sepia(44%) saturate(900%) hue-rotate(196deg) brightness(102%) contrast(96%);
+}
+
 * { transition: background-color 0.25s, color 0.25s, border-color 0.25s; }
+
+/* -------- Quran Reader -------- */
+.quran-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.quran-nav select {
+  flex: 1;
+}
+
+.ayah-text {
+  font-family: "Amiri", serif;
+  font-size: 1.5rem;
+  line-height: 2.4;
+  text-align: justify;
+  direction: rtl;
+  color: var(--text-main);
+}
+
+.ayah-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin: 0 4px;
+  vertical-align: middle;
+  font-family: "Roboto", sans-serif;
+}
+
+.surah-header {
+  text-align: center;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  border-radius: var(--radius);
+}
+
+.surah-header h2 {
+  font-family: "Amiri", serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.surah-header .surah-info {
+  font-size: 0.82rem;
+  opacity: 0.85;
+  margin-top: 4px;
+}
