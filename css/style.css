@@ -3,6 +3,15 @@
    Modern Islamic Design
    ========================= */
 
+/* -------- KFGQPC Uthmanic Font -------- */
+@font-face {
+  font-family: 'KFGQPC Hafs';
+  src: url('../kfgqpc_hafs_smart_font/HafsSmart_08.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* -------- Root Colors -------- */
 :root {
   --primary: #0D2C54;
@@ -322,7 +331,7 @@ html.dark .nav-btn.active .nav-icon img {
 }
 
 .ayah-text {
-  font-family: "Amiri", serif;
+  font-family: 'KFGQPC Hafs', "Amiri", serif;
   font-size: 1.5rem;
   line-height: 2.4;
   text-align: justify;

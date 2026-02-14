@@ -198,8 +198,8 @@
   function buildAyahsHTML(ayahs) {
     let html = '<div class="ayah-inline">';
     for (const a of ayahs) {
-      // Ayah text (emlaey for proper display)
-      html += `<span class="ayah-text">${escapeHTML(a.aya_text_emlaey)}</span>`;
+      // Ayah text (Uthmanic script with full tashkeel/harakat)
+      html += `<span class="ayah-text">${escapeHTML(a.aya_text)}</span>`;
       // Ayah number badge
       html += `<span class="ayah-num-badge">${toArabicNumeral(a.aya_no)}</span> `;
     }
