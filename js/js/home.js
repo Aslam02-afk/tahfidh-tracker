@@ -75,8 +75,8 @@ function renderClasses() {
         <div style="display:flex; gap:8px; margin-top:12px;">
           <button class="btn btn-secondary" style="padding:0.35rem 0.8rem; font-size:0.82rem; flex:1;"
             onclick="event.stopPropagation(); location.href='add-class.html?classId=${h.id}'">${t('edit')}</button>
-          <button class="btn" style="padding:0.35rem 0.8rem; font-size:0.82rem; background:#FEE2E2; color:#DC2626;"
-            onclick="event.stopPropagation(); confirmDeleteClass('${h.id}', \`${h.name}\`)">🗑️</button>
+          <button class="btn" style="padding:0.35rem 0.8rem; background:#FEE2E2; display:flex; align-items:center; justify-content:center;"
+            onclick="event.stopPropagation(); confirmDeleteClass('${h.id}', \`${h.name}\`)"><img src="icons/delete icon.svg" style="width:18px; height:18px;" alt=""></button>
         </div>
       </article>`;
   }).join('');

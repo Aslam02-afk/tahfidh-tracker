@@ -64,8 +64,8 @@
               onclick="location.href='record.html?classId=${classId}&studentId=${s.id}'">${t('openRecord')}</button>
             <button class="btn btn-secondary" style="flex:1;"
               onclick="location.href='add-student.html?classId=${classId}&studentId=${s.id}'">✏️</button>
-            <button class="btn" style="flex:1; background:#FEE2E2; color:#DC2626;"
-              onclick="confirmDeleteStudent('${s.id}', '${s.name.replace(/'/g, "\\'")}')">🗑️</button>
+            <button class="btn" style="flex:1; background:#FEE2E2; display:flex; align-items:center; justify-content:center;"
+              onclick="confirmDeleteStudent('${s.id}', '${s.name.replace(/'/g, "\\'")}')"><img src="icons/delete icon.svg" style="width:18px; height:18px;" alt=""></button>
           </div>
         </article>`;
     }).join('');

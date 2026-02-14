@@ -4,8 +4,7 @@ function updateDarkBtn() {
   const isDark = document.documentElement.classList.contains('dark');
   const btn = qs('darkModeBtn');
   if (btn) btn.textContent = isDark ? t('disable') : t('enable');
-  const toggle = qs('darkToggle');
-  if (toggle) toggle.textContent = isDark ? '☀️' : '🌙';
+  updateDarkIcon();
 }
 
 function updateLangBtn() {

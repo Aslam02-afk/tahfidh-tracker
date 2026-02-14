@@ -14,12 +14,19 @@ function initDarkMode() {
 function toggleDarkMode() {
   const isDark = document.documentElement.classList.toggle('dark');
   localStorage.setItem('darkMode', isDark ? '1' : '0');
+  updateDarkIcon();
+}
+
+function updateDarkIcon() {
   const btn = qs('darkToggle');
-  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+  if (!btn) return;
+  const isDark = document.documentElement.classList.contains('dark');
+  btn.innerHTML = `<img src="icons/${isDark ? 'night time icon' : 'day time icon'}.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="">`;
 }
 
 // Call on every page load
 initDarkMode();
+updateDarkIcon();
 
 // ===== Surah List =====
 const SURAHS = [

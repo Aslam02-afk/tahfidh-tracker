@@ -8,7 +8,7 @@ const LANG = {
 
     // Home
     appTitle: 'إدارة التحفيظ', appSub: 'Tahfidh Tracker',
-    classes: 'الحلقات', addNewClass: '➕ إضافة حلقة جديدة',
+    classes: 'الحلقات', addNewClass: 'إضافة حلقة جديدة',
     noClassesYet: 'لا توجد حلقات بعد',
     noClassesHint: 'اضغط الزر أدناه لإضافة أول حلقة',
     teacher: 'المعلم', student: 'طالب', progressToday: 'تقدم اليوم',
@@ -45,7 +45,7 @@ const LANG = {
     notes: 'ملاحظات (اختياري)',
     classNamePh: 'مثال: الصفوف الأولية', teacherPh: 'مثال: عبدالله',
     notesPh: 'أي معلومات إضافية...',
-    saveClass: '💾 حفظ الحلقة', deleteClass: '🗑️ حذف الحلقة',
+    saveClass: '💾 حفظ الحلقة', deleteClass: 'حذف الحلقة',
     enterClassName: 'يرجى إدخال اسم الحلقة',
     confirmDeleteClassFull: 'حذف حلقة "$1"؟\nسيتم حذف جميع الطلاب والسجلات.',
 
@@ -55,7 +55,7 @@ const LANG = {
     male: 'ذكر', female: 'أنثى',
     phone: 'رقم الهاتف (اختياري)', lastSurah: 'آخر سورة محفوظة',
     fullNamePh: 'الاسم الكامل', phonePh: '+966...',
-    saveStudent: '💾 حفظ الطالب', deleteStudent: '🗑️ حذف الطالب',
+    saveStudent: '💾 حفظ الطالب', deleteStudent: 'حذف الطالب',
     enterStudentName: 'يرجى إدخال اسم الطالب',
     confirmDeleteStudentFull: 'حذف الطالب "$1"؟\nسيتم حذف جميع سجلاته.',
 
@@ -70,7 +70,7 @@ const LANG = {
     exportData: '⬇️ تصدير البيانات (JSON)',
     importLabel: 'استيراد نسخة احتياطية',
     importData: '⬆️ استيراد البيانات',
-    danger: '⚠️ خطر', clearAll: '🗑️ مسح جميع البيانات',
+    danger: '⚠️ خطر', clearAll: 'مسح جميع البيانات',
     clearWarning: 'سيتم حذف جميع الحلقات والطلاب والسجلات بشكل نهائي',
     contactSection: '📩 التواصل', contactBtn: 'تواصل مع برنامج الهدى',
     selectFile: 'يرجى اختيار ملف JSON',
@@ -108,7 +108,7 @@ const LANG = {
     languageDesc: 'عربي أو إنجليزي',
     appearanceSection: '🌙 المظهر', darkModeLabel: 'الوضع الليلي',
     backupSection: '💾 النسخ الاحتياطي', importBackup: 'استيراد نسخة احتياطية',
-    dangerSection: '⚠️ خطر', clearAllData: '🗑️ مسح جميع البيانات',
+    dangerSection: '⚠️ خطر', clearAllData: 'مسح جميع البيانات',
     contactAlHudaa: 'تواصل مع برنامج الهدى',
     v13notes: 'قارئ القرآن — اختبارات الطلاب — تقارير إسلامية محسّنة — أيقونات مخصصة',
     v12notes: 'دعم اللغة الإنجليزية — تقارير ثنائية اللغة للأولياء',
@@ -183,7 +183,7 @@ const LANG = {
 
     // Home
     appTitle: 'Tahfidh Management', appSub: 'Tahfidh Tracker',
-    classes: 'Classes', addNewClass: '➕ Add New Class',
+    classes: 'Classes', addNewClass: 'Add New Class',
     noClassesYet: 'No classes yet',
     noClassesHint: 'Tap the button below to add your first class',
     teacher: 'Teacher', student: 'student', progressToday: 'Today\'s progress',
@@ -220,7 +220,7 @@ const LANG = {
     notes: 'Notes (optional)',
     classNamePh: 'e.g. Beginners Class', teacherPh: 'e.g. Abdullah',
     notesPh: 'Any additional info...',
-    saveClass: '💾 Save Class', deleteClass: '🗑️ Delete Class',
+    saveClass: '💾 Save Class', deleteClass: 'Delete Class',
     enterClassName: 'Please enter class name',
     confirmDeleteClassFull: 'Delete class "$1"?\nAll students and records will be deleted.',
 
@@ -230,7 +230,7 @@ const LANG = {
     male: 'Male', female: 'Female',
     phone: 'Phone (optional)', lastSurah: 'Last Memorized Surah',
     fullNamePh: 'Full name', phonePh: '+966...',
-    saveStudent: '💾 Save Student', deleteStudent: '🗑️ Delete Student',
+    saveStudent: '💾 Save Student', deleteStudent: 'Delete Student',
     enterStudentName: 'Please enter student name',
     confirmDeleteStudentFull: 'Delete student "$1"?\nAll records will be deleted.',
 
@@ -245,7 +245,7 @@ const LANG = {
     exportData: '⬇️ Export Data (JSON)',
     importLabel: 'Import Backup',
     importData: '⬆️ Import Data',
-    danger: '⚠️ Danger Zone', clearAll: '🗑️ Clear All Data',
+    danger: '⚠️ Danger Zone', clearAll: 'Clear All Data',
     clearWarning: 'All classes, students and records will be permanently deleted',
     contactSection: '📩 Contact', contactBtn: 'Contact Al Hudaa Program',
     selectFile: 'Please select a JSON file',
@@ -283,7 +283,7 @@ const LANG = {
     languageDesc: 'Arabic or English',
     appearanceSection: '🌙 Appearance', darkModeLabel: 'Dark Mode',
     backupSection: '💾 Backup & Restore', importBackup: 'Import Backup',
-    dangerSection: '⚠️ Danger Zone', clearAllData: '🗑️ Clear All Data',
+    dangerSection: '⚠️ Danger Zone', clearAllData: 'Clear All Data',
     contactAlHudaa: 'Contact Al Hudaa Program',
     v13notes: 'Quran reader — Student exams — Enhanced Islamic reports — Custom icons',
     v12notes: 'English language support — Bilingual reports for parents',
