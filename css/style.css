@@ -175,17 +175,17 @@ html[dir="ltr"] body {
 }
 
 .btn-secondary {
-  background: #EEF2F7;
-  color: var(--text-main);
+  background: var(--primary);
+  color: #fff;
 }
 
 .btn-success {
-  background: var(--green);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
 }
 
 .btn-warning {
-  background: var(--warning);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
 }
 
@@ -304,7 +304,7 @@ html.dark .form-select {
   border-color: var(--border);
 }
 
-html.dark .btn-secondary { background: #334155; color: var(--text-main); }
+html.dark .btn-secondary { background: #1E3A5F; color: #fff; }
 
 html.dark .bottom-nav { background: #1E293B; border-color: var(--border); }
 html.dark .nav-btn { color: var(--text-muted); }

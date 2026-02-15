@@ -52,10 +52,10 @@
           <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
             <span style="font-size:0.78rem; background:${attColor}; padding:4px 10px; border-radius:8px; font-weight:700;">${attLabel}</span>
             <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem;"
-              onclick="markAttendance('${s.id}', 'present')" style="padding:0.3rem 0.7rem; font-size:0.78rem; background:#D1FAE5; color:#065F46;">P</button>
-            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem; background:#FEF3C7; color:#92400E;"
+              onclick="markAttendance('${s.id}', 'present')">P</button>
+            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem;"
               onclick="markAttendance('${s.id}', 'late')">L</button>
-            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem; background:#FEE2E2; color:#991B1B;"
+            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem;"
               onclick="markAttendance('${s.id}', 'absent')">A</button>
           </div>
 
