@@ -33,7 +33,7 @@ function renderClasses() {
   if (data.halaqah.length === 0) {
     container.innerHTML = `
       <div class="card" style="text-align:center; padding:2rem; color:var(--text-muted);">
-        <div style="font-size:2.5rem; margin-bottom:10px;">📚</div>
+        <div style="margin-bottom:10px;"><img src="icons/Quran icon.svg" style="width:40px; height:40px;" alt=""></div>
         <div style="font-weight:700;">${t('noClassesYet')}</div>
         <div style="font-size:0.85rem; margin-top:6px;">${t('noClassesHint')}</div>
       </div>`;

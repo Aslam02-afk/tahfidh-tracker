@@ -15,7 +15,7 @@
   <div class="app-title" id="pageTitle" data-i18n="addStudent">إضافة طالب</div>
   <div style="display:flex; gap:4px;">
     <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">EN</button>
-    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
   </div>
 </header>
 
@@ -57,7 +57,7 @@
       <textarea id="notes" class="form-input" rows="3" data-i18n-ph="notesPh" placeholder="أي معلومات إضافية..."></textarea>
     </div>
     <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.05rem; padding:0.85rem; margin-top:6px;" data-i18n="saveStudent">
-      💾 حفظ الطالب
+      حفظ الطالب
     </button>
     <button id="btnDelete" class="btn btn-full" style="background:#FEE2E2; color:#DC2626; margin-top:10px; display:none; gap:8px;">
       <img src="icons/delete icon.svg" style="width:18px; height:18px;" alt="">

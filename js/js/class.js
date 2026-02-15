@@ -20,7 +20,7 @@
     if (filtered.length === 0) {
       container.innerHTML = `
         <div class="card" style="text-align:center; padding:2rem; color:var(--text-muted);">
-          <div style="font-size:2rem;">👤</div>
+          <div><img src="icons/students icon.svg" style="width:32px; height:32px;" alt=""></div>
           <div style="margin-top:8px;">${query ? t('noResults') : t('noStudents')}</div>
         </div>`;
       return;
@@ -41,7 +41,7 @@
                 ${hasRecord ? t('recordedToday') : t('notRecorded')}
               </div>
             </div>
-            <div style="font-size:1.5rem;">${s.starred ? '⭐' : '☆'}</div>
+            <div style="font-size:1.5rem;">${s.starred ? '★' : '☆'}</div>
           </div>
 
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; font-size:0.82rem;">
@@ -52,18 +52,18 @@
           <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
             <span style="font-size:0.78rem; background:${attColor}; padding:4px 10px; border-radius:8px; font-weight:700;">${attLabel}</span>
             <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem;"
-              onclick="markAttendance('${s.id}', 'present')">✅</button>
-            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem;"
-              onclick="markAttendance('${s.id}', 'late')">🟡</button>
-            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem;"
-              onclick="markAttendance('${s.id}', 'absent')">🔴</button>
+              onclick="markAttendance('${s.id}', 'present')" style="padding:0.3rem 0.7rem; font-size:0.78rem; background:#D1FAE5; color:#065F46;">P</button>
+            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem; background:#FEF3C7; color:#92400E;"
+              onclick="markAttendance('${s.id}', 'late')">L</button>
+            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem; background:#FEE2E2; color:#991B1B;"
+              onclick="markAttendance('${s.id}', 'absent')">A</button>
           </div>
 
           <div style="display:flex; gap:8px; margin-top:10px;">
             <button class="btn btn-success" style="flex:2;"
               onclick="location.href='record.html?classId=${classId}&studentId=${s.id}'">${t('openRecord')}</button>
             <button class="btn btn-secondary" style="flex:1;"
-              onclick="location.href='add-student.html?classId=${classId}&studentId=${s.id}'">✏️</button>
+              onclick="location.href='add-student.html?classId=${classId}&studentId=${s.id}'"><img src="icons/edit icon.svg" style="width:16px; height:16px;" alt=""></button>
             <button class="btn" style="flex:1; background:#FEE2E2; display:flex; align-items:center; justify-content:center;"
               onclick="confirmDeleteStudent('${s.id}', '${s.name.replace(/'/g, "\\'")}')"><img src="icons/delete icon.svg" style="width:18px; height:18px;" alt=""></button>
           </div>

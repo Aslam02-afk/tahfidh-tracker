@@ -18,7 +18,7 @@
   </div>
   <div style="display:flex; gap:4px;">
     <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">EN</button>
-    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
   </div>
 </header>
 
@@ -30,13 +30,13 @@
         <div style="font-weight:800;" data-i18n="date">التاريخ</div>
         <div id="recordDateDisplay" style="color:var(--text-muted); margin-top:4px;"></div>
       </div>
-      <div style="font-size:1.4rem;">🗓️</div>
+      <div><img src="icons/edit icon.svg" style="width:24px; height:24px;" alt=""></div>
     </div>
   </section>
 
   <!-- TAHFIDH -->
   <section class="card">
-    <div style="font-size:1.1rem; font-weight:900; margin-bottom:12px;" data-i18n="tahfidh">📘 الحفظ (Tahfidh)</div>
+    <div style="font-size:1.1rem; font-weight:900; margin-bottom:12px;" data-i18n="tahfidh">الحفظ (Tahfidh)</div>
     <div class="grid-2">
       <div class="form-group">
         <label class="form-label" data-i18n="fromSurah">من سورة</label>
@@ -78,7 +78,7 @@
 
   <!-- MURAJAAH -->
   <section class="card">
-    <div style="font-size:1.1rem; font-weight:900; margin-bottom:12px;" data-i18n="murajaah">🔁 المراجعة (Murājaʿah)</div>
+    <div style="font-size:1.1rem; font-weight:900; margin-bottom:12px;" data-i18n="murajaah">المراجعة (Murājaʿah)</div>
     <div class="grid-2">
       <div class="form-group">
         <label class="form-label" data-i18n="fromSurah">من سورة</label>
@@ -120,7 +120,7 @@
 
   <section class="card">
     <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.1rem; padding:0.9rem;" data-i18n="saveRecord">
-      💾 حفظ سجل اليوم
+      حفظ سجل اليوم
     </button>
   </section>
 </main>

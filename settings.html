@@ -15,7 +15,7 @@
   <div class="app-title" data-i18n="settings">الإعدادات</div>
   <div style="display:flex; gap:4px;">
     <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">EN</button>
-    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">🌙</button>
+    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
   </div>
 </header>
 
@@ -23,7 +23,7 @@
 
   <!-- Language -->
   <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="languageSection">🌐 اللغة</div>
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="languageSection">اللغة</div>
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div>
         <div style="font-weight:700;" data-i18n="languageLabel">لغة التطبيق</div>
@@ -37,7 +37,7 @@
 
   <!-- Dark mode -->
   <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="appearanceSection">🌙 المظهر</div>
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="appearanceSection">المظهر</div>
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div>
         <div style="font-weight:700;" data-i18n="darkModeLabel">الوضع الليلي</div>
@@ -51,10 +51,10 @@
 
   <!-- Backup & Restore -->
   <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="backupSection">💾 النسخ الاحتياطي</div>
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="backupSection">النسخ الاحتياطي</div>
 
     <button class="btn btn-primary btn-full" onclick="exportDB()" style="margin-bottom:10px;" data-i18n="exportData">
-      ⬇️ تصدير البيانات (JSON)
+      تصدير البيانات (JSON)
     </button>
 
     <div class="form-group" style="margin-bottom:0;">
@@ -62,13 +62,13 @@
       <input id="importFile" type="file" accept=".json" class="form-input" style="padding:0.5rem;" />
     </div>
     <button class="btn btn-warning btn-full" onclick="doImport()" style="margin-top:10px;" data-i18n="importData">
-      ⬆️ استيراد البيانات
+      استيراد البيانات
     </button>
   </section>
 
   <!-- Clear data -->
   <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="dangerSection">⚠️ خطر</div>
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="dangerSection">خطر</div>
     <button class="btn btn-full" onclick="clearAllData()"
       style="background:#FEE2E2; color:#DC2626; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px;">
       <img src="icons/delete icon.svg" style="width:18px; height:18px;" alt="">
@@ -81,7 +81,7 @@
 
   <!-- Contact -->
   <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="contactSection">📩 التواصل</div>
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="contactSection">التواصل</div>
     <p style="color:var(--text-muted); line-height:1.7; margin-bottom:12px; font-size:0.85rem;" data-i18n="contactUsDesc">
       إذا كان لديك اقتراح، مشكلة تقنية، أو طلب خاص، يسعدنا تواصلك مع برنامج الهدى.
     </p>
@@ -104,16 +104,16 @@
       <textarea id="contactMessage" class="form-input" rows="4" data-i18n-ph="messagePh" placeholder="اكتب رسالتك هنا..."></textarea>
     </div>
     <button class="btn btn-primary btn-full" onclick="sendContactMessage()" data-i18n="sendMessage">
-      ✉️ إرسال الرسالة
+      إرسال الرسالة
     </button>
     <p style="font-size:0.82rem; color:var(--text-muted); margin-top:10px; text-align:center;">
-      📧 <b>markazalhudaa143@gmail.com</b>
+      <b>markazalhudaa143@gmail.com</b>
     </p>
   </section>
 
   <!-- What's New -->
   <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="whatsNew">🆕 ما الجديد | What's New</div>
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="whatsNew">ما الجديد | What's New</div>
     <div style="font-size:0.82rem; line-height:1.8; color:var(--text-muted);">
       <div style="display:flex; gap:8px; align-items:flex-start; margin-bottom:8px;">
         <span style="background:var(--green); color:#fff; padding:2px 8px; border-radius:6px; font-size:0.72rem; white-space:nowrap;">v1.3</span>

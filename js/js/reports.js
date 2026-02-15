@@ -70,18 +70,18 @@ function generateWeeklyReport(studentId, classId) {
 
   if (isAr) {
     // ---- Arabic version ----
-    text += '🌿 تقرير الحفظ الأسبوعي 🌿\n\n';
+    text += 'تقرير الحفظ الأسبوعي\n\n';
     text += t('rptGreeting') + '\n\n';
     text += t('rptIntro') + '\n\n';
-    text += '📖 الطالب: ' + student.name + '\n';
-    text += '📅 الفترة: ' + fromStr + ' – ' + toStr + '\n\n';
+    text += 'الطالب: ' + student.name + '\n';
+    text += 'الفترة: ' + fromStr + ' – ' + toStr + '\n\n';
 
     if (!records.length) {
       text += t('rptNoRecords') + '\n\n';
     } else {
       records.forEach(r => {
         const dayName = getDayName(r.date);
-        text += '🗓 ' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
+        text += '' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
 
         text += t('rptNewMemorization') + '\n';
         text += r.tahfidh.surahFrom + ' (' + r.tahfidh.ayahFrom + '–' + r.tahfidh.ayahTo + ')\n';
@@ -98,7 +98,7 @@ function generateWeeklyReport(studentId, classId) {
       const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
       const weeklyRating = scoreToRating(avgScore);
 
-      text += '📊 إجمالي أخطاء الحفظ: ' + totalErrors + '\n';
+      text += 'إجمالي أخطاء الحفظ: ' + totalErrors + '\n';
       text += t('rptWeeklyRating') + ' ' + weeklyRating + '\n\n';
     }
 
@@ -109,18 +109,18 @@ function generateWeeklyReport(studentId, classId) {
 
   } else {
     // ---- English version ----
-    text += '🌿 Weekly Tahfidh Report 🌿\n\n';
+    text += 'Weekly Tahfidh Report\n\n';
     text += t('rptGreeting') + '\n\n';
     text += t('rptIntro') + '\n\n';
-    text += '📖 Student: ' + student.name + '\n';
-    text += '📅 Period: ' + fromStr + ' – ' + toStr + '\n\n';
+    text += 'Student: ' + student.name + '\n';
+    text += 'Period: ' + fromStr + ' – ' + toStr + '\n\n';
 
     if (!records.length) {
       text += t('rptNoRecords') + '\n\n';
     } else {
       records.forEach(r => {
         const dayName = getDayName(r.date);
-        text += '🗓 ' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
+        text += '' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
 
         text += t('rptNewMemorization') + '\n';
         text += r.tahfidh.surahFrom + ' (' + r.tahfidh.ayahFrom + '–' + r.tahfidh.ayahTo + ')\n';
@@ -137,7 +137,7 @@ function generateWeeklyReport(studentId, classId) {
       const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
       const weeklyRating = scoreToRating(avgScore);
 
-      text += '📊 Total Errors in New Memorization: ' + totalErrors + '\n';
+      text += 'Total Errors in New Memorization: ' + totalErrors + '\n';
       text += t('rptWeeklyRating') + ' ' + weeklyRating + '\n\n';
     }
 
@@ -177,20 +177,20 @@ function generateMonthlyReport(studentId, classId) {
 
   if (isAr) {
     // ---- Arabic version ----
-    text += '🌿 تقرير الحفظ الشهري 🌿\n\n';
+    text += 'تقرير الحفظ الشهري\n\n';
     text += t('rptGreeting') + '\n\n';
     text += 'يسرنا مشاركة التقرير الشهري للطالب:\n\n';
-    text += '📖 الطالب: ' + student.name + '\n';
-    text += '📅 الشهر: ' + monthName + '\n';
-    text += '📆 أيام التسجيل: ' + records.length + '\n';
-    text += '🔴 غياب: ' + (student.absences || 0) + ' | 🟡 تأخر: ' + (student.late || 0) + '\n\n';
+    text += 'الطالب: ' + student.name + '\n';
+    text += 'الشهر: ' + monthName + '\n';
+    text += 'أيام التسجيل: ' + records.length + '\n';
+    text += 'غياب: ' + (student.absences || 0) + ' | تأخر: ' + (student.late || 0) + '\n\n';
 
     if (!records.length) {
       text += t('rptNoRecords') + '\n\n';
     } else {
       records.forEach(r => {
         const dayName = getDayName(r.date);
-        text += '🗓 ' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
+        text += '' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
 
         text += t('rptNewMemorization') + '\n';
         text += r.tahfidh.surahFrom + ' (' + r.tahfidh.ayahFrom + '–' + r.tahfidh.ayahTo + ')\n';
@@ -207,8 +207,8 @@ function generateMonthlyReport(studentId, classId) {
       const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
       const monthlyRating = scoreToRating(avgScore);
 
-      text += '📊 إجمالي أخطاء الحفظ: ' + totalErrors + '\n';
-      text += '⭐ التقييم الشهري: ' + monthlyRating + '\n\n';
+      text += 'إجمالي أخطاء الحفظ: ' + totalErrors + '\n';
+      text += 'التقييم الشهري: ' + monthlyRating + '\n\n';
     }
 
     text += t('rptClosing') + '\n\n';
@@ -218,20 +218,20 @@ function generateMonthlyReport(studentId, classId) {
 
   } else {
     // ---- English version ----
-    text += '🌿 Monthly Tahfidh Report 🌿\n\n';
+    text += 'Monthly Tahfidh Report\n\n';
     text += t('rptGreeting') + '\n\n';
     text += 'We are pleased to share the monthly progress report of the student:\n\n';
-    text += '📖 Student: ' + student.name + '\n';
-    text += '📅 Month: ' + monthName + '\n';
-    text += '📆 Days recorded: ' + records.length + '\n';
-    text += '🔴 Absences: ' + (student.absences || 0) + ' | 🟡 Late: ' + (student.late || 0) + '\n\n';
+    text += 'Student: ' + student.name + '\n';
+    text += 'Month: ' + monthName + '\n';
+    text += 'Days recorded: ' + records.length + '\n';
+    text += 'Absences: ' + (student.absences || 0) + ' | Late: ' + (student.late || 0) + '\n\n';
 
     if (!records.length) {
       text += t('rptNoRecords') + '\n\n';
     } else {
       records.forEach(r => {
         const dayName = getDayName(r.date);
-        text += '🗓 ' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
+        text += '' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
 
         text += t('rptNewMemorization') + '\n';
         text += r.tahfidh.surahFrom + ' (' + r.tahfidh.ayahFrom + '–' + r.tahfidh.ayahTo + ')\n';
@@ -248,8 +248,8 @@ function generateMonthlyReport(studentId, classId) {
       const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
       const monthlyRating = scoreToRating(avgScore);
 
-      text += '📊 Total Errors in New Memorization: ' + totalErrors + '\n';
-      text += '⭐ Monthly Rating: ' + monthlyRating + '\n\n';
+      text += 'Total Errors in New Memorization: ' + totalErrors + '\n';
+      text += 'Monthly Rating: ' + monthlyRating + '\n\n';
     }
 
     text += t('rptClosing') + '\n\n';
