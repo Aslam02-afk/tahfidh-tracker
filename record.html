@@ -35,8 +35,12 @@
   </section>
 
   <!-- TAHFIDH -->
-  <section class="card">
-    <div style="font-size:1.1rem; font-weight:900; margin-bottom:12px;" data-i18n="tahfidh">الحفظ (Tahfidh)</div>
+  <section id="tahfidhSection" class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <div style="font-size:1.1rem; font-weight:900;" data-i18n="tahfidh">الحفظ (Tahfidh)</div>
+      <button id="noHifdhBtn" class="btn btn-secondary" style="font-size:0.78rem; padding:0.35rem 0.8rem;" onclick="toggleNoHifdh()" data-i18n="noHifdhToday">لا يوجد حفظ اليوم</button>
+    </div>
+    <div id="tahfidhFields">
     <div class="grid-2">
       <div class="form-group">
         <label class="form-label" data-i18n="fromSurah">من سورة</label>
@@ -74,6 +78,8 @@
         </select>
       </div>
     </div>
+    </div><!-- /tahfidhFields -->
+    <div id="hifdhOffMsg" style="display:none; text-align:center; padding:1rem; color:var(--text-muted); font-weight:700;" data-i18n="hifdhOff">الحفظ مُعطّل اليوم</div>
   </section>
 
   <!-- MURAJAAH -->

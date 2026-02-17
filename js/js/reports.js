@@ -41,6 +41,28 @@ function fmtDate(dateStr) {
   return new Date(dateStr + 'T00:00:00').toLocaleDateString(locale);
 }
 
+/**
+ * Helper: render a single record's day block (tahfidh + murajaah).
+ * Skips tahfidh if the student is murajaah-only or if noHifdh is set for the day.
+ */
+function renderRecordBlock(r, skipTahfidh, isAr) {
+  const dayName = getDayName(r.date);
+  let block = '' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
+
+  if (!skipTahfidh && !r.noHifdh) {
+    block += (isAr ? t('rptNewMemorization') : t('rptNewMemorization')) + '\n';
+    block += r.tahfidh.surahFrom + ' (' + r.tahfidh.ayahFrom + '–' + r.tahfidh.ayahTo + ')\n';
+    block += (isAr ? t('errors') : 'Errors') + ': ' + (r.tahfidh.errors || 0) + '\n';
+    block += (isAr ? t('rating') : 'Evaluation') + ': ' + (r.tahfidh.rating || '') + '\n\n';
+  }
+
+  block += (isAr ? t('rptRevision') : t('rptRevision')) + '\n';
+  block += t('rptFrom') + ' ' + r.murajaah.surahFrom + ' ' + t('rptTo') + ' ' + r.murajaah.surahTo + '\n';
+  block += (isAr ? t('errors') : 'Errors') + ': ' + (r.murajaah.errors || 0) + '\n\n';
+
+  return block;
+}
+
 // ====================================================
 // Weekly Report
 // ====================================================
@@ -52,6 +74,7 @@ function generateWeeklyReport(studentId, classId) {
   const halaqah = classId ? data.halaqah.find(h => h.id === classId) : null;
   const className   = halaqah ? halaqah.name : '';
   const teacherName = halaqah ? (halaqah.teacher || '') : '';
+  const skipTahfidh = student.course === 'murajaah';
 
   const today  = new Date();
   const from   = new Date();
@@ -69,7 +92,6 @@ function generateWeeklyReport(studentId, classId) {
   let text = '';
 
   if (isAr) {
-    // ---- Arabic version ----
     text += 'تقرير الحفظ الأسبوعي\n\n';
     text += t('rptGreeting') + '\n\n';
     text += t('rptIntro') + '\n\n';
@@ -79,27 +101,18 @@ function generateWeeklyReport(studentId, classId) {
     if (!records.length) {
       text += t('rptNoRecords') + '\n\n';
     } else {
-      records.forEach(r => {
-        const dayName = getDayName(r.date);
-        text += '' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
+      records.forEach(r => { text += renderRecordBlock(r, skipTahfidh, true); });
 
-        text += t('rptNewMemorization') + '\n';
-        text += r.tahfidh.surahFrom + ' (' + r.tahfidh.ayahFrom + '–' + r.tahfidh.ayahTo + ')\n';
-        text += t('errors') + ': ' + (r.tahfidh.errors || 0) + '\n';
-        text += t('rating') + ': ' + (r.tahfidh.rating || '') + '\n\n';
+      if (!skipTahfidh) {
+        const hifdhRecords = records.filter(r => !r.noHifdh);
+        const totalErrors = hifdhRecords.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
+        const scores = hifdhRecords.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
+        const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+        const weeklyRating = scoreToRating(avgScore);
 
-        text += t('rptRevision') + '\n';
-        text += t('rptFrom') + ' ' + r.murajaah.surahFrom + ' ' + t('rptTo') + ' ' + r.murajaah.surahTo + '\n';
-        text += t('errors') + ': ' + (r.murajaah.errors || 0) + '\n\n';
-      });
-
-      const totalErrors = records.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
-      const scores = records.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
-      const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-      const weeklyRating = scoreToRating(avgScore);
-
-      text += 'إجمالي أخطاء الحفظ: ' + totalErrors + '\n';
-      text += t('rptWeeklyRating') + ' ' + weeklyRating + '\n\n';
+        text += 'إجمالي أخطاء الحفظ: ' + totalErrors + '\n';
+        text += t('rptWeeklyRating') + ' ' + weeklyRating + '\n\n';
+      }
     }
 
     text += t('rptClosing') + '\n\n';
@@ -108,7 +121,6 @@ function generateWeeklyReport(studentId, classId) {
     if (teacherName) text += '— ' + teacherName + '\n';
 
   } else {
-    // ---- English version ----
     text += 'Weekly Tahfidh Report\n\n';
     text += t('rptGreeting') + '\n\n';
     text += t('rptIntro') + '\n\n';
@@ -118,27 +130,18 @@ function generateWeeklyReport(studentId, classId) {
     if (!records.length) {
       text += t('rptNoRecords') + '\n\n';
     } else {
-      records.forEach(r => {
-        const dayName = getDayName(r.date);
-        text += '' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
+      records.forEach(r => { text += renderRecordBlock(r, skipTahfidh, false); });
 
-        text += t('rptNewMemorization') + '\n';
-        text += r.tahfidh.surahFrom + ' (' + r.tahfidh.ayahFrom + '–' + r.tahfidh.ayahTo + ')\n';
-        text += 'Errors: ' + (r.tahfidh.errors || 0) + '\n';
-        text += 'Evaluation: ' + (r.tahfidh.rating || '') + '\n\n';
+      if (!skipTahfidh) {
+        const hifdhRecords = records.filter(r => !r.noHifdh);
+        const totalErrors = hifdhRecords.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
+        const scores = hifdhRecords.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
+        const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+        const weeklyRating = scoreToRating(avgScore);
 
-        text += t('rptRevision') + '\n';
-        text += t('rptFrom') + ' ' + r.murajaah.surahFrom + ' ' + t('rptTo') + ' ' + r.murajaah.surahTo + '\n';
-        text += 'Errors: ' + (r.murajaah.errors || 0) + '\n\n';
-      });
-
-      const totalErrors = records.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
-      const scores = records.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
-      const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-      const weeklyRating = scoreToRating(avgScore);
-
-      text += 'Total Errors in New Memorization: ' + totalErrors + '\n';
-      text += t('rptWeeklyRating') + ' ' + weeklyRating + '\n\n';
+        text += 'Total Errors in New Memorization: ' + totalErrors + '\n';
+        text += t('rptWeeklyRating') + ' ' + weeklyRating + '\n\n';
+      }
     }
 
     text += t('rptClosing') + '\n\n';
@@ -161,6 +164,7 @@ function generateMonthlyReport(studentId, classId) {
   const halaqah = classId ? data.halaqah.find(h => h.id === classId) : null;
   const className   = halaqah ? halaqah.name : '';
   const teacherName = halaqah ? (halaqah.teacher || '') : '';
+  const skipTahfidh = student.course === 'murajaah';
 
   const today = new Date();
   const from  = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -176,7 +180,6 @@ function generateMonthlyReport(studentId, classId) {
   let text = '';
 
   if (isAr) {
-    // ---- Arabic version ----
     text += 'تقرير الحفظ الشهري\n\n';
     text += t('rptGreeting') + '\n\n';
     text += 'يسرنا مشاركة التقرير الشهري للطالب:\n\n';
@@ -188,27 +191,18 @@ function generateMonthlyReport(studentId, classId) {
     if (!records.length) {
       text += t('rptNoRecords') + '\n\n';
     } else {
-      records.forEach(r => {
-        const dayName = getDayName(r.date);
-        text += '' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
+      records.forEach(r => { text += renderRecordBlock(r, skipTahfidh, true); });
 
-        text += t('rptNewMemorization') + '\n';
-        text += r.tahfidh.surahFrom + ' (' + r.tahfidh.ayahFrom + '–' + r.tahfidh.ayahTo + ')\n';
-        text += t('errors') + ': ' + (r.tahfidh.errors || 0) + '\n';
-        text += t('rating') + ': ' + (r.tahfidh.rating || '') + '\n\n';
+      if (!skipTahfidh) {
+        const hifdhRecords = records.filter(r => !r.noHifdh);
+        const totalErrors = hifdhRecords.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
+        const scores = hifdhRecords.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
+        const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+        const monthlyRating = scoreToRating(avgScore);
 
-        text += t('rptRevision') + '\n';
-        text += t('rptFrom') + ' ' + r.murajaah.surahFrom + ' ' + t('rptTo') + ' ' + r.murajaah.surahTo + '\n';
-        text += t('errors') + ': ' + (r.murajaah.errors || 0) + '\n\n';
-      });
-
-      const totalErrors = records.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
-      const scores = records.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
-      const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-      const monthlyRating = scoreToRating(avgScore);
-
-      text += 'إجمالي أخطاء الحفظ: ' + totalErrors + '\n';
-      text += 'التقييم الشهري: ' + monthlyRating + '\n\n';
+        text += 'إجمالي أخطاء الحفظ: ' + totalErrors + '\n';
+        text += 'التقييم الشهري: ' + monthlyRating + '\n\n';
+      }
     }
 
     text += t('rptClosing') + '\n\n';
@@ -217,7 +211,6 @@ function generateMonthlyReport(studentId, classId) {
     if (teacherName) text += '— ' + teacherName + '\n';
 
   } else {
-    // ---- English version ----
     text += 'Monthly Tahfidh Report\n\n';
     text += t('rptGreeting') + '\n\n';
     text += 'We are pleased to share the monthly progress report of the student:\n\n';
@@ -229,27 +222,18 @@ function generateMonthlyReport(studentId, classId) {
     if (!records.length) {
       text += t('rptNoRecords') + '\n\n';
     } else {
-      records.forEach(r => {
-        const dayName = getDayName(r.date);
-        text += '' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
+      records.forEach(r => { text += renderRecordBlock(r, skipTahfidh, false); });
 
-        text += t('rptNewMemorization') + '\n';
-        text += r.tahfidh.surahFrom + ' (' + r.tahfidh.ayahFrom + '–' + r.tahfidh.ayahTo + ')\n';
-        text += 'Errors: ' + (r.tahfidh.errors || 0) + '\n';
-        text += 'Evaluation: ' + (r.tahfidh.rating || '') + '\n\n';
+      if (!skipTahfidh) {
+        const hifdhRecords = records.filter(r => !r.noHifdh);
+        const totalErrors = hifdhRecords.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
+        const scores = hifdhRecords.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
+        const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+        const monthlyRating = scoreToRating(avgScore);
 
-        text += t('rptRevision') + '\n';
-        text += t('rptFrom') + ' ' + r.murajaah.surahFrom + ' ' + t('rptTo') + ' ' + r.murajaah.surahTo + '\n';
-        text += 'Errors: ' + (r.murajaah.errors || 0) + '\n\n';
-      });
-
-      const totalErrors = records.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
-      const scores = records.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
-      const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-      const monthlyRating = scoreToRating(avgScore);
-
-      text += 'Total Errors in New Memorization: ' + totalErrors + '\n';
-      text += 'Monthly Rating: ' + monthlyRating + '\n\n';
+        text += 'Total Errors in New Memorization: ' + totalErrors + '\n';
+        text += 'Monthly Rating: ' + monthlyRating + '\n\n';
+      }
     }
 
     text += t('rptClosing') + '\n\n';

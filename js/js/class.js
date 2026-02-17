@@ -35,7 +35,7 @@
       return `
         <article class="card">
           <div style="display:flex; align-items:center; gap:12px;">
-            <div style="flex:1;">
+            <div style="flex:1; cursor:pointer;" onclick="location.href='student-detail.html?classId=${classId}&studentId=${s.id}'">
               <div style="font-size:1.05rem; font-weight:900;">${s.name}</div>
               <div style="margin-top:4px; font-size:0.82rem; color:${hasRecord ? '#16A34A' : 'var(--text-muted)'}; font-weight:700;">
                 ${hasRecord ? t('recordedToday') : t('notRecorded')}

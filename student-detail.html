@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>بيانات الطالب – Tahfidh Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+
+<header class="app-header">
+  <button class="menu-btn" onclick="history.back()">←</button>
+  <div class="app-title" data-i18n="studentDetail">بيانات الطالب</div>
+  <div style="display:flex; gap:4px;">
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">EN</button>
+    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
+  </div>
+</header>
+
+<main class="main-content">
+  <div id="studentDetailContainer"></div>
+</main>
+
+<footer class="branding-footer" data-i18n="footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
+
+<script src="js/js/db.js"></script>
+<script src="js/js/i18n.js"></script>
+<script src="js/js/ui.js"></script>
+<script src="js/js/reports.js"></script>
+<script src="js/js/student-detail.js"></script>
+</body>
+</html>

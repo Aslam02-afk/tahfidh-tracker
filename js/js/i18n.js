@@ -102,6 +102,10 @@ const LANG = {
     // Add student (extra keys)
     addStudent: 'إضافة طالب', studentNameLabel: 'اسم الطالب *',
     studentNamePh: 'الاسم الكامل', phoneOptional: 'رقم الهاتف (اختياري)',
+    courseLabel: 'المسار', courseHifdh: 'حفظ', courseTalqin: 'تلقين', courseMurajaah: 'مراجعة',
+
+    // Record page (extra)
+    noHifdhToday: 'لا يوجد حفظ اليوم', hifdhOff: 'الحفظ مُعطّل اليوم',
 
     // Settings (extra keys for HTML data-i18n)
     languageSection: 'اللغة', languageLabel: 'لغة التطبيق',
@@ -170,11 +174,49 @@ const LANG = {
     rptBarakallah: 'بارك الله فيكم.',
     rptClassName: '—',
 
+    // Student Detail
+    studentDetail: 'بيانات الطالب',
+    studentInfo: 'معلومات الطالب',
+    phoneLabel: 'الهاتف',
+    lastSurahLabel: 'آخر سورة محفوظة',
+    notesLabel: 'ملاحظات',
+    noPhone: 'غير مسجل',
+    noNotes: 'لا توجد ملاحظات',
+    noLastSurah: 'غير محدد',
+    attendanceSummary: 'ملخص الحضور',
+    totalAbsences: 'إجمالي الغياب',
+    totalLate: 'إجمالي التأخر',
+    examInfo: 'بيانات الاختبار',
+    examJuz: 'أجزاء الاختبار',
+    examPercent: 'نسبة الاختبار',
+    recentRecords: 'آخر السجلات',
+    noRecordsYet: 'لا توجد سجلات بعد',
+    sendWeeklyReport: 'إرسال تقرير أسبوعي لولي الأمر',
+    sendMonthlyReport: 'إرسال تقرير شهري لولي الأمر',
+    editStudent: 'تعديل بيانات الطالب',
+    newMemorization: 'حفظ جديد',
+    revision: 'مراجعة',
+
     // Quran Reader
     quran: 'القرآن', quranTitle: 'القرآن الكريم', quranSubtitle: 'تلاوة وقراءة',
     allJuz: 'كل الأجزاء', ayahs: 'آية', loadingQuran: 'جاري تحميل القرآن...',
     quranLoadError: 'فشل تحميل بيانات القرآن. يرجى المحاولة مرة أخرى.',
-  },
+    quranLoadError: 'فشل تحميل بيانات القرآن. يرجى المحاولة مرة أخرى.',
+
+// Rate Us
+rateSectionTitle: "قيّمنا",
+rateCardTitle: "قيّم التطبيق",
+rateCardSubtitle: "ساعدنا في تحسين Tahfidh Tracker",
+rateModalTitle: "قيّم Tahfidh Tracker",
+rateNamePh: "الاسم (اختياري)",
+rateMsgPh: "اقتراحات / كيف يمكننا التحسين؟ (اختياري)",
+send: "إرسال",
+cancel: "إلغاء",
+ok: "حسنًا",
+selectRating: "اختر عدد النجوم أولاً",
+thankTitle: "شكرًا لك!",
+thankMsg: "شكرًا لتقييمك.",
+},
 
   en: {
     // Nav
@@ -277,6 +319,10 @@ const LANG = {
     // Add student (extra keys)
     addStudent: 'Add Student', studentNameLabel: 'Student Name *',
     studentNamePh: 'Full name', phoneOptional: 'Phone (optional)',
+    courseLabel: 'Course', courseHifdh: 'Hifdh', courseTalqin: 'Talqin', courseMurajaah: 'Murajaah',
+
+    // Record page (extra)
+    noHifdhToday: 'No Hifdh Today', hifdhOff: 'Hifdh is off today',
 
     // Settings (extra keys)
     languageSection: 'Language', languageLabel: 'App Language',
@@ -345,11 +391,50 @@ const LANG = {
     rptBarakallah: 'Barakallahu feekum.',
     rptClassName: '—',
 
+    // Student Detail
+    studentDetail: 'Student Details',
+    studentInfo: 'Student Information',
+    phoneLabel: 'Phone',
+    lastSurahLabel: 'Last Memorized Surah',
+    notesLabel: 'Notes',
+    noPhone: 'Not registered',
+    noNotes: 'No notes',
+    noLastSurah: 'Not specified',
+    attendanceSummary: 'Attendance Summary',
+    totalAbsences: 'Total Absences',
+    totalLate: 'Total Late',
+    examInfo: 'Exam Information',
+    examJuz: 'Exam Juz',
+    examPercent: 'Exam Percentage',
+    recentRecords: 'Recent Records',
+    noRecordsYet: 'No records yet',
+    sendWeeklyReport: 'Send Weekly Report to Parent',
+    sendMonthlyReport: 'Send Monthly Report to Parent',
+    editStudent: 'Edit Student',
+    newMemorization: 'New Memorization',
+    revision: 'Revision',
+
     // Quran Reader
     quran: 'Quran', quranTitle: 'The Noble Quran', quranSubtitle: 'Quran Reader',
     allJuz: 'All Juz', ayahs: 'Ayahs', loadingQuran: 'Loading Quran...',
     quranLoadError: 'Failed to load Quran data. Please try again.',
-  }
+    quranLoadError: 'Failed to load Quran data. Please try again.',
+
+// Rate Us
+rateSectionTitle: "Rate Us",
+rateCardTitle: "Rate the App",
+rateCardSubtitle: "Help us improve Tahfidh Tracker",
+rateModalTitle: "Rate Tahfidh Tracker",
+rateNamePh: "Name (optional)",
+rateMsgPh: "Recommendation / How can we improve? (optional)",
+send: "Send",
+cancel: "Cancel",
+ok: "OK",
+selectRating: "Please select a rating first",
+thankTitle: "Thank You!",
+thankMsg: "Thank you for your rating.",
+}
+
 };
 
 function getLang() { return localStorage.getItem('appLang') || 'ar'; }

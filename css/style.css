@@ -375,3 +375,183 @@ html.dark .nav-btn.active .nav-icon img {
   opacity: 0.85;
   margin-top: 4px;
 }
+/* =========================
+   Rate Us (Card + Modals)
+   Uses existing tokens/colors
+   ========================= */
+
+/* Rate card (matches your card style but clickable) */
+.rate-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.75);
+  position: relative;
+  cursor: pointer;
+  z-index: 1;
+}
+
+html.dark .rate-card {
+  background: rgba(30,41,59,0.75);
+}
+
+.rate-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+}
+
+.rate-card .card-left {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  font-size: 20px;
+  flex: 0 0 44px;
+}
+
+.rate-card .card-title {
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.rate-card .card-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.rate-card .card-arrow {
+  margin-inline-start: auto;
+  font-size: 22px;
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+/* Modal overlay + box */
+.tt-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: none;            /* default hidden */
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 2000;
+}
+
+.tt-modal.show { display: flex; }
+
+.tt-modal-box {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.22);
+  padding: 16px;
+}
+
+.tt-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.tt-modal-title {
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.tt-icon-btn {
+  background: rgba(13,44,84,0.08);
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  padding: 6px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+html.dark .tt-icon-btn { background: rgba(255,255,255,0.06); }
+
+/* Stars */
+.tt-stars {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 6px;
+}
+
+.tt-star {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(201,162,77,0.06);
+  padding: 10px 0;
+  font-size: 22px;
+  cursor: pointer;
+  text-align: center;
+}
+
+html.dark .tt-star {
+  background: rgba(201,162,77,0.05);
+}
+
+.tt-star.active {
+  border-color: rgba(201,162,77,0.6);
+  background: rgba(201,162,77,0.14);
+  color: var(--accent);
+}
+
+/* Inputs inside modal – reuse your form look */
+.tt-modal-box input,
+.tt-modal-box textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 0.65rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  font-family: inherit;
+  font-size: 0.95rem;
+  background: transparent;
+  color: var(--text-main);
+}
+
+.tt-modal-box textarea { min-height: 90px; resize: vertical; }
+
+/* Modal actions */
+.tt-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.tt-actions .btn { flex: 1; }  /* your .btn already exists */
+
+/* Thank you modal center */
+.tt-thanks {
+  text-align: center;
+}
+
+.tt-thanks .tt-thanks-icon {
+  font-size: 38px;
+  margin: 8px 0 4px;
+}
+
+.tt-thanks p {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Respect RTL/LTR automatically (your html[dir] already handles body)
+   This ensures modals follow direction too. */
+html[dir="rtl"] .tt-modal-box { direction: rtl; text-align: right; }
+html[dir="ltr"] .tt-modal-box { direction: ltr; text-align: left; }

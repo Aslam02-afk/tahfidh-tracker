@@ -12,6 +12,7 @@
       qs("pageTitle").textContent   = t('editStudentTitle');
       qs("studentName").value       = s.name;
       qs("gender").value            = s.gender      || "ذكر";
+      qs("course").value            = s.course      || "hifdh";
       qs("phone").value             = s.phone       || "";
       qs("lastSurah").value         = s.lastSurah   || "";
       qs("examJuz").value           = s.examJuz != null ? s.examJuz : "";
@@ -33,6 +34,7 @@
       ? Object.assign(getStudentById(studentId) || {}, {
           name,
           gender:      qs("gender").value,
+          course:      qs("course").value,
           phone:       qs("phone").value.trim(),
           lastSurah:   qs("lastSurah").value,
           examJuz:     examJuzVal !== "" ? Number(examJuzVal) : null,
@@ -45,6 +47,7 @@
           classId,
           name,
           gender:      qs("gender").value,
+          course:      qs("course").value,
           phone:       qs("phone").value.trim(),
           lastSurah:   qs("lastSurah").value,
           examJuz:     examJuzVal !== "" ? Number(examJuzVal) : null,

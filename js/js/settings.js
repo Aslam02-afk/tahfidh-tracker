@@ -66,3 +66,205 @@ function sendContactMessage() {
 
   window.location.href = "mailto:" + email + "?subject=" + mailSubject + "&body=" + body;
 }
+/* =========================
+   Rate Us (Tahfidh Tracker)
+   - Uses current app language via getLang() + t()
+   - Offline queue
+   - Sends to backend (NO token in app)
+   ========================= */
+
+const FEEDBACK_API_URL = "https://YOUR-BACKEND.onrender.com/api/feedback"; // change this
+const FEEDBACK_QUEUE_KEY = "tt_feedback_queue_v1";
+
+let selectedStars = 0;
+
+function setTextSafe(id, text) {
+  const el = qs(id);
+  if (el) el.textContent = text;
+}
+
+function openRateModal() {
+  // Update text according to current language
+  syncRateUIText();
+  qs('rateModal')?.classList.add('show');
+}
+
+function closeRateModal() {
+  qs('rateModal')?.classList.remove('show');
+}
+
+function openThankYouModal() {
+  syncThankYouText();
+  qs('thankYouModal')?.classList.add('show');
+}
+
+function closeThankYouModal() {
+  qs('thankYouModal')?.classList.remove('show');
+}
+
+function resetRateForm() {
+  selectedStars = 0;
+  updateStarsUI();
+  if (qs('rateName')) qs('rateName').value = "";
+  if (qs('rateMessage')) qs('rateMessage').value = "";
+}
+
+function updateStarsUI() {
+  document.querySelectorAll("#starContainer .tt-star").forEach(btn => {
+    const v = Number(btn.dataset.value);
+    const active = v <= selectedStars;
+    btn.classList.toggle("active", active);
+    btn.textContent = active ? "★" : "☆";
+  });
+}
+
+/* -------- Offline queue helpers -------- */
+function loadFeedbackQueue() {
+  try {
+    const raw = localStorage.getItem(FEEDBACK_QUEUE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+function saveFeedbackQueue(items) {
+  localStorage.setItem(FEEDBACK_QUEUE_KEY, JSON.stringify(items));
+}
+function enqueueFeedback(item) {
+  const q = loadFeedbackQueue();
+  q.push(item);
+  saveFeedbackQueue(q);
+}
+
+async function sendFeedbackToBackend(payload) {
+  const res = await fetch(FEEDBACK_API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      stars: payload.stars,
+      name: payload.name || "",
+      message: payload.message || "",
+      lang: payload.lang || getLang()
+    })
+  });
+  if (!res.ok) throw new Error("feedback_failed");
+}
+
+async function flushFeedbackQueue() {
+  if (!navigator.onLine) return;
+  const q = loadFeedbackQueue();
+  if (!q.length) return;
+
+  const remaining = [];
+  for (const item of q) {
+    try {
+      await sendFeedbackToBackend(item);
+    } catch {
+      remaining.push(item);
+    }
+  }
+  saveFeedbackQueue(remaining);
+}
+
+window.addEventListener("online", () => {
+  flushFeedbackQueue().catch(() => {});
+});
+
+/* -------- i18n text sync -------- */
+function syncRateUIText() {
+  // These keys must exist in your translations
+  setTextSafe("rateCardTitle", t("rateCardTitle"));
+  setTextSafe("rateCardSubtitle", t("rateCardSubtitle"));
+  setTextSafe("rateModalTitle", t("rateModalTitle"));
+
+  const nameInput = qs("rateName");
+  const msgInput = qs("rateMessage");
+  if (nameInput) nameInput.placeholder = t("rateNamePh");
+  if (msgInput) msgInput.placeholder = t("rateMsgPh");
+
+  setTextSafe("rateCancelBtn", t("cancel"));
+  setTextSafe("rateSubmitBtn", t("send"));
+}
+
+function syncThankYouText() {
+  setTextSafe("thankYouTitle", t("thankTitle"));
+  setTextSafe("thankYouMessage", t("thankMsg"));
+  setTextSafe("thankYouCloseBtn", t("ok"));
+}
+
+/* -------- submit -------- */
+async function submitRating() {
+  if (!selectedStars) {
+    alert(t("selectRating"));
+    return;
+  }
+
+  const payload = {
+    stars: selectedStars,
+    name: qs("rateName")?.value?.trim() || "",
+    message: qs("rateMessage")?.value?.trim() || "",
+    lang: getLang(),
+    createdAt: new Date().toISOString()
+  };
+
+  // Always show thank-you popup (even if queued)
+  const submitBtn = qs("rateSubmitBtn");
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    if (!navigator.onLine) {
+      enqueueFeedback(payload);
+      closeRateModal();
+      openThankYouModal();
+      resetRateForm();
+      return;
+    }
+
+    await sendFeedbackToBackend(payload);
+    closeRateModal();
+    openThankYouModal();
+    resetRateForm();
+  } catch (e) {
+    // Queue so it won't be lost
+    enqueueFeedback(payload);
+    closeRateModal();
+    openThankYouModal();
+    resetRateForm();
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+    flushFeedbackQueue().catch(() => {});
+  }
+}
+
+/* -------- wiring events -------- */
+(function initRateUs() {
+  // Sync UI labels once (and after language changes, you already call applyLang() in switchLang)
+  syncRateUIText();
+  flushFeedbackQueue().catch(() => {});
+
+  // Card click
+  qs("rateCard")?.addEventListener("click", openRateModal);
+
+  // Close/cancel
+  qs("rateCloseBtn")?.addEventListener("click", closeRateModal);
+  qs("rateCancelBtn")?.addEventListener("click", closeRateModal);
+
+  // Stars
+  document.querySelectorAll("#starContainer .tt-star").forEach(btn => {
+    btn.addEventListener("click", () => {
+      selectedStars = Number(btn.dataset.value);
+      updateStarsUI();
+    });
+  });
+
+  // Submit
+  qs("rateSubmitBtn")?.addEventListener("click", submitRating);
+
+  // Thank you close
+  qs("thankYouCloseBtn")?.addEventListener("click", closeThankYouModal);
+
+  // Optional: click outside to close thank-you
+  qs("thankYouModal")?.addEventListener("click", (e) => {
+    if (e.target === qs("thankYouModal")) closeThankYouModal();
+  });
+})();

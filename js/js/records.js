@@ -18,6 +18,12 @@
     });
   }
 
+  // Hide entire tahfidh section for murajaah-only students
+  const isMurajaahOnly = student && student.course === 'murajaah';
+  if (isMurajaahOnly && qs("tahfidhSection")) {
+    qs("tahfidhSection").style.display = 'none';
+  }
+
   if (qs("tSurahFromWrap")) qs("tSurahFromWrap").innerHTML = surahSelect("tSurahFrom", "");
   if (qs("tSurahToWrap"))   qs("tSurahToWrap").innerHTML   = surahSelect("tSurahTo",   "");
   if (qs("mSurahFromWrap")) qs("mSurahFromWrap").innerHTML = surahSelect("mSurahFrom", "");
@@ -31,14 +37,37 @@
   qs("mErrMinus").onclick = () => setErr("mErrors", getErr("mErrors") - 1);
   qs("mErrPlus").onclick  = () => setErr("mErrors", getErr("mErrors") + 1);
 
+  // No-hifdh-today toggle state
+  let noHifdh = false;
+
+  window.toggleNoHifdh = function() {
+    noHifdh = !noHifdh;
+    const fields = qs("tahfidhFields");
+    const msg    = qs("hifdhOffMsg");
+    const btn    = qs("noHifdhBtn");
+    if (fields) fields.style.display = noHifdh ? 'none' : '';
+    if (msg)    msg.style.display    = noHifdh ? 'block' : 'none';
+    if (btn) {
+      btn.style.background = noHifdh ? '#FEE2E2' : '';
+      btn.style.color      = noHifdh ? '#DC2626' : '';
+    }
+  };
+
   const existing = getDailyRecord(studentId, today);
   if (existing) {
-    qs("tSurahFrom").value = existing.tahfidh.surahFrom;
-    qs("tSurahTo").value   = existing.tahfidh.surahTo;
-    qs("tAyahFrom").value  = existing.tahfidh.ayahFrom;
-    qs("tAyahTo").value    = existing.tahfidh.ayahTo;
-    setErr("tErrors", existing.tahfidh.errors);
-    qs("tRating").value    = existing.tahfidh.rating;
+    if (!isMurajaahOnly && existing.tahfidh) {
+      qs("tSurahFrom").value = existing.tahfidh.surahFrom;
+      qs("tSurahTo").value   = existing.tahfidh.surahTo;
+      qs("tAyahFrom").value  = existing.tahfidh.ayahFrom;
+      qs("tAyahTo").value    = existing.tahfidh.ayahTo;
+      setErr("tErrors", existing.tahfidh.errors);
+      qs("tRating").value    = existing.tahfidh.rating;
+
+      // Restore no-hifdh state
+      if (existing.noHifdh) {
+        window.toggleNoHifdh();
+      }
+    }
 
     qs("mSurahFrom").value = existing.murajaah.surahFrom;
     qs("mSurahTo").value   = existing.murajaah.surahTo;
@@ -51,13 +80,14 @@
   qs("btnSave").onclick = () => {
     const record = {
       studentId, classId, date: today,
+      noHifdh: noHifdh || isMurajaahOnly,
       tahfidh: {
-        surahFrom: qs("tSurahFrom").value,
-        surahTo:   qs("tSurahTo").value,
-        ayahFrom:  qs("tAyahFrom").value,
-        ayahTo:    qs("tAyahTo").value,
-        errors:    getErr("tErrors"),
-        rating:    qs("tRating").value
+        surahFrom: isMurajaahOnly || noHifdh ? '' : qs("tSurahFrom").value,
+        surahTo:   isMurajaahOnly || noHifdh ? '' : qs("tSurahTo").value,
+        ayahFrom:  isMurajaahOnly || noHifdh ? '' : qs("tAyahFrom").value,
+        ayahTo:    isMurajaahOnly || noHifdh ? '' : qs("tAyahTo").value,
+        errors:    isMurajaahOnly || noHifdh ? 0  : getErr("tErrors"),
+        rating:    isMurajaahOnly || noHifdh ? '' : qs("tRating").value
       },
       murajaah: {
         surahFrom: qs("mSurahFrom").value,
