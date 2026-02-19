@@ -197,6 +197,11 @@ const LANG = {
     newMemorization: 'حفظ جديد',
     revision: 'مراجعة',
 
+    // Theme Picker
+    themeSection: 'خلفية التطبيق',
+    themeNone: 'بلا خلفية', themeArabic: 'أنماط عربية',
+    themeFlower: 'أزهار', themeBg: 'خلفية كاملة',
+
     // Quran Reader
     quran: 'القرآن', quranTitle: 'القرآن الكريم', quranSubtitle: 'تلاوة وقراءة',
     allJuz: 'كل الأجزاء', ayahs: 'آية', loadingQuran: 'جاري تحميل القرآن...',
@@ -413,6 +418,11 @@ thankMsg: "شكرًا لتقييمك.",
     editStudent: 'Edit Student',
     newMemorization: 'New Memorization',
     revision: 'Revision',
+
+    // Theme Picker
+    themeSection: 'App Background',
+    themeNone: 'None', themeArabic: 'Arabic Patterns',
+    themeFlower: 'Flowers', themeBg: 'Full Background',
 
     // Quran Reader
     quran: 'Quran', quranTitle: 'The Noble Quran', quranSubtitle: 'Quran Reader',

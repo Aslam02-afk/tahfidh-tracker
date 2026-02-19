@@ -1,5 +1,5 @@
 // Service Worker – Tahfidh Tracker
-const CACHE = 'tahfidh-v11';
+const CACHE = 'tahfidh-v12';
 
 const PRECACHE = [
   './',
@@ -44,7 +44,10 @@ const PRECACHE = [
   'icons/file icon.svg',
   'icons/share icon.svg',
   'student-detail.html',
-  'js/js/student-detail.js'
+  'js/js/student-detail.js',
+  'themes/arabic-patterns.svg',
+  'themes/BG.svg',
+  'themes/flower theme.svg'
 ];
 
 self.addEventListener('install', e => {

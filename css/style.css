@@ -319,6 +319,42 @@ html.dark .nav-btn.active .nav-icon img {
 
 * { transition: background-color 0.25s, color 0.25s, border-color 0.25s; }
 
+/* -------- Theme Picker -------- */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+.theme-btn {
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  overflow: hidden;
+  background: var(--card-bg);
+  padding: 0;
+  transition: border-color 0.2s, transform 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.theme-btn:hover { transform: translateY(-2px); border-color: var(--secondary); }
+.theme-btn.theme-active { border-color: var(--secondary); border-width: 3px; }
+.theme-preview {
+  width: 100%;
+  height: 64px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--bg);
+}
+.theme-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 5px 4px;
+  color: var(--text-main);
+  text-align: center;
+}
+
 /* -------- Quran Reader -------- */
 .quran-nav {
   display: flex;

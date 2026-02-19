@@ -28,6 +28,50 @@ function updateDarkIcon() {
 initDarkMode();
 updateDarkIcon();
 
+// ===== Theme System =====
+const THEME_FILES = {
+  'arabic': 'themes/arabic-patterns.svg',
+  'flower':  'themes/flower theme.svg',
+  'bg':      'themes/BG.svg'
+};
+
+function applyTheme(theme) {
+  if (!theme || theme === 'none') {
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundSize  = '';
+    document.body.style.backgroundRepeat = '';
+    document.body.style.backgroundAttachment = '';
+  } else {
+    const file = THEME_FILES[theme];
+    if (!file) return;
+    const isFull = theme === 'bg';
+    document.body.style.backgroundImage     = `url('${file}')`;
+    document.body.style.backgroundSize      = isFull ? 'cover' : '380px 380px';
+    document.body.style.backgroundRepeat    = isFull ? 'no-repeat' : 'repeat';
+    document.body.style.backgroundAttachment = 'fixed';
+    document.body.style.backgroundPosition  = isFull ? 'center center' : '0 0';
+  }
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('appTheme') || 'none';
+  applyTheme(saved);
+  // Mark active button in settings if on that page
+  document.querySelectorAll('[data-theme]').forEach(btn => {
+    btn.classList.toggle('theme-active', btn.dataset.theme === saved);
+  });
+}
+
+function setTheme(theme) {
+  localStorage.setItem('appTheme', theme);
+  applyTheme(theme);
+  document.querySelectorAll('[data-theme]').forEach(btn => {
+    btn.classList.toggle('theme-active', btn.dataset.theme === theme);
+  });
+}
+
+initTheme();
+
 // ===== Surah List =====
 const SURAHS = [
   "الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال",

@@ -49,6 +49,29 @@
     </div>
   </section>
 
+  <!-- Background Theme -->
+  <section class="card">
+    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="themeSection">خلفية التطبيق</div>
+    <div class="theme-grid">
+      <button class="theme-btn" data-theme="none" onclick="setTheme('none')">
+        <div class="theme-preview" style="background-image: radial-gradient(circle, rgba(201,162,77,0.15) 2px, transparent 2px); background-size: 24px 24px;"></div>
+        <div class="theme-label" data-i18n="themeNone">بلا خلفية</div>
+      </button>
+      <button class="theme-btn" data-theme="arabic" onclick="setTheme('arabic')">
+        <div class="theme-preview" style="background-image: url('themes/arabic-patterns.svg'); background-size: cover;"></div>
+        <div class="theme-label" data-i18n="themeArabic">أنماط عربية</div>
+      </button>
+      <button class="theme-btn" data-theme="flower" onclick="setTheme('flower')">
+        <div class="theme-preview" style="background-image: url('themes/flower theme.svg'); background-size: cover;"></div>
+        <div class="theme-label" data-i18n="themeFlower">أزهار</div>
+      </button>
+      <button class="theme-btn" data-theme="bg" onclick="setTheme('bg')">
+        <div class="theme-preview" style="background-image: url('themes/BG.svg'); background-size: cover;"></div>
+        <div class="theme-label" data-i18n="themeBg">خلفية كاملة</div>
+      </button>
+    </div>
+  </section>
+
   <!-- Backup & Restore -->
   <section class="card">
     <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="backupSection">النسخ الاحتياطي</div>
