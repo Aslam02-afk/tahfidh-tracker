@@ -31,12 +31,18 @@
       const att = (s.attendance && s.attendance[today]) || '';
       const attColor = att === 'absent' ? '#FEE2E2' : att === 'late' ? '#FEF3C7' : '#F0FDF4';
       const attLabel = att === 'absent' ? t('absent') : att === 'late' ? t('lateLabel') : t('present');
+      const courseKey = s.course === 'talqin' ? 'courseTalqin' : s.course === 'murajaah' ? 'courseMurajaah' : 'courseHifdh';
+      const courseBg  = s.course === 'murajaah' ? '#E0F2FE' : s.course === 'talqin' ? '#F3E8FF' : '#DCFCE7';
+      const courseClr = s.course === 'murajaah' ? '#0369A1' : s.course === 'talqin' ? '#7C3AED' : '#166534';
 
       return `
         <article class="card">
           <div style="display:flex; align-items:center; gap:12px;">
             <div style="flex:1; cursor:pointer;" onclick="location.href='student-detail.html?classId=${classId}&studentId=${s.id}'">
-              <div style="font-size:1.05rem; font-weight:900;">${s.name}</div>
+              <div style="font-size:1.05rem; font-weight:900; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                ${s.name}
+                <span style="font-size:0.7rem; background:${courseBg}; color:${courseClr}; padding:2px 8px; border-radius:6px; font-weight:700;">${t(courseKey)}</span>
+              </div>
               <div style="margin-top:4px; font-size:0.82rem; color:${hasRecord ? '#16A34A' : 'var(--text-muted)'}; font-weight:700;">
                 ${hasRecord ? t('recordedToday') : t('notRecorded')}
               </div>
