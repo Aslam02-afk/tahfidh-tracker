@@ -227,6 +227,12 @@ ok: "حسنًا",
 selectRating: "اختر عدد النجوم أولاً",
 thankTitle: "شكرًا لك!",
 thankMsg: "شكرًا لتقييمك.",
+
+    // Photo Upload
+    teacherPhotoLabel: 'صورة المعلم (اختياري)',
+    studentPhotoLabel: 'صورة الطالب (اختياري)',
+    uploadPhoto: 'رفع صورة',
+    removePhoto: 'حذف الصورة',
 },
 
   en: {
@@ -455,6 +461,12 @@ ok: "OK",
 selectRating: "Please select a rating first",
 thankTitle: "Thank You!",
 thankMsg: "Thank you for your rating.",
+
+    // Photo Upload
+    teacherPhotoLabel: 'Teacher Photo (optional)',
+    studentPhotoLabel: 'Student Photo (optional)',
+    uploadPhoto: 'Upload Photo',
+    removePhoto: 'Remove Photo',
 }
 
 };

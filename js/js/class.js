@@ -34,10 +34,18 @@
       const courseKey = s.course === 'talqin' ? 'courseTalqin' : s.course === 'murajaah' ? 'courseMurajaah' : 'courseHifdh';
       const courseBg  = s.course === 'murajaah' ? '#E0F2FE' : s.course === 'talqin' ? '#F3E8FF' : '#DCFCE7';
       const courseClr = s.course === 'murajaah' ? '#0369A1' : s.course === 'talqin' ? '#7C3AED' : '#166534';
+      const studentIconSrc = (s.gender === 'أنثى' || s.gender === 'Female')
+        ? 'icons/female teacher icon.svg' : 'icons/male teacher icon.svg';
+      const studentImgSrc = s.studentPhoto || studentIconSrc;
+      const studentImgStyle = s.studentPhoto
+        ? 'width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid var(--border); flex-shrink:0; cursor:pointer;'
+        : 'width:44px; height:44px; border-radius:50%; border:2px solid var(--border); padding:8px; background:var(--bg); flex-shrink:0; cursor:pointer;';
 
       return `
         <article class="card">
           <div style="display:flex; align-items:center; gap:12px;">
+            <img src="${studentImgSrc}" alt="" style="${studentImgStyle}"
+              onclick="location.href='student-detail.html?classId=${classId}&studentId=${s.id}'">
             <div style="flex:1; cursor:pointer;" onclick="location.href='student-detail.html?classId=${classId}&studentId=${s.id}'">
               <div style="font-size:1.05rem; font-weight:900; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
                 ${s.name}

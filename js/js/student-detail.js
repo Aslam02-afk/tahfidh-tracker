@@ -23,8 +23,16 @@
     let html = '';
 
     // ---- Student Name Header Card ----
+    const studentIconSrc = (student.gender === 'أنثى' || student.gender === 'Female')
+      ? 'icons/female teacher icon.svg' : 'icons/male teacher icon.svg';
+    const headerPhotoSrc = student.studentPhoto || studentIconSrc;
+    const headerPhotoStyle = student.studentPhoto
+      ? 'width:72px; height:72px; border-radius:50%; object-fit:cover; border:3px solid rgba(255,255,255,0.5); margin-bottom:10px;'
+      : 'width:72px; height:72px; border-radius:50%; border:3px solid rgba(255,255,255,0.5); padding:14px; background:rgba(255,255,255,0.15); margin-bottom:10px;';
+
     html += `
       <section class="card" style="background:linear-gradient(135deg,#0D2C54,#0F766E); color:#fff; border:none; text-align:center;">
+        <img src="${headerPhotoSrc}" alt="" style="${headerPhotoStyle}">
         <div style="font-size:1.4rem; font-weight:900;">${student.name}</div>
         <div style="opacity:0.85; font-size:0.85rem; margin-top:4px;">
           ${halaqah ? halaqah.name : ''} ${halaqah && halaqah.teacher ? '— ' + halaqah.teacher : ''}

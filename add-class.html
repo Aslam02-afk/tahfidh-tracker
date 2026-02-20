@@ -30,6 +30,23 @@
       <input id="teacherName" class="form-input" data-i18n-ph="teacherNamePh" placeholder="مثال: عبدالله" />
     </div>
     <div class="form-group">
+      <label class="form-label" data-i18n="teacherPhotoLabel">صورة المعلم (اختياري)</label>
+      <div style="display:flex; align-items:center; gap:14px; margin-top:6px;">
+        <img id="teacherPhotoPreview" src="icons/male teacher icon.svg" alt=""
+          style="width:64px; height:64px; border-radius:50%; object-fit:cover; border:2px solid var(--border); background:var(--bg); flex-shrink:0;" />
+        <div style="display:flex; flex-direction:column; gap:8px; flex:1;">
+          <label class="btn btn-secondary" for="teacherPhotoInput"
+            style="cursor:pointer; padding:0.4rem 1rem; font-size:0.85rem; text-align:center; display:block; margin:0;"
+            data-i18n="uploadPhoto">رفع صورة</label>
+          <input type="file" id="teacherPhotoInput" accept="image/*" style="display:none;"
+            onchange="handleTeacherPhoto(this)" />
+          <button type="button" id="teacherPhotoClearBtn" class="btn" onclick="clearTeacherPhoto()"
+            style="display:none; padding:0.4rem 1rem; font-size:0.85rem; background:#FEE2E2; color:#DC2626; margin:0;"
+            data-i18n="removePhoto">حذف الصورة</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
       <label class="form-label" data-i18n="teacherGender">جنس المعلم</label>
       <div style="display:flex; gap:10px;">
         <button type="button" id="genderMale" class="btn btn-primary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:0.6rem;" onclick="selectGender('male')">

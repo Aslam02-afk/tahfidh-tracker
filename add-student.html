@@ -27,10 +27,27 @@
     </div>
     <div class="form-group">
       <label class="form-label" data-i18n="gender">الجنس</label>
-      <select id="gender" class="form-input form-select">
+      <select id="gender" class="form-input form-select" onchange="onGenderChange(this.value)">
         <option value="ذكر" data-i18n="male">ذكر</option>
         <option value="أنثى" data-i18n="female">أنثى</option>
       </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label" data-i18n="studentPhotoLabel">صورة الطالب (اختياري)</label>
+      <div style="display:flex; align-items:center; gap:14px; margin-top:6px;">
+        <img id="studentPhotoPreview" src="icons/male teacher icon.svg" alt=""
+          style="width:64px; height:64px; border-radius:50%; object-fit:cover; border:2px solid var(--border); background:var(--bg); flex-shrink:0;" />
+        <div style="display:flex; flex-direction:column; gap:8px; flex:1;">
+          <label class="btn btn-secondary" for="studentPhotoInput"
+            style="cursor:pointer; padding:0.4rem 1rem; font-size:0.85rem; text-align:center; display:block; margin:0;"
+            data-i18n="uploadPhoto">رفع صورة</label>
+          <input type="file" id="studentPhotoInput" accept="image/*" style="display:none;"
+            onchange="handleStudentPhoto(this)" />
+          <button type="button" id="studentPhotoClearBtn" class="btn" onclick="clearStudentPhoto()"
+            style="display:none; padding:0.4rem 1rem; font-size:0.85rem; background:#FEE2E2; color:#DC2626; margin:0;"
+            data-i18n="removePhoto">حذف الصورة</button>
+        </div>
+      </div>
     </div>
     <div class="form-group">
       <label class="form-label" data-i18n="courseLabel">المسار</label>
