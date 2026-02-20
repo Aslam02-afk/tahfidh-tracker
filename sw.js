@@ -1,5 +1,5 @@
 // Service Worker – Tahfidh Tracker
-const CACHE = 'tahfidh-v15';
+const CACHE = 'tahfidh-v16';
 
 const PRECACHE = [
   './',

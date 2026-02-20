@@ -55,7 +55,13 @@
                 ${hasRecord ? t('recordedToday') : t('notRecorded')}
               </div>
             </div>
-            <div style="font-size:1.5rem;">${s.starred ? '★' : '☆'}</div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+              <div style="font-size:1.5rem;">${s.starred ? '★' : '☆'}</div>
+              <a href="add-student.html?classId=${classId}&studentId=${s.id}"
+                style="display:flex; align-items:center; opacity:0.45;">
+                <img src="icons/edit icon.svg" style="width:16px; height:16px;" alt="">
+              </a>
+            </div>
           </div>
 
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; font-size:0.82rem;">
@@ -74,11 +80,9 @@
           </div>
 
           <div style="display:flex; gap:8px; margin-top:10px;">
-            <button class="btn btn-success" style="flex:2;"
+            <button class="btn btn-success" style="flex:1;"
               onclick="location.href='record.html?classId=${classId}&studentId=${s.id}'">${t('openRecord')}</button>
-            <button class="btn btn-secondary" style="flex:1;"
-              onclick="location.href='add-student.html?classId=${classId}&studentId=${s.id}'"><img src="icons/edit icon.svg" style="width:16px; height:16px;" alt=""></button>
-            <button class="btn" style="flex:1; background:#FEE2E2; display:flex; align-items:center; justify-content:center;"
+            <button class="btn" style="background:#FEE2E2; display:flex; align-items:center; justify-content:center; padding:0.5rem 0.75rem;"
               onclick="confirmDeleteStudent('${s.id}', '${s.name.replace(/'/g, "\\'")}')"><img src="icons/delete icon.svg" style="width:18px; height:18px;" alt=""></button>
           </div>
         </article>`;

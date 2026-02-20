@@ -51,7 +51,11 @@ function renderClasses() {
       : `<img src="icons/${genderIcon}.svg" alt="" style="width:52px; height:52px; border-radius:50%; border:2px solid var(--border); padding:10px; background:var(--card-bg); flex-shrink:0;">`;
 
     return `
-      <article class="card" style="cursor:pointer;" onclick="location.href='class.html?classId=${h.id}'">
+      <article class="card" style="cursor:pointer; position:relative;" onclick="location.href='class.html?classId=${h.id}'">
+        <button style="position:absolute;top:10px;inset-inline-end:10px;background:none;border:none;padding:5px;cursor:pointer;opacity:0.45;z-index:1;"
+          onclick="event.stopPropagation();location.href='add-class.html?classId=${h.id}'">
+          <img src="icons/edit icon.svg" style="width:18px;height:18px;" alt="">
+        </button>
         <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
           ${teacherImgHtml}
           <div style="flex:1;">
@@ -76,10 +80,10 @@ function renderClasses() {
           </div>
         </div>
         <div style="display:flex; gap:8px; margin-top:12px;">
-          <button class="btn btn-secondary" style="padding:0.35rem 0.8rem; font-size:0.82rem; flex:1;"
-            onclick="event.stopPropagation(); location.href='add-class.html?classId=${h.id}'">${t('edit')}</button>
-          <button class="btn" style="padding:0.35rem 0.8rem; background:#FEE2E2; display:flex; align-items:center; justify-content:center;"
-            onclick="event.stopPropagation(); confirmDeleteClass('${h.id}', \`${h.name}\`)"><img src="icons/delete icon.svg" style="width:18px; height:18px;" alt=""></button>
+          <button class="btn" style="flex:1; padding:0.35rem 0.8rem; background:#FEE2E2; display:flex; align-items:center; justify-content:center; gap:6px;"
+            onclick="event.stopPropagation(); confirmDeleteClass('${h.id}', \`${h.name}\`)">
+            <img src="icons/delete icon.svg" style="width:18px; height:18px;" alt="">
+          </button>
         </div>
       </article>`;
   }).join('');

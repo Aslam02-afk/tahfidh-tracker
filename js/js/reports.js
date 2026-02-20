@@ -307,17 +307,14 @@ function generateReportDocument(type, studentId, classId, format) {
     periodLabel = from.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
   }
 
-  const html = buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, title, periodLabel);
+  const html = buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, title, periodLabel, format);
   const win  = window.open('', '_blank');
   if (!win) { alert(isAr ? 'يرجى السماح بالنوافذ المنبثقة' : 'Please allow popups'); return; }
   win.document.write(html);
   win.document.close();
-  if (format === 'pdf') {
-    setTimeout(function() { win.print(); }, 900);
-  }
 }
 
-function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, title, periodLabel) {
+function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, title, periodLabel, format) {
   const dir         = isAr ? 'rtl' : 'ltr';
   const className   = halaqah ? halaqah.name            : '';
   const teacherName = halaqah ? (halaqah.teacher || '')  : '';
@@ -381,6 +378,11 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     ? '<img src="' + logoSrc + '" alt="" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:4px solid #0D2C54;display:block;margin:0 auto 10px;">'
     : '<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0D2C54,#0F766E);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:2rem;color:#fff;">📖</div>';
 
+  const shareLabel = isAr ? '📤 مشاركة' : '📤 Share';
+  const shareScript = format === 'pdf'
+    ? "async function shareReport(){var btn=document.getElementById('shareBtn');btn.disabled=true;btn.textContent='⏳...';try{var canvas=await html2canvas(document.querySelector('.page'),{scale:2,useCORS:true,backgroundColor:'#fff'});var imgData=canvas.toDataURL('image/jpeg',0.92);var pdf=new window.jspdf.jsPDF({orientation:'p',unit:'mm',format:'a4'});var pw=pdf.internal.pageSize.getWidth();var ph=pdf.internal.pageSize.getHeight();var ih=(canvas.height*pw)/canvas.width;var y=0;while(y<ih){if(y>0)pdf.addPage();pdf.addImage(imgData,'JPEG',0,-y,pw,ih);y+=ph;}var blob=pdf.output('blob');var file=new File([blob],'tahfidh-report.pdf',{type:'application/pdf'});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:document.title});}else{pdf.save('tahfidh-report.pdf');}}catch(e){alert(e.message);}finally{btn.disabled=false;btn.textContent='" + (isAr ? '📤 مشاركة' : '📤 Share') + "';}}"
+    : "async function shareReport(){var btn=document.getElementById('shareBtn');btn.disabled=true;btn.textContent='⏳...';try{var canvas=await html2canvas(document.querySelector('.page'),{scale:2,useCORS:true,backgroundColor:'#F8FAFC'});canvas.toBlob(async function(blob){var file=new File([blob],'tahfidh-report.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:document.title});}else{var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tahfidh-report.png';a.click();}btn.disabled=false;btn.textContent='" + (isAr ? '📤 مشاركة' : '📤 Share') + "';},'image/png');}catch(e){alert(e.message);btn.disabled=false;btn.textContent='" + (isAr ? '📤 مشاركة' : '📤 Share') + "';}}";
+
   return '<!DOCTYPE html><html dir="' + dir + '" lang="' + (isAr ? 'ar' : 'en') + '"><head>'
     + '<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
     + '<title>' + title + ' – ' + student.name + '</title>'
@@ -402,7 +404,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     + '.btn-close{background:#F3F4F6;color:#374151;}'
     + '</style></head><body>'
     + '<div class="action-bar no-print">'
-    + '<button class="btn-print" onclick="window.print()">' + (isAr ? '🖨️ طباعة / PDF' : '🖨️ Print / PDF') + '</button>'
+    + '<button id="shareBtn" class="btn-print" onclick="shareReport()">' + shareLabel + '</button>'
     + '<button class="btn-close" onclick="window.close()">' + (isAr ? '✕ إغلاق' : '✕ Close') + '</button>'
     + '</div>'
     + '<div class="page">'
@@ -454,5 +456,9 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     + '<div style="text-align:center;color:#9CA3AF;font-size:0.78rem;padding:16px 0;border-top:1px solid #E5E7EB;margin-top:8px;">'
     + (isAr ? 'أُعدّ بواسطة ' : 'Made with ❤️ by ') + appName
     + '</div>'
-    + '</div></body></html>';
+    + '</div>'
+    + '<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"><\/script>'
+    + (format === 'pdf' ? '<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous"><\/script>' : '')
+    + '<script>' + shareScript + '<\/script>'
+    + '</body></html>';
 }
