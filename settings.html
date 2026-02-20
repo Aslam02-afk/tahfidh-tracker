@@ -14,56 +14,20 @@
   <button class="menu-btn" onclick="location.href='index.html'">←</button>
   <div class="app-title" data-i18n="settings">الإعدادات</div>
   <div style="display:flex; gap:4px;">
-    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">EN</button>
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">🌐</button>
     <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
   </div>
 </header>
 
 <main class="main-content">
 
-  <!-- Language -->
-  <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="languageSection">اللغة</div>
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <div>
-        <div style="font-weight:700;" data-i18n="languageLabel">لغة التطبيق</div>
-        <div style="font-size:0.82rem; color:var(--text-muted); margin-top:2px;" data-i18n="languageDesc">عربي أو إنجليزي</div>
-      </div>
-      <button id="langBtn" class="btn btn-secondary" onclick="switchLang()" style="min-width:80px;">
-        English
-      </button>
-    </div>
-  </section>
-
-  <!-- Dark mode -->
-  <section class="card">
-    <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="appearanceSection">المظهر</div>
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <div>
-        <div style="font-weight:700;" data-i18n="darkModeLabel">الوضع الليلي</div>
-        <div style="font-size:0.82rem; color:var(--text-muted); margin-top:2px;" data-i18n="darkModeDesc">خلفية داكنة تريح العيون</div>
-      </div>
-      <button id="darkModeBtn" class="btn btn-secondary" onclick="toggleDarkMode(); updateDarkBtn()" style="min-width:80px;" data-i18n="enable">
-        تفعيل
-      </button>
-    </div>
-  </section>
-
   <!-- Background Theme -->
   <section class="card">
     <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="themeSection">خلفية التطبيق</div>
-    <div class="theme-grid">
+    <div class="theme-grid" style="grid-template-columns: repeat(2, 1fr);">
       <button class="theme-btn" data-theme="none" onclick="setTheme('none')">
         <div class="theme-preview" style="background-image: radial-gradient(circle, rgba(201,162,77,0.15) 2px, transparent 2px); background-size: 24px 24px;"></div>
         <div class="theme-label" data-i18n="themeNone">بلا خلفية</div>
-      </button>
-      <button class="theme-btn" data-theme="arabic" onclick="setTheme('arabic')">
-        <div class="theme-preview" style="background-image: url('themes/arabic-patterns.svg'); background-size: cover;"></div>
-        <div class="theme-label" data-i18n="themeArabic">أنماط عربية</div>
-      </button>
-      <button class="theme-btn" data-theme="flower" onclick="setTheme('flower')">
-        <div class="theme-preview" style="background-image: url('themes/flower theme.svg'); background-size: cover;"></div>
-        <div class="theme-label" data-i18n="themeFlower">أزهار</div>
       </button>
       <button class="theme-btn" data-theme="bg" onclick="setTheme('bg')">
         <div class="theme-preview" style="background-image: url('themes/BG.svg'); background-size: cover;"></div>

@@ -77,7 +77,7 @@ function sendContactMessage() {
 const FEEDBACK_API_URL = "/api/send-rating";
 const FEEDBACK_QUEUE_KEY = "tt_feedback_queue_v1";
 
-let selectedStars = 0;
+var selectedStars = 0;
 
 function setTextSafe(id, text) {
   const el = qs(id);
