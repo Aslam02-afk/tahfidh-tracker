@@ -202,6 +202,12 @@ const LANG = {
     themeNone: 'بلا خلفية', themeArabic: 'أنماط عربية',
     themeFlower: 'أزهار', themeBg: 'خلفية كاملة',
 
+    // Share
+    shareSection: 'شارك التطبيق',
+    shareDesc: 'شارك Tahfidh Tracker مع المعلمين والزملاء',
+    shareBtn: 'مشاركة التطبيق',
+    shareCopied: 'تم نسخ الرابط!',
+
     // Quran Reader
     quran: 'القرآن', quranTitle: 'القرآن الكريم', quranSubtitle: 'تلاوة وقراءة',
     allJuz: 'كل الأجزاء', ayahs: 'آية', loadingQuran: 'جاري تحميل القرآن...',
@@ -423,6 +429,12 @@ thankMsg: "شكرًا لتقييمك.",
     themeSection: 'App Background',
     themeNone: 'None', themeArabic: 'Arabic Patterns',
     themeFlower: 'Flowers', themeBg: 'Full Background',
+
+    // Share
+    shareSection: 'Share the App',
+    shareDesc: 'Share Tahfidh Tracker with teachers and colleagues',
+    shareBtn: 'Share App',
+    shareCopied: 'Link copied!',
 
     // Quran Reader
     quran: 'Quran', quranTitle: 'The Noble Quran', quranSubtitle: 'Quran Reader',

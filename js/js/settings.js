@@ -46,6 +46,20 @@ function clearAllData() {
   }
 }
 
+async function shareApp() {
+  const url  = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/');
+  const data = {
+    title: 'Tahfidh Tracker | تتبع التحفيظ',
+    text:  'تطبيق إدارة حلقات التحفيظ – Tahfidh Tracker',
+    url
+  };
+  if (navigator.share) {
+    try { await navigator.share(data); } catch (_) { /* user cancelled */ }
+  } else {
+    navigator.clipboard.writeText(url).then(() => alert(t('shareCopied')));
+  }
+}
+
 function sendContactMessage() {
   const name = qs('contactTeacherName').value || t('notMentioned');
   const subject = qs('contactSubject').value;
