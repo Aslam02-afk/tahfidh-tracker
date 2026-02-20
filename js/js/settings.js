@@ -94,8 +94,10 @@ function closeRateModal() {
   qs('rateModal')?.classList.remove('show');
 }
 
-function openThankYouModal() {
+function openThankYouModal(stars) {
   syncThankYouText();
+  const starsEl = qs('thankYouStars');
+  if (starsEl) starsEl.textContent = '⭐'.repeat(Math.min(5, Math.max(1, stars || 5)));
   qs('thankYouModal')?.classList.add('show');
 }
 
@@ -218,20 +220,20 @@ async function submitRating() {
     if (!navigator.onLine) {
       enqueueFeedback(payload);
       closeRateModal();
-      openThankYouModal();
+      openThankYouModal(selectedStars);
       resetRateForm();
       return;
     }
 
     await sendFeedbackToBackend(payload);
     closeRateModal();
-    openThankYouModal();
+    openThankYouModal(selectedStars);
     resetRateForm();
   } catch (e) {
     // Queue so it won't be lost
     enqueueFeedback(payload);
     closeRateModal();
-    openThankYouModal();
+    openThankYouModal(selectedStars);
     resetRateForm();
   } finally {
     if (submitBtn) submitBtn.disabled = false;
