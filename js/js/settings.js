@@ -73,7 +73,8 @@ function sendContactMessage() {
    - Sends to backend (NO token in app)
    ========================= */
 
-const FEEDBACK_API_URL = "https://YOUR-BACKEND.onrender.com/api/feedback"; // change this
+// Use relative URL when served by the Express server, or set full URL for external hosting
+const FEEDBACK_API_URL = "/api/send-rating";
 const FEEDBACK_QUEUE_KEY = "tt_feedback_queue_v1";
 
 let selectedStars = 0;
@@ -141,10 +142,9 @@ async function sendFeedbackToBackend(payload) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      stars: payload.stars,
-      name: payload.name || "",
-      message: payload.message || "",
-      lang: payload.lang || getLang()
+      rating:    payload.rating,
+      comment:   payload.comment || "",
+      timestamp: payload.timestamp
     })
   });
   if (!res.ok) throw new Error("feedback_failed");
@@ -199,11 +199,14 @@ async function submitRating() {
     return;
   }
 
+  const name    = qs("rateName")?.value?.trim()    || "";
+  const message = qs("rateMessage")?.value?.trim() || "";
+  const comment = [name, message].filter(Boolean).join("\n") || "";
+
   const payload = {
-    stars: selectedStars,
-    name: qs("rateName")?.value?.trim() || "",
-    message: qs("rateMessage")?.value?.trim() || "",
-    lang: getLang(),
+    rating:    selectedStars,
+    comment:   comment,
+    timestamp: new Date().toLocaleString('en-GB', { timeZone: 'Asia/Riyadh', hour12: false }),
     createdAt: new Date().toISOString()
   };
 
