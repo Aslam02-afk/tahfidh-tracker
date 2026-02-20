@@ -87,8 +87,7 @@ function sendContactMessage() {
    - Sends to backend (NO token in app)
    ========================= */
 
-// Use relative URL when served by the Express server, or set full URL for external hosting
-const FEEDBACK_API_URL = "/api/send-rating";
+const FEEDBACK_API_URL = "https://tahfidh-tracker.onrender.com/api/send-rating";
 const FEEDBACK_QUEUE_KEY = "tt_feedback_queue_v1";
 
 var selectedStars = 0;
