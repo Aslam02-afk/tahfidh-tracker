@@ -233,6 +233,15 @@ thankMsg: "شكرًا لتقييمك.",
     studentPhotoLabel: 'صورة الطالب (اختياري)',
     uploadPhoto: 'رفع صورة',
     removePhoto: 'حذف الصورة',
+
+    // Phone required
+    phoneRequired: 'رقم هاتف ولي الأمر *',
+
+    // Report Format Modal
+    reportFmtTitle: 'اختر صيغة التقرير',
+    reportFmtPdf: 'PDF – طباعة / حفظ',
+    reportFmtImg: 'صورة – لقطة شاشة',
+    reportFmtMsg: 'رسالة – WhatsApp',
 },
 
   en: {
@@ -467,6 +476,15 @@ thankMsg: "Thank you for your rating.",
     studentPhotoLabel: 'Student Photo (optional)',
     uploadPhoto: 'Upload Photo',
     removePhoto: 'Remove Photo',
+
+    // Phone required
+    phoneRequired: 'Parent Phone Number *',
+
+    // Report Format Modal
+    reportFmtTitle: 'Choose Report Format',
+    reportFmtPdf: 'PDF – Print / Save',
+    reportFmtImg: 'Image – Screenshot',
+    reportFmtMsg: 'Message – WhatsApp',
 }
 
 };

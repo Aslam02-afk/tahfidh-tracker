@@ -99,3 +99,18 @@ function surahOptions(selected) {
 function surahSelect(id, selected) {
   return `<select id="${id}" class="form-input form-select"><option value="">${t('chooseSurah')}</option>${surahOptions(selected)}</select>`;
 }
+
+// Searchable surah input for record page (uses native <datalist>)
+function surahSearchInput(id, selected) {
+  const listId = id + '_list';
+  return `<div style="position:relative;">
+    <input id="${id}" class="form-input" list="${listId}"
+      placeholder="${t('chooseSurah')}"
+      value="${selected || ''}" autocomplete="off"
+      style="padding-inline-end:2.4rem;" />
+    <span style="position:absolute;inset-inline-end:10px;top:50%;transform:translateY(-50%);opacity:0.35;pointer-events:none;">🔍</span>
+  </div>
+  <datalist id="${listId}">
+    ${SURAHS.map((s, i) => `<option value="${s}">${i + 1}. ${s}</option>`).join('')}
+  </datalist>`;
+}

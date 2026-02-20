@@ -24,10 +24,10 @@
     qs("tahfidhSection").style.display = 'none';
   }
 
-  if (qs("tSurahFromWrap")) qs("tSurahFromWrap").innerHTML = surahSelect("tSurahFrom", "");
-  if (qs("tSurahToWrap"))   qs("tSurahToWrap").innerHTML   = surahSelect("tSurahTo",   "");
-  if (qs("mSurahFromWrap")) qs("mSurahFromWrap").innerHTML = surahSelect("mSurahFrom", "");
-  if (qs("mSurahToWrap"))   qs("mSurahToWrap").innerHTML   = surahSelect("mSurahTo",   "");
+  if (qs("tSurahFromWrap")) qs("tSurahFromWrap").innerHTML = surahSearchInput("tSurahFrom", "");
+  if (qs("tSurahToWrap"))   qs("tSurahToWrap").innerHTML   = surahSearchInput("tSurahTo",   "");
+  if (qs("mSurahFromWrap")) qs("mSurahFromWrap").innerHTML = surahSearchInput("mSurahFrom", "");
+  if (qs("mSurahToWrap"))   qs("mSurahToWrap").innerHTML   = surahSearchInput("mSurahTo",   "");
 
   function getErr(id) { return parseInt(qs(id).textContent) || 0; }
   function setErr(id, val) { qs(id).textContent = Math.max(0, val); }

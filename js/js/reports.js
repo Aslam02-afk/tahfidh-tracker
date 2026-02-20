@@ -244,3 +244,215 @@ function generateMonthlyReport(studentId, classId) {
 
   window.open('https://wa.me/?text=' + encodeURIComponent(text));
 }
+
+// ====================================================
+// Report Format Modal
+// ====================================================
+var _rptType      = '';
+var _rptStudentId = '';
+var _rptClassId   = '';
+
+function showReportFormatModal(type, studentId, classId) {
+  _rptType      = type;
+  _rptStudentId = studentId;
+  _rptClassId   = classId;
+  const modal = document.getElementById('reportFmtModal');
+  if (modal) modal.classList.add('show');
+}
+
+function closeReportFmtModal() {
+  const modal = document.getElementById('reportFmtModal');
+  if (modal) modal.classList.remove('show');
+}
+
+function submitReportFormat(format) {
+  closeReportFmtModal();
+  if (format === 'msg') {
+    if (_rptType === 'weekly') generateWeeklyReport(_rptStudentId, _rptClassId);
+    else                        generateMonthlyReport(_rptStudentId, _rptClassId);
+  } else {
+    generateReportDocument(_rptType, _rptStudentId, _rptClassId, format);
+  }
+}
+
+// ====================================================
+// PDF / Image Report Generator
+// ====================================================
+function generateReportDocument(type, studentId, classId, format) {
+  const data    = dbLoad();
+  const student = data.students.find(function(s) { return s.id === studentId; });
+  if (!student) return;
+
+  const halaqah     = classId ? data.halaqah.find(function(h) { return h.id === classId; }) : null;
+  const skipTahfidh = student.course === 'murajaah';
+  const isAr        = getLang() === 'ar';
+  const locale      = isAr ? 'ar-SA' : 'en-US';
+  const today       = new Date();
+  var from, records, title, periodLabel;
+
+  if (type === 'weekly') {
+    from = new Date();
+    from.setDate(today.getDate() - 6);
+    records = data.records.filter(function(r) {
+      return r.studentId === studentId && new Date(r.date) >= from;
+    }).sort(function(a, b) { return a.date.localeCompare(b.date); });
+    title       = isAr ? 'التقرير الأسبوعي' : 'Weekly Report';
+    periodLabel = from.toLocaleDateString(locale) + ' – ' + today.toLocaleDateString(locale);
+  } else {
+    from = new Date(today.getFullYear(), today.getMonth(), 1);
+    records = data.records.filter(function(r) {
+      return r.studentId === studentId && new Date(r.date) >= from;
+    }).sort(function(a, b) { return a.date.localeCompare(b.date); });
+    title       = isAr ? 'التقرير الشهري' : 'Monthly Report';
+    periodLabel = from.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
+  }
+
+  const html = buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, title, periodLabel);
+  const win  = window.open('', '_blank');
+  if (!win) { alert(isAr ? 'يرجى السماح بالنوافذ المنبثقة' : 'Please allow popups'); return; }
+  win.document.write(html);
+  win.document.close();
+  if (format === 'pdf') {
+    setTimeout(function() { win.print(); }, 900);
+  }
+}
+
+function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, title, periodLabel) {
+  const dir         = isAr ? 'rtl' : 'ltr';
+  const className   = halaqah ? halaqah.name            : '';
+  const teacherName = halaqah ? (halaqah.teacher || '')  : '';
+  const logoSrc     = halaqah && halaqah.teacherPhoto    ? halaqah.teacherPhoto : '';
+  const appName     = isAr ? 'إدارة التحفيظ' : 'Tahfidh Management';
+
+  const hifdhRecords = records.filter(function(r) { return !r.noHifdh && !skipTahfidh; });
+  const totalTErrors = hifdhRecords.reduce(function(a, r) { return a + (r.tahfidh.errors || 0); }, 0);
+  const hifdhScores  = hifdhRecords.map(function(r) { return ratingToScore(r.tahfidh.rating); }).filter(function(s) { return s > 0; });
+  const avgHifdh     = hifdhScores.length ? hifdhScores.reduce(function(a, b) { return a + b; }, 0) / hifdhScores.length : 0;
+  const totalMErrors = records.reduce(function(a, r) { return a + (r.murajaah.errors || 0); }, 0);
+  const mScores      = records.map(function(r) { return ratingToScore(r.murajaah.rating); }).filter(function(s) { return s > 0; });
+  const avgMurajaah  = mScores.length ? mScores.reduce(function(a, b) { return a + b; }, 0) / mScores.length : 0;
+  const overallRating = scoreToRating(skipTahfidh ? avgMurajaah : (avgHifdh + avgMurajaah) / 2);
+
+  function ratingColor(r) {
+    if (r === 'ممتاز'    || r === 'Excellent') return '#16A34A';
+    if (r === 'جيد جدًا' || r === 'Very Good') return '#0369A1';
+    if (r === 'جيد'      || r === 'Good')      return '#D97706';
+    return '#DC2626';
+  }
+
+  const thStyle      = 'background:#0D2C54;color:#fff;padding:10px 8px;font-size:0.82rem;font-weight:700;';
+  const overallColor = ratingColor(overallRating);
+
+  var hifdhRows = '';
+  if (!skipTahfidh) {
+    records.forEach(function(r) {
+      if (r.noHifdh) {
+        hifdhRows += '<tr><td>' + getDayName(r.date) + '</td><td>' + fmtDate(r.date) + '</td>'
+          + '<td colspan="4" style="text-align:center;color:#6B7280;font-style:italic;">'
+          + (isAr ? 'لا حفظ اليوم' : 'No new memorization') + '</td></tr>';
+      } else {
+        const rc = ratingColor(r.tahfidh.rating);
+        hifdhRows += '<tr>'
+          + '<td>' + getDayName(r.date) + '</td>'
+          + '<td>' + fmtDate(r.date) + '</td>'
+          + '<td>' + (r.tahfidh.surahFrom || '—') + '</td>'
+          + '<td>' + (r.tahfidh.ayahFrom || '—') + ' – ' + (r.tahfidh.ayahTo || '—') + '</td>'
+          + '<td>' + (r.tahfidh.errors || 0) + '</td>'
+          + '<td style="color:' + rc + ';font-weight:700;">' + (r.tahfidh.rating || '—') + '</td>'
+          + '</tr>';
+      }
+    });
+  }
+
+  var mRows = '';
+  records.forEach(function(r) {
+    const rc = ratingColor(r.murajaah.rating);
+    mRows += '<tr>'
+      + '<td>' + getDayName(r.date) + '</td>'
+      + '<td>' + fmtDate(r.date) + '</td>'
+      + '<td>' + (r.murajaah.surahFrom || '—') + '</td>'
+      + '<td>' + (r.murajaah.surahTo || '—') + '</td>'
+      + '<td>' + (r.murajaah.errors || 0) + '</td>'
+      + '<td style="color:' + rc + ';font-weight:700;">' + (r.murajaah.rating || '—') + '</td>'
+      + '</tr>';
+  });
+
+  const logoHtml = logoSrc
+    ? '<img src="' + logoSrc + '" alt="" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:4px solid #0D2C54;display:block;margin:0 auto 10px;">'
+    : '<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0D2C54,#0F766E);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:2rem;color:#fff;">📖</div>';
+
+  return '<!DOCTYPE html><html dir="' + dir + '" lang="' + (isAr ? 'ar' : 'en') + '"><head>'
+    + '<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+    + '<title>' + title + ' – ' + student.name + '</title>'
+    + '<style>'
+    + 'body{margin:0;padding:0;font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:#F8FAFC;color:#1E293B;direction:' + dir + ';}'
+    + '@page{margin:1.5cm;size:A4;}'
+    + '@media print{.no-print{display:none!important;}body{background:#fff;}tr{page-break-inside:avoid;}}'
+    + '.page{max-width:800px;margin:0 auto;padding:20px;}'
+    + 'table{width:100%;border-collapse:collapse;margin-bottom:20px;}'
+    + 'tr:nth-child(even) td{background:#F8FAFC;}'
+    + 'td{padding:9px 8px;font-size:0.82rem;border-bottom:1px solid #E5E7EB;}'
+    + '.summary-box{background:linear-gradient(135deg,#0D2C54,#0F766E);color:#fff;border-radius:14px;padding:20px;margin:20px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;print-color-adjust:exact;-webkit-print-color-adjust:exact;}'
+    + '.summary-item .val{font-size:1.6rem;font-weight:900;}'
+    + '.summary-item .lbl{font-size:0.75rem;opacity:0.85;margin-top:4px;}'
+    + 'h2{color:#0D2C54;border-bottom:3px solid #0D2C54;padding-bottom:6px;font-size:1rem;margin-top:24px;}'
+    + '.action-bar{position:sticky;top:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(4px);padding:10px 20px;display:flex;gap:10px;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);z-index:100;}'
+    + '.action-bar button{padding:8px 22px;border:none;border-radius:8px;font-size:0.9rem;cursor:pointer;font-family:inherit;font-weight:700;}'
+    + '.btn-print{background:#0D2C54;color:#fff;}'
+    + '.btn-close{background:#F3F4F6;color:#374151;}'
+    + '</style></head><body>'
+    + '<div class="action-bar no-print">'
+    + '<button class="btn-print" onclick="window.print()">' + (isAr ? '🖨️ طباعة / PDF' : '🖨️ Print / PDF') + '</button>'
+    + '<button class="btn-close" onclick="window.close()">' + (isAr ? '✕ إغلاق' : '✕ Close') + '</button>'
+    + '</div>'
+    + '<div class="page">'
+    + '<div style="text-align:center;padding:24px 0 16px;">'
+    + logoHtml
+    + '<h1 style="margin:0;font-size:1.5rem;color:#0D2C54;font-weight:900;">' + title + '</h1>'
+    + (className   ? '<div style="color:#0F766E;font-weight:700;font-size:0.95rem;margin-top:4px;">' + className + '</div>' : '')
+    + (teacherName ? '<div style="color:#6B7280;font-size:0.88rem;margin-top:2px;">' + (isAr ? 'المعلم: ' : 'Teacher: ') + teacherName + '</div>' : '')
+    + '</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">'
+    + '<div style="background:#F3F6FA;padding:12px;border-radius:10px;"><div style="color:#6B7280;font-size:0.78rem;">' + (isAr ? 'اسم الطالب' : 'Student Name') + '</div><div style="font-weight:900;font-size:1rem;margin-top:3px;">' + student.name + '</div></div>'
+    + '<div style="background:#F3F6FA;padding:12px;border-radius:10px;"><div style="color:#6B7280;font-size:0.78rem;">' + (isAr ? 'الفترة' : 'Period') + '</div><div style="font-weight:700;font-size:0.88rem;margin-top:3px;">' + periodLabel + '</div></div>'
+    + '<div style="background:#F3F6FA;padding:12px;border-radius:10px;"><div style="color:#6B7280;font-size:0.78rem;">' + (isAr ? 'أيام التسجيل' : 'Days Recorded') + '</div><div style="font-weight:900;font-size:1rem;margin-top:3px;">' + records.length + '</div></div>'
+    + '<div style="background:#F3F6FA;padding:12px;border-radius:10px;"><div style="color:#6B7280;font-size:0.78rem;">' + (isAr ? 'الغياب / التأخر' : 'Absent / Late') + '</div><div style="font-weight:700;font-size:0.88rem;margin-top:3px;">' + (student.absences || 0) + ' / ' + (student.late || 0) + '</div></div>'
+    + '</div>'
+    + (!skipTahfidh ? (
+        '<h2>' + (isAr ? 'تفاصيل الحفظ الجديد' : 'New Memorization Details') + '</h2>'
+        + '<table><thead><tr>'
+        + '<th style="' + thStyle + '">' + (isAr ? 'اليوم' : 'Day') + '</th>'
+        + '<th style="' + thStyle + '">' + (isAr ? 'التاريخ' : 'Date') + '</th>'
+        + '<th style="' + thStyle + '">' + (isAr ? 'السورة' : 'Surah') + '</th>'
+        + '<th style="' + thStyle + '">' + (isAr ? 'الآيات' : 'Ayahs') + '</th>'
+        + '<th style="' + thStyle + '">' + (isAr ? 'الأخطاء' : 'Errors') + '</th>'
+        + '<th style="' + thStyle + '">' + (isAr ? 'التقييم' : 'Rating') + '</th>'
+        + '</tr></thead><tbody>'
+        + (hifdhRows || '<tr><td colspan="6" style="text-align:center;padding:16px;color:#6B7280;">' + (isAr ? 'لا توجد سجلات' : 'No records') + '</td></tr>')
+        + '</tbody></table>'
+      ) : '')
+    + '<h2>' + (isAr ? 'تفاصيل المراجعة' : 'Revision Details') + '</h2>'
+    + '<table><thead><tr>'
+    + '<th style="' + thStyle + '">' + (isAr ? 'اليوم' : 'Day') + '</th>'
+    + '<th style="' + thStyle + '">' + (isAr ? 'التاريخ' : 'Date') + '</th>'
+    + '<th style="' + thStyle + '">' + (isAr ? 'من سورة' : 'From Surah') + '</th>'
+    + '<th style="' + thStyle + '">' + (isAr ? 'إلى سورة' : 'To Surah') + '</th>'
+    + '<th style="' + thStyle + '">' + (isAr ? 'الأخطاء' : 'Errors') + '</th>'
+    + '<th style="' + thStyle + '">' + (isAr ? 'التقييم' : 'Rating') + '</th>'
+    + '</tr></thead><tbody>'
+    + (mRows || '<tr><td colspan="6" style="text-align:center;padding:16px;color:#6B7280;">' + (isAr ? 'لا توجد سجلات' : 'No records') + '</td></tr>')
+    + '</tbody></table>'
+    + '<div class="summary-box">'
+    + (!skipTahfidh ? '<div class="summary-item"><div class="val">' + totalTErrors + '</div><div class="lbl">' + (isAr ? 'أخطاء الحفظ' : 'Memorization Errors') + '</div></div>' : '')
+    + '<div class="summary-item"><div class="val">' + totalMErrors + '</div><div class="lbl">' + (isAr ? 'أخطاء المراجعة' : 'Revision Errors') + '</div></div>'
+    + '<div class="summary-item"><div class="val" style="color:' + overallColor + ';text-shadow:0 0 8px rgba(255,255,255,0.3);">' + overallRating + '</div><div class="lbl">' + (isAr ? 'التقييم الإجمالي' : 'Overall Rating') + '</div></div>'
+    + '</div>'
+    + '<div style="text-align:center;margin:24px 0;padding:16px;background:#F0FDF4;border-radius:12px;border:1px solid #BBF7D0;">'
+    + '<div style="font-size:1.1rem;font-weight:700;color:#166534;">' + (isAr ? 'جزاكم الله خيرًا' : 'Barak Allahu feek') + '</div>'
+    + '<div style="color:#6B7280;font-size:0.85rem;margin-top:4px;">' + (isAr ? 'نسأل الله التوفيق والسداد' : 'May Allah grant you success') + '</div>'
+    + '</div>'
+    + '<div style="text-align:center;color:#9CA3AF;font-size:0.78rem;padding:16px 0;border-top:1px solid #E5E7EB;margin-top:8px;">'
+    + (isAr ? 'أُعدّ بواسطة ' : 'Made with ❤️ by ') + appName
+    + '</div>'
+    + '</div></body></html>';
+}

@@ -137,12 +137,12 @@
     html += `
       <section class="card">
         <button class="btn btn-primary btn-full" style="margin-bottom:8px; padding:0.85rem; font-size:1rem; display:flex; align-items:center; justify-content:center; gap:8px;"
-          onclick="generateWeeklyReport('${studentId}', '${classId}')">
+          onclick="showReportFormatModal('weekly', '${studentId}', '${classId}')">
           <img src="icons/share icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="">
           ${t('sendWeeklyReport')}
         </button>
         <button class="btn btn-secondary btn-full" style="margin-bottom:8px; padding:0.85rem; font-size:1rem; display:flex; align-items:center; justify-content:center; gap:8px;"
-          onclick="generateMonthlyReport('${studentId}', '${classId}')">
+          onclick="showReportFormatModal('monthly', '${studentId}', '${classId}')">
           <img src="icons/share icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="">
           ${t('sendMonthlyReport')}
         </button>
