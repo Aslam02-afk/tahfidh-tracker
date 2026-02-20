@@ -206,33 +206,33 @@
 <script src="js/js/settings.js"></script>
 
 <!-- Rate Modal -->
-<div class="tt-modal" id="rateModal">
+<div class="tt-modal" id="rateModal" onclick="if(event.target===this) closeRateModal()">
   <div class="tt-modal-box">
     <div class="tt-modal-header">
       <div class="tt-modal-title" id="rateModalTitle" data-i18n="rateModalTitle">قيّم Tahfidh Tracker</div>
-      <button class="tt-icon-btn" id="rateCloseBtn" type="button">✕</button>
+      <button class="tt-icon-btn" id="rateCloseBtn" type="button" onclick="closeRateModal()">✕</button>
     </div>
 
     <div class="tt-stars" id="starContainer" aria-label="Star rating">
-      <button type="button" class="tt-star" data-value="1">☆</button>
-      <button type="button" class="tt-star" data-value="2">☆</button>
-      <button type="button" class="tt-star" data-value="3">☆</button>
-      <button type="button" class="tt-star" data-value="4">☆</button>
-      <button type="button" class="tt-star" data-value="5">☆</button>
+      <button type="button" class="tt-star" data-value="1" onclick="selectedStars=1; updateStarsUI()">☆</button>
+      <button type="button" class="tt-star" data-value="2" onclick="selectedStars=2; updateStarsUI()">☆</button>
+      <button type="button" class="tt-star" data-value="3" onclick="selectedStars=3; updateStarsUI()">☆</button>
+      <button type="button" class="tt-star" data-value="4" onclick="selectedStars=4; updateStarsUI()">☆</button>
+      <button type="button" class="tt-star" data-value="5" onclick="selectedStars=5; updateStarsUI()">☆</button>
     </div>
 
     <input id="rateName" data-i18n-placeholder="rateNamePh" placeholder="الاسم (اختياري)" />
     <textarea id="rateMessage" data-i18n-placeholder="rateMsgPh" placeholder="اقتراحات / كيف يمكننا التحسين؟ (اختياري)"></textarea>
 
     <div class="tt-actions">
-      <button class="btn btn-secondary" id="rateCancelBtn" type="button" data-i18n="cancel">إلغاء</button>
-      <button class="btn btn-primary" id="rateSubmitBtn" type="button" data-i18n="send">إرسال</button>
+      <button class="btn btn-secondary" id="rateCancelBtn" type="button" onclick="closeRateModal()" data-i18n="cancel">إلغاء</button>
+      <button class="btn btn-primary" id="rateSubmitBtn" type="button" onclick="submitRating()" data-i18n="send">إرسال</button>
     </div>
   </div>
 </div>
 
 <!-- Thank You Modal -->
-<div class="tt-modal" id="thankYouModal">
+<div class="tt-modal" id="thankYouModal" onclick="if(event.target===this) closeThankYouModal()">
   <div class="tt-modal-box tt-thanks">
     <div class="tt-thanks-icon" aria-hidden="true">🌟</div>
     <div class="tt-modal-title" id="thankYouTitle" data-i18n="thankTitle">شكرًا لك!</div>
@@ -240,7 +240,7 @@
     <p id="thankYouMessage" data-i18n="thankMsg">شكرًا لتقييمك.</p>
 
     <div class="tt-actions" style="justify-content:center;">
-      <button class="btn btn-primary" id="thankYouCloseBtn" type="button" style="max-width:160px;" data-i18n="ok">حسنًا</button>
+      <button class="btn btn-primary" id="thankYouCloseBtn" type="button" onclick="closeThankYouModal()" style="max-width:160px;" data-i18n="ok">حسنًا</button>
     </div>
   </div>
 </div>
