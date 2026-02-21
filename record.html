@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>سجل الطالب – Tahfidh Tracker</title>
+  <title>تسجيل يومي – Tahfidh Tracker</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
   <link rel="manifest" href="manifest.json" />
@@ -13,7 +13,7 @@
 <header class="app-header">
   <button class="menu-btn" onclick="history.back()">←</button>
   <div style="text-align:center;">
-    <div class="app-title" data-i18n="studentRecord">سجل الطالب</div>
+    <div class="app-title" data-i18n="takeRecord">تسجيل يومي</div>
     <div id="studentNameDisplay" style="font-size:0.85rem; opacity:0.9;"></div>
   </div>
   <div style="display:flex; gap:4px;">
@@ -24,131 +24,32 @@
 
 <main class="main-content">
 
+  <!-- Date picker -->
   <section class="card">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <div>
-        <div style="font-weight:800;" data-i18n="date">التاريخ</div>
-        <div id="recordDateDisplay" style="color:var(--text-muted); margin-top:4px;"></div>
-      </div>
-      <div><img src="icons/edit icon.svg" style="width:24px; height:24px;" alt=""></div>
+    <label class="form-label" style="display:block; font-weight:800; margin-bottom:8px;" data-i18n="selectDate">اختر التاريخ</label>
+    <input type="date" id="recordDate" class="form-input" />
+  </section>
+
+  <!-- Attendance -->
+  <section class="card">
+    <div style="font-weight:800; margin-bottom:10px;" data-i18n="attendance">الحضور</div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button id="attPresent" class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px);" onclick="setAtt('present')" data-i18n="present">حاضر</button>
+      <button id="attAbsent"  class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px);" onclick="setAtt('absent')"  data-i18n="absent">غائب</button>
+      <button id="attLate"    class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px);" onclick="setAtt('late')"    data-i18n="lateLabel">متأخر</button>
+      <button id="attExcused" class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px);" onclick="setAtt('excused')" data-i18n="excused">معذور</button>
     </div>
   </section>
 
-  <!-- TAHFIDH -->
-  <section id="tahfidhSection" class="card">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <div style="font-size:1.1rem; font-weight:900;" data-i18n="tahfidh">الحفظ (Tahfidh)</div>
-      <button id="noHifdhBtn" class="btn btn-secondary" style="font-size:0.78rem; padding:0.35rem 0.8rem;" onclick="toggleNoHifdh()" data-i18n="noHifdhToday">لا يوجد حفظ اليوم</button>
-    </div>
-    <div id="tahfidhFields">
-    <div class="grid-2">
-      <div class="form-group">
-        <label class="form-label" data-i18n="fromSurah">من سورة</label>
-        <div id="tSurahFromWrap"></div>
-      </div>
-      <div class="form-group">
-        <label class="form-label" data-i18n="toSurah">إلى سورة</label>
-        <div id="tSurahToWrap"></div>
-      </div>
-      <div class="form-group">
-        <label class="form-label" data-i18n="fromAyah">من آية</label>
-        <input id="tAyahFrom" type="number" class="form-input" placeholder="1" min="1" />
-      </div>
-      <div class="form-group">
-        <label class="form-label" data-i18n="toAyah">إلى آية</label>
-        <input id="tAyahTo" type="number" class="form-input" placeholder="10" min="1" />
-      </div>
-    </div>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px;">
-      <div class="card" style="padding:0.75rem;">
-        <div style="font-weight:700; margin-bottom:8px;" data-i18n="errors">عدد الأخطاء</div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <button id="tErrMinus" class="btn btn-secondary" style="padding:0.4rem 0.9rem;">−</button>
-          <div id="tErrors" style="font-size:1.3rem; font-weight:900; min-width:24px; text-align:center;">0</div>
-          <button id="tErrPlus" class="btn btn-secondary" style="padding:0.4rem 0.9rem;">+</button>
-        </div>
-      </div>
-      <div class="card" style="padding:0.75rem;">
-        <div style="font-weight:700; margin-bottom:8px;" data-i18n="rating">التقييم</div>
-        <select id="tRating" class="form-input form-select">
-          <option value="ممتاز" data-i18n="excellent">ممتاز</option>
-          <option value="جيد جدًا" data-i18n="veryGood">جيد جدًا</option>
-          <option value="جيد" data-i18n="good">جيد</option>
-          <option value="ضعيف" data-i18n="weak">ضعيف</option>
-        </select>
-      </div>
-    </div>
-    </div><!-- /tahfidhFields -->
-    <div id="hifdhOffMsg" style="display:none; text-align:center; padding:1rem; color:var(--text-muted); font-weight:700;" data-i18n="hifdhOff">الحفظ مُعطّل اليوم</div>
+  <!-- Course-specific section (rendered by records.js) -->
+  <div id="courseSection"></div>
+
+  <!-- Save -->
+  <section class="card">
+    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.1rem; padding:0.9rem;" data-i18n="saveRecord">حفظ سجل اليوم</button>
   </section>
 
-  <!-- MURAJAAH -->
-  <section class="card">
-    <div style="font-size:1.1rem; font-weight:900; margin-bottom:12px;" data-i18n="murajaah">المراجعة (Murājaʿah)</div>
-    <div class="grid-2">
-      <div class="form-group">
-        <label class="form-label" data-i18n="fromSurah">من سورة</label>
-        <div id="mSurahFromWrap"></div>
-      </div>
-      <div class="form-group">
-        <label class="form-label" data-i18n="toSurah">إلى سورة</label>
-        <div id="mSurahToWrap"></div>
-      </div>
-      <div class="form-group">
-        <label class="form-label" data-i18n="fromAyah">من آية</label>
-        <input id="mAyahFrom" type="number" class="form-input" placeholder="1" min="1" />
-      </div>
-      <div class="form-group">
-        <label class="form-label" data-i18n="toAyah">إلى آية</label>
-        <input id="mAyahTo" type="number" class="form-input" placeholder="10" min="1" />
-      </div>
-    </div>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px;">
-      <div class="card" style="padding:0.75rem;">
-        <div style="font-weight:700; margin-bottom:8px;" data-i18n="errors">عدد الأخطاء</div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <button id="mErrMinus" class="btn btn-secondary" style="padding:0.4rem 0.9rem;">−</button>
-          <div id="mErrors" style="font-size:1.3rem; font-weight:900; min-width:24px; text-align:center;">0</div>
-          <button id="mErrPlus" class="btn btn-secondary" style="padding:0.4rem 0.9rem;">+</button>
-        </div>
-      </div>
-      <div class="card" style="padding:0.75rem;">
-        <div style="font-weight:700; margin-bottom:8px;" data-i18n="rating">التقييم</div>
-        <select id="mRating" class="form-input form-select">
-          <option value="ممتاز" data-i18n="excellent">ممتاز</option>
-          <option value="جيد جدًا" data-i18n="veryGood">جيد جدًا</option>
-          <option value="جيد" data-i18n="good">جيد</option>
-          <option value="ضعيف" data-i18n="weak">ضعيف</option>
-        </select>
-      </div>
-    </div>
-  </section>
-
-  <section class="card">
-    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.1rem; padding:0.9rem;" data-i18n="saveRecord">
-      حفظ سجل اليوم
-    </button>
-  </section>
 </main>
-
-<nav class="bottom-nav">
-  <button class="nav-btn" onclick="location.href='index.html'">
-    <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
-    <div class="nav-text" data-i18n="home">الرئيسية</div>
-  </button>
-  <button class="nav-btn" onclick="history.back()">
-    <div class="nav-icon"><img src="icons/students icon.svg" alt=""></div>
-    <div class="nav-text" data-i18n="students">الطلاب</div>
-  </button>
-  <button class="nav-btn active">
-    <div class="nav-icon"><img src="icons/edit icon.svg" alt=""></div>
-    <div class="nav-text" data-i18n="record">السجل</div>
-  </button>
-  <button class="nav-btn" onclick="location.href='settings.html'">
-    <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
-    <div class="nav-text" data-i18n="settings">الإعدادات</div>
-  </button>
-</nav>
 
 <footer class="branding-footer" data-i18n="footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
 

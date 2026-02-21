@@ -7,10 +7,12 @@
 function ratingToScore(rating) {
   if (!rating) return 0;
   const r = rating.trim();
-  if (r === 'ممتاز'   || r === 'Excellent') return 4;
-  if (r === 'جيد جدًا' || r === 'Very Good') return 3;
-  if (r === 'جيد'     || r === 'Good')      return 2;
-  if (r === 'ضعيف'    || r === 'Weak')      return 1;
+  if (r === 'ممتاز'          || r === 'Excellent')         return 4;
+  if (r === 'جيد جدًا'       || r === 'Very Good')         return 3;
+  if (r === 'جيد'             || r === 'Good')              return 2;
+  if (r === 'مقبول'           || r === 'Acceptable')        return 1.5;
+  if (r === 'يحتاج تحسين'    || r === 'Needs Improvement') return 1;
+  if (r === 'ضعيف'            || r === 'Weak')              return 1;
   return 0;
 }
 
@@ -331,9 +333,11 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
   const overallRating = scoreToRating(skipTahfidh ? avgMurajaah : (avgHifdh + avgMurajaah) / 2);
 
   function ratingColor(r) {
-    if (r === 'ممتاز'    || r === 'Excellent') return '#16A34A';
-    if (r === 'جيد جدًا' || r === 'Very Good') return '#0369A1';
-    if (r === 'جيد'      || r === 'Good')      return '#D97706';
+    if (r === 'ممتاز'       || r === 'Excellent')         return '#16A34A';
+    if (r === 'جيد جدًا'    || r === 'Very Good')         return '#0369A1';
+    if (r === 'جيد'          || r === 'Good')              return '#D97706';
+    if (r === 'مقبول'        || r === 'Acceptable')        return '#B45309';
+    if (r === 'يحتاج تحسين' || r === 'Needs Improvement') return '#DC2626';
     return '#DC2626';
   }
 

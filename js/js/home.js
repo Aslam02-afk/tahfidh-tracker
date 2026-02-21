@@ -45,7 +45,11 @@ function renderClasses() {
     const doneToday = data.records.filter(r => r.classId === h.id && r.date === today).length;
     const pct = students.length ? Math.round(doneToday / students.length * 100) : 0;
     const genderIcon = h.teacherGender === 'female' ? 'female teacher icon' : 'male teacher icon';
-    const timeIcon = h.classTime === 'evening' ? 'night time icon' : 'day time icon';
+    const nightTimes = { evening: 1, fajr: 1, maghrib: 1, isha: 1 };
+    const timeIcon = nightTimes[h.classTime] ? 'night time icon' : 'day time icon';
+    const salahLabel = h.classTime === 'custom' && h.classTimeCustom
+      ? h.classTimeCustom
+      : (t(h.classTime) !== h.classTime ? t(h.classTime) : '');
     const teacherImgHtml = h.teacherPhoto
       ? `<img src="${h.teacherPhoto}" alt="" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--border); flex-shrink:0;">`
       : `<img src="icons/${genderIcon}.svg" alt="" style="width:52px; height:52px; border-radius:50%; border:2px solid var(--border); padding:10px; background:var(--card-bg); flex-shrink:0;">`;
@@ -63,6 +67,7 @@ function renderClasses() {
             <div style="margin-top:4px; color:var(--text-muted); font-size:0.9rem;">${t('teacher')}: ${h.teacher || '—'}</div>
             <div style="display:flex; gap:8px; margin-top:6px; align-items:center;">
               <img src="icons/${timeIcon}.svg" style="width:18px; height:18px; opacity:0.7;" alt="">
+              ${salahLabel ? `<span style="font-size:0.8rem; color:var(--text-muted);">${salahLabel}</span>` : ''}
             </div>
           </div>
           <div style="text-align:center; background:var(--bg); padding:8px 14px; border-radius:12px; min-width:54px;">

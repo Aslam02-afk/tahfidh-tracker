@@ -28,12 +28,9 @@
 
     container.innerHTML = filtered.map(s => {
       const hasRecord = data.records.some(r => r.studentId === s.id && r.date === today);
-      const att = (s.attendance && s.attendance[today]) || '';
-      const attColor = att === 'absent' ? '#FEE2E2' : att === 'late' ? '#FEF3C7' : '#F0FDF4';
-      const attLabel = att === 'absent' ? t('absent') : att === 'late' ? t('lateLabel') : t('present');
-      const courseKey = s.course === 'talqin' ? 'courseTalqin' : s.course === 'murajaah' ? 'courseMurajaah' : 'courseHifdh';
-      const courseBg  = s.course === 'murajaah' ? '#E0F2FE' : s.course === 'talqin' ? '#F3E8FF' : '#DCFCE7';
-      const courseClr = s.course === 'murajaah' ? '#0369A1' : s.course === 'talqin' ? '#7C3AED' : '#166534';
+      const courseKey = s.course === 'talqin' ? 'courseTalqin' : s.course === 'murajaah' ? 'courseMurajaah' : s.course === 'qaida' ? 'courseQaida' : 'courseHifdh';
+      const courseBg  = s.course === 'murajaah' ? '#E0F2FE' : s.course === 'talqin' ? '#F3E8FF' : s.course === 'qaida' ? '#FEF9C3' : '#DCFCE7';
+      const courseClr = s.course === 'murajaah' ? '#0369A1' : s.course === 'talqin' ? '#7C3AED' : s.course === 'qaida' ? '#92400E' : '#166534';
       const studentIconSrc = (s.gender === 'أنثى' || s.gender === 'Female')
         ? 'icons/female teacher icon.svg' : 'icons/male teacher icon.svg';
       const studentImgSrc = s.studentPhoto || studentIconSrc;
@@ -42,11 +39,10 @@
         : 'width:44px; height:44px; border-radius:50%; border:2px solid var(--border); padding:8px; background:var(--bg); flex-shrink:0; cursor:pointer;';
 
       return `
-        <article class="card">
+        <article class="card" style="cursor:pointer; position:relative;" onclick="location.href='student-detail.html?classId=${classId}&studentId=${s.id}'">
           <div style="display:flex; align-items:center; gap:12px;">
-            <img src="${studentImgSrc}" alt="" style="${studentImgStyle}"
-              onclick="location.href='student-detail.html?classId=${classId}&studentId=${s.id}'">
-            <div style="flex:1; cursor:pointer;" onclick="location.href='student-detail.html?classId=${classId}&studentId=${s.id}'">
+            <img src="${studentImgSrc}" alt="" style="${studentImgStyle}">
+            <div style="flex:1;">
               <div style="font-size:1.05rem; font-weight:900; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
                 ${s.name}
                 <span style="font-size:0.7rem; background:${courseBg}; color:${courseClr}; padding:2px 8px; border-radius:6px; font-weight:700;">${t(courseKey)}</span>
@@ -58,41 +54,21 @@
             <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
               <div style="font-size:1.5rem;">${s.starred ? '★' : '☆'}</div>
               <a href="add-student.html?classId=${classId}&studentId=${s.id}"
-                style="display:flex; align-items:center; opacity:0.45;">
+                style="display:flex; align-items:center; opacity:0.45;"
+                onclick="event.stopPropagation()">
                 <img src="icons/edit icon.svg" style="width:16px; height:16px;" alt="">
               </a>
             </div>
           </div>
-
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; font-size:0.82rem;">
-            <div style="background:#F3F6FA; padding:8px; border-radius:10px;">${t('absences')}: <b>${s.absences || 0}</b></div>
-            <div style="background:#F3F6FA; padding:8px; border-radius:10px;">${t('late')}: <b>${s.late || 0}</b></div>
-          </div>
-
-          <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
-            <span style="font-size:0.78rem; background:${attColor}; padding:4px 10px; border-radius:8px; font-weight:700;">${attLabel}</span>
-            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem;"
-              onclick="markAttendance('${s.id}', 'present')">P</button>
-            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem;"
-              onclick="markAttendance('${s.id}', 'late')">L</button>
-            <button class="btn btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.78rem;"
-              onclick="markAttendance('${s.id}', 'absent')">A</button>
-          </div>
-
           <div style="display:flex; gap:8px; margin-top:10px;">
             <button class="btn btn-success" style="flex:1;"
-              onclick="location.href='record.html?classId=${classId}&studentId=${s.id}'">${t('openRecord')}</button>
+              onclick="event.stopPropagation(); location.href='record.html?classId=${classId}&studentId=${s.id}'">${t('takeRecord')}</button>
             <button class="btn" style="background:#FEE2E2; display:flex; align-items:center; justify-content:center; padding:0.5rem 0.75rem;"
-              onclick="confirmDeleteStudent('${s.id}', '${s.name.replace(/'/g, "\\'")}')"><img src="icons/delete icon.svg" style="width:18px; height:18px;" alt=""></button>
+              onclick="event.stopPropagation(); confirmDeleteStudent('${s.id}', '${s.name.replace(/'/g, "\\'")}')"><img src="icons/delete icon.svg" style="width:18px; height:18px;" alt=""></button>
           </div>
         </article>`;
     }).join('');
   }
-
-  window.markAttendance = function(studentId, status) {
-    recordAttendance(studentId, today, status);
-    renderPage();
-  };
 
   window.confirmDeleteStudent = function(id, name) {
     if (confirm(t('confirmDeleteStudent').replace('$1', name))) {

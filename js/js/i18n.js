@@ -7,7 +7,7 @@ const LANG = {
     students: 'الطلاب', records: 'السجلات', record: 'السجل',
 
     // Home
-    appTitle: 'إدارة التحفيظ', appSub: 'Tahfidh Tracker',
+    appTitle: 'متتبع التحفيظ', appSub: 'نظام إدارة التحفيظ',
     classes: 'الحلقات', addNewClass: 'إضافة حلقة جديدة',
     noClassesYet: 'لا توجد حلقات بعد',
     noClassesHint: 'اضغط الزر أدناه لإضافة أول حلقة',
@@ -242,6 +242,28 @@ thankMsg: "شكرًا لتقييمك.",
     reportFmtPdf: 'PDF – طباعة / حفظ',
     reportFmtImg: 'صورة – لقطة شاشة',
     reportFmtMsg: 'رسالة – WhatsApp',
+
+    // New course
+    courseQaida: 'القاعدة',
+
+    // Attendance
+    attendance: 'الحضور', excused: 'معذور',
+
+    // Record toggles & fields
+    tahfidhToggle: 'تفعيل الحفظ', murajaahToggle: 'تفعيل المراجعة',
+    mistakes: 'الأخطاء', score: 'الدرجة', grade: 'التقييم',
+    startedFrom: 'بدأ من', endedAt: 'انتهى إلى',
+    bookName: 'اسم الكتاب', fromPage: 'من صفحة', toPage: 'إلى صفحة',
+    acceptable: 'مقبول', needsImprovement: 'يحتاج تحسين',
+    takeRecord: 'تسجيل يومي', selectDate: 'اختر التاريخ',
+
+    // Student profile tabs
+    tabOverview: 'نظرة عامة', tabRecords: 'السجلات', tabProgress: 'التقدم',
+
+    // Class time picker
+    salahTime: 'وقت الصلاة', customTime: 'وقت مخصص',
+    fajr: 'الفجر', dhuhr: 'الظهر', asr: 'العصر',
+    maghrib: 'المغرب', isha: 'العشاء',
 },
 
   en: {
@@ -250,7 +272,7 @@ thankMsg: "شكرًا لتقييمك.",
     students: 'Students', records: 'Records', record: 'Record',
 
     // Home
-    appTitle: 'Tahfidh Management', appSub: 'Tahfidh Tracker',
+    appTitle: 'Tahfidh Tracker', appSub: 'Tahfidh Management System',
     classes: 'Classes', addNewClass: 'Add New Class',
     noClassesYet: 'No classes yet',
     noClassesHint: 'Tap the button below to add your first class',
@@ -485,6 +507,28 @@ thankMsg: "Thank you for your rating.",
     reportFmtPdf: 'PDF – Print / Save',
     reportFmtImg: 'Image – Screenshot',
     reportFmtMsg: 'Message – WhatsApp',
+
+    // New course
+    courseQaida: 'Qaida',
+
+    // Attendance
+    attendance: 'Attendance', excused: 'Excused',
+
+    // Record toggles & fields
+    tahfidhToggle: 'Tahfidh On', murajaahToggle: 'Murajaah On',
+    mistakes: 'Mistakes', score: 'Score', grade: 'Grade',
+    startedFrom: 'Started From', endedAt: 'Ended At',
+    bookName: 'Book Name', fromPage: 'From Page', toPage: 'To Page',
+    acceptable: 'Acceptable', needsImprovement: 'Needs Improvement',
+    takeRecord: 'Take Daily Record', selectDate: 'Select Date',
+
+    // Student profile tabs
+    tabOverview: 'Overview', tabRecords: 'Records', tabProgress: 'Progress',
+
+    // Class time picker
+    salahTime: 'Salah Time', customTime: 'Custom Time',
+    fajr: 'Fajr', dhuhr: 'Dhuhr', asr: 'Asr',
+    maghrib: 'Maghrib', isha: 'Isha',
 }
 
 };

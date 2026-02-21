@@ -62,17 +62,24 @@
     </div>
     <div class="form-group">
       <label class="form-label" data-i18n="classTime">وقت الحلقة</label>
-      <div style="display:flex; gap:10px;">
-        <button type="button" id="timeMorning" class="btn btn-primary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:0.6rem;" onclick="selectTime('morning')">
-          <img src="icons/day time icon.svg" style="width:24px; height:24px;" alt="">
-          <span data-i18n="classTimeMorning">صباحي</span>
-        </button>
-        <button type="button" id="timeEvening" class="btn btn-secondary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:0.6rem;" onclick="selectTime('evening')">
-          <img src="icons/night time icon.svg" style="width:24px; height:24px;" alt="">
-          <span data-i18n="classTimeEvening">مسائي</span>
-        </button>
+      <!-- Mode toggle -->
+      <div style="display:flex; gap:10px; margin-bottom:10px;">
+        <button type="button" id="modeSalah" class="btn btn-primary" style="flex:1; padding:0.55rem;" onclick="selectTimeMode('salah')" data-i18n="salahTime">وقت الصلاة</button>
+        <button type="button" id="modeCustom" class="btn btn-secondary" style="flex:1; padding:0.55rem;" onclick="selectTimeMode('custom')" data-i18n="customTime">وقت مخصص</button>
       </div>
-      <input type="hidden" id="classTime" value="morning" />
+      <!-- Salah buttons -->
+      <div id="salahButtons" style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" id="salahFajr"    class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('fajr')"    data-i18n="fajr">الفجر</button>
+        <button type="button" id="salahDhuhr"   class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('dhuhr')"   data-i18n="dhuhr">الظهر</button>
+        <button type="button" id="salahAsr"     class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('asr')"     data-i18n="asr">العصر</button>
+        <button type="button" id="salahMaghrib" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('maghrib')" data-i18n="maghrib">المغرب</button>
+        <button type="button" id="salahIsha"    class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('isha')"    data-i18n="isha">العشاء</button>
+      </div>
+      <!-- Custom time input -->
+      <div id="customTimeWrap" style="display:none; margin-top:8px;">
+        <input type="time" id="classTimeCustom" class="form-input" />
+      </div>
+      <input type="hidden" id="classTime" value="dhuhr" />
     </div>
     <div class="form-group">
       <label class="form-label" data-i18n="notesOptional">ملاحظات (اختياري)</label>

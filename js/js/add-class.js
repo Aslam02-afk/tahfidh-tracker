@@ -18,10 +18,26 @@
     }
   };
 
-  window.selectTime = function(val) {
-    qs('classTime').value = val;
-    qs('timeMorning').className = 'btn ' + (val === 'morning' ? 'btn-primary' : 'btn-secondary');
-    qs('timeEvening').className = 'btn ' + (val === 'evening' ? 'btn-primary' : 'btn-secondary');
+  window.selectTimeMode = function(mode) {
+    qs('modeSalah').className  = 'btn ' + (mode === 'salah'  ? 'btn-primary' : 'btn-secondary');
+    qs('modeCustom').className = 'btn ' + (mode === 'custom' ? 'btn-primary' : 'btn-secondary');
+    qs('salahButtons').style.display   = mode === 'salah'  ? 'flex' : 'none';
+    qs('customTimeWrap').style.display = mode === 'custom' ? 'block' : 'none';
+    if (mode === 'custom') {
+      qs('classTime').value = 'custom';
+    } else {
+      var cur = qs('classTime').value;
+      if (!['fajr','dhuhr','asr','maghrib','isha'].includes(cur)) cur = 'dhuhr';
+      selectSalahTime(cur);
+    }
+  };
+
+  window.selectSalahTime = function(time) {
+    qs('classTime').value = time;
+    ['fajr','dhuhr','asr','maghrib','isha'].forEach(function(s) {
+      var btn = document.getElementById('salah' + s.charAt(0).toUpperCase() + s.slice(1));
+      if (btn) btn.className = 'btn ' + (s === time ? 'btn-primary' : 'btn-secondary');
+    });
   };
 
   window.handleTeacherPhoto = function(input) {
@@ -55,7 +71,16 @@
       qs("notes").value             = h.notes   || "";
       qs("btnDelete").style.display = "block";
       if (h.teacherGender) selectGender(h.teacherGender);
-      if (h.classTime) selectTime(h.classTime);
+      var rawTime = h.classTime || 'dhuhr';
+      if (rawTime === 'morning') rawTime = 'dhuhr';
+      if (rawTime === 'evening') rawTime = 'maghrib';
+      if (rawTime === 'custom') {
+        selectTimeMode('custom');
+        if (h.classTimeCustom) qs('classTimeCustom').value = h.classTimeCustom;
+      } else {
+        selectTimeMode('salah');
+        selectSalahTime(rawTime);
+      }
       if (h.teacherPhoto) {
         teacherPhotoBase64 = h.teacherPhoto;
         qs('teacherPhotoPreview').src = h.teacherPhoto;
@@ -69,13 +94,14 @@
     if (!name) { alert(t('enterClassName')); return; }
 
     const halaqah = {
-      id:            isEdit ? classId : uid(),
+      id:              isEdit ? classId : uid(),
       name,
-      teacher:       qs("teacherName").value.trim(),
-      teacherGender: qs("teacherGender").value,
-      classTime:     qs("classTime").value,
-      teacherPhoto:  teacherPhotoBase64 || '',
-      notes:         qs("notes").value.trim()
+      teacher:         qs("teacherName").value.trim(),
+      teacherGender:   qs("teacherGender").value,
+      classTime:       qs("classTime").value,
+      classTimeCustom: qs("classTime").value === 'custom' ? (qs("classTimeCustom").value || '') : '',
+      teacherPhoto:    teacherPhotoBase64 || '',
+      notes:           qs("notes").value.trim()
     };
 
     saveClass(halaqah);
@@ -89,4 +115,7 @@
       location.href = "index.html";
     }
   };
+
+  // Initialize time picker (new class defaults to salah/dhuhr)
+  if (!isEdit) selectSalahTime('dhuhr');
 })();
