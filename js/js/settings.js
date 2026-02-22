@@ -153,16 +153,25 @@ function enqueueFeedback(item) {
 }
 
 async function sendFeedbackToBackend(payload) {
-  const res = await fetch(FEEDBACK_API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      rating:    payload.rating,
-      comment:   payload.comment || "",
-      timestamp: payload.timestamp
-    })
+  const body = JSON.stringify({
+    rating:    payload.rating,
+    comment:   payload.comment || "",
+    timestamp: payload.timestamp
   });
-  if (!res.ok) throw new Error("feedback_failed");
+  // Retry up to 3 times with delays to handle Render cold-start (~30s wake-up)
+  const delays = [0, 15000, 30000];
+  for (let i = 0; i < delays.length; i++) {
+    if (delays[i]) await new Promise(r => setTimeout(r, delays[i]));
+    try {
+      const res = await fetch(FEEDBACK_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body
+      });
+      if (res.ok) return;
+    } catch (_) {}
+  }
+  throw new Error("feedback_failed");
 }
 
 async function flushFeedbackQueue() {

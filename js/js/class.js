@@ -52,7 +52,7 @@
               </div>
             </div>
             <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
-              <div style="font-size:1.5rem;">${s.starred ? '★' : '☆'}</div>
+              <div style="font-size:1.5rem; cursor:pointer;" onclick="toggleStar('${s.id}', event)">${s.starred ? '★' : '☆'}</div>
               <a href="add-student.html?classId=${classId}&studentId=${s.id}"
                 style="display:flex; align-items:center; opacity:0.45;"
                 onclick="event.stopPropagation()">
@@ -69,6 +69,16 @@
         </article>`;
     }).join('');
   }
+
+  window.toggleStar = function(id, event) {
+    event.stopPropagation();
+    const data = dbLoad();
+    const s = data.students.find(st => st.id === id);
+    if (!s) return;
+    s.starred = !s.starred;
+    saveStudent(s);
+    renderPage();
+  };
 
   window.confirmDeleteStudent = function(id, name) {
     if (confirm(t('confirmDeleteStudent').replace('$1', name))) {
