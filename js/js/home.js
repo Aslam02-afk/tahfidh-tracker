@@ -44,7 +44,7 @@ function renderClasses() {
     const students = data.students.filter(s => s.classId === h.id);
     const doneToday = data.records.filter(r => r.classId === h.id && r.date === today).length;
     const pct = students.length ? Math.round(doneToday / students.length * 100) : 0;
-    const CARD_THEMES = { pink: 'Pink_theme.svg', green: 'green_theme.svg', greenlight: 'greenlight_theme.svg', purple: 'puple_theme.svg' };
+    const CARD_THEMES = { pink: 'Pink_theme.png', green: 'green_theme.png', greenlight: 'greenlight_theme.png', purple: 'puple_theme.png' };
     const cardBgStyle = (h.cardTheme && CARD_THEMES[h.cardTheme])
       ? `background-image:url('themes/${CARD_THEMES[h.cardTheme]}'); background-size:cover; background-repeat:no-repeat; background-position:center;`
       : '';
