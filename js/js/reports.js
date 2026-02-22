@@ -152,7 +152,9 @@ function generateWeeklyReport(studentId, classId) {
     if (teacherName) text += '— ' + teacherName + '\n';
   }
 
-  window.open('https://wa.me/?text=' + encodeURIComponent(text));
+  const weeklyPhone = (student.phone || '').replace(/\D/g, '');
+  const weeklyUrl = 'https://wa.me/' + weeklyPhone + '?text=' + encodeURIComponent(text);
+  window.open(weeklyUrl);
 }
 
 // ====================================================
@@ -244,7 +246,9 @@ function generateMonthlyReport(studentId, classId) {
     if (teacherName) text += '— ' + teacherName + '\n';
   }
 
-  window.open('https://wa.me/?text=' + encodeURIComponent(text));
+  const monthlyPhone = (student.phone || '').replace(/\D/g, '');
+  const monthlyUrl = 'https://wa.me/' + monthlyPhone + '?text=' + encodeURIComponent(text);
+  window.open(monthlyUrl);
 }
 
 // ====================================================
