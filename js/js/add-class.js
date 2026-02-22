@@ -10,12 +10,7 @@
     qs('teacherGender').value = val;
     qs('genderMale').className  = 'btn ' + (val === 'male'   ? 'btn-primary' : 'btn-secondary');
     qs('genderFemale').className = 'btn ' + (val === 'female' ? 'btn-primary' : 'btn-secondary');
-    // Update preview placeholder if no custom photo
-    if (!teacherPhotoBase64) {
-      qs('teacherPhotoPreview').src = val === 'female'
-        ? 'icons/female teacher icon.svg'
-        : 'icons/male teacher icon.svg';
-    }
+    // No longer update preview based on gender (preview is class logo)
   };
 
   window.selectCardTheme = function(theme) {
@@ -62,10 +57,7 @@
 
   window.clearTeacherPhoto = function() {
     teacherPhotoBase64 = '';
-    const gender = qs('teacherGender').value;
-    qs('teacherPhotoPreview').src = gender === 'female'
-      ? 'icons/female teacher icon.svg'
-      : 'icons/male teacher icon.svg';
+    qs('teacherPhotoPreview').src = 'icons/Quran icon.svg';
     qs('teacherPhotoClearBtn').style.display = 'none';
     qs('teacherPhotoInput').value = '';
   };

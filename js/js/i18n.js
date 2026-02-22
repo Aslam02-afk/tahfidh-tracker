@@ -229,7 +229,7 @@ thankTitle: "شكرًا لك!",
 thankMsg: "شكرًا لتقييمك.",
 
     // Photo Upload
-    teacherPhotoLabel: 'صورة المعلم (اختياري)',
+    teacherPhotoLabel: 'شعار الحلقة (اختياري)',
     studentPhotoLabel: 'صورة الطالب (اختياري)',
     uploadPhoto: 'رفع صورة',
     removePhoto: 'حذف الصورة',
@@ -494,7 +494,7 @@ thankTitle: "Thank You!",
 thankMsg: "Thank you for your rating.",
 
     // Photo Upload
-    teacherPhotoLabel: 'Teacher Photo (optional)',
+    teacherPhotoLabel: 'Class Logo (optional)',
     studentPhotoLabel: 'Student Photo (optional)',
     uploadPhoto: 'Upload Photo',
     removePhoto: 'Remove Photo',
