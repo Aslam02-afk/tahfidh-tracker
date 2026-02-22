@@ -18,6 +18,14 @@
     }
   };
 
+  window.selectCardTheme = function(theme) {
+    qs('cardTheme').value = theme;
+    ['none','pink','green','greenlight','purple'].forEach(function(k) {
+      var btn = document.getElementById('cardTheme-' + k);
+      if (btn) btn.className = 'btn ' + (k === theme ? 'btn-primary' : 'btn-secondary');
+    });
+  };
+
   window.selectTimeMode = function(mode) {
     qs('modeSalah').className  = 'btn ' + (mode === 'salah'  ? 'btn-primary' : 'btn-secondary');
     qs('modeCustom').className = 'btn ' + (mode === 'custom' ? 'btn-primary' : 'btn-secondary');
@@ -70,6 +78,7 @@
       qs("teacherName").value       = h.teacher || "";
       qs("notes").value             = h.notes   || "";
       qs("btnDelete").style.display = "block";
+      if (h.cardTheme) selectCardTheme(h.cardTheme);
       if (h.teacherGender) selectGender(h.teacherGender);
       var rawTime = h.classTime || 'dhuhr';
       if (rawTime === 'morning') rawTime = 'dhuhr';
@@ -100,6 +109,7 @@
       teacherGender:   qs("teacherGender").value,
       classTime:       qs("classTime").value,
       classTimeCustom: qs("classTime").value === 'custom' ? (qs("classTimeCustom").value || '') : '',
+      cardTheme:       qs("cardTheme").value || 'none',
       teacherPhoto:    teacherPhotoBase64 || '',
       notes:           qs("notes").value.trim()
     };

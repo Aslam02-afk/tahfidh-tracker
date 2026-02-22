@@ -85,6 +85,35 @@
       <label class="form-label" data-i18n="notesOptional">ملاحظات (اختياري)</label>
       <textarea id="notes" class="form-input" rows="3" data-i18n-ph="notesPh" placeholder="أي معلومات إضافية..."></textarea>
     </div>
+    <div class="form-group">
+      <label class="form-label">تصميم بطاقة الحلقة</label>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;">
+        <button type="button" id="cardTheme-none" class="btn btn-primary"
+          style="flex:1; min-width:52px; height:52px; border-radius:10px; font-size:0.75rem; font-weight:700;"
+          onclick="selectCardTheme('none')">بلا</button>
+        <button type="button" id="cardTheme-pink" class="btn btn-secondary"
+          style="flex:1; min-width:52px; height:52px; border-radius:10px; padding:0; overflow:hidden; border:2px solid var(--border);"
+          onclick="selectCardTheme('pink')">
+          <img src="themes/Pink_theme.svg" style="width:100%; height:100%; object-fit:cover; display:block;" alt="">
+        </button>
+        <button type="button" id="cardTheme-green" class="btn btn-secondary"
+          style="flex:1; min-width:52px; height:52px; border-radius:10px; padding:0; overflow:hidden; border:2px solid var(--border);"
+          onclick="selectCardTheme('green')">
+          <img src="themes/green_theme.svg" style="width:100%; height:100%; object-fit:cover; display:block;" alt="">
+        </button>
+        <button type="button" id="cardTheme-greenlight" class="btn btn-secondary"
+          style="flex:1; min-width:52px; height:52px; border-radius:10px; padding:0; overflow:hidden; border:2px solid var(--border);"
+          onclick="selectCardTheme('greenlight')">
+          <img src="themes/greenlight_theme.svg" style="width:100%; height:100%; object-fit:cover; display:block;" alt="">
+        </button>
+        <button type="button" id="cardTheme-purple" class="btn btn-secondary"
+          style="flex:1; min-width:52px; height:52px; border-radius:10px; padding:0; overflow:hidden; border:2px solid var(--border);"
+          onclick="selectCardTheme('purple')">
+          <img src="themes/puple_theme.svg" style="width:100%; height:100%; object-fit:cover; display:block;" alt="">
+        </button>
+      </div>
+      <input type="hidden" id="cardTheme" value="none" />
+    </div>
     <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.05rem; padding:0.85rem; margin-top:6px;" data-i18n="saveClass">
       حفظ الحلقة
     </button>

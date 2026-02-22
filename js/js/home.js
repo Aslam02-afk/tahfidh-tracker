@@ -44,6 +44,10 @@ function renderClasses() {
     const students = data.students.filter(s => s.classId === h.id);
     const doneToday = data.records.filter(r => r.classId === h.id && r.date === today).length;
     const pct = students.length ? Math.round(doneToday / students.length * 100) : 0;
+    const CARD_THEMES = { pink: 'Pink_theme.svg', green: 'green_theme.svg', greenlight: 'greenlight_theme.svg', purple: 'puple_theme.svg' };
+    const cardBgStyle = (h.cardTheme && CARD_THEMES[h.cardTheme])
+      ? `background-image:url('themes/${CARD_THEMES[h.cardTheme]}'); background-size:cover; background-repeat:no-repeat; background-position:center;`
+      : '';
     const genderIcon = h.teacherGender === 'female' ? 'female teacher icon' : 'male teacher icon';
     const nightTimes = { evening: 1, fajr: 1, maghrib: 1, isha: 1 };
     const timeIcon = nightTimes[h.classTime] ? 'night time icon' : 'day time icon';
@@ -55,7 +59,7 @@ function renderClasses() {
       : `<img src="icons/${genderIcon}.svg" alt="" style="width:52px; height:52px; border-radius:50%; border:2px solid var(--border); padding:10px; background:var(--card-bg); flex-shrink:0;">`;
 
     return `
-      <article class="card" style="cursor:pointer; position:relative;" onclick="location.href='class.html?classId=${h.id}'">
+      <article class="card" style="cursor:pointer; position:relative; ${cardBgStyle}" onclick="location.href='class.html?classId=${h.id}'">
         <button style="position:absolute;top:10px;inset-inline-end:10px;background:none;border:none;padding:5px;cursor:pointer;opacity:0.45;z-index:1;"
           onclick="event.stopPropagation();location.href='add-class.html?classId=${h.id}'">
           <img src="icons/edit icon.svg" style="width:18px;height:18px;" alt="">
