@@ -458,7 +458,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     + '<div style="color:#6B7280;font-size:0.85rem;margin-top:4px;">' + (isAr ? 'نسأل الله التوفيق والسداد' : 'May Allah grant you success') + '</div>'
     + '</div>'
     + '<div style="text-align:center;color:#9CA3AF;font-size:0.78rem;padding:16px 0;border-top:1px solid #E5E7EB;margin-top:8px;">'
-    + (isAr ? 'أُعدّ بواسطة ' : 'Made with ❤️ by ') + appName
+    + (isAr ? 'صُنع بواسطة ' : 'Made by ') + appName
     + '</div>'
     + '</div>'
     + '<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"><\/script>'

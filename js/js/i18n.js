@@ -141,7 +141,7 @@ const LANG = {
     aboutDesc: 'تطبيق إدارة التحفيظ لمساعدة معلمي القرآن في متابعة بيانات الطلاب وتسجيل الحفظ والمراجعة اليومية',
     aboutDescEn: 'Designed to help Quran teachers track student progress, record daily memorization & revision, and send reports to parents.',
     whatsNew: 'ما الجديد | What\'s New',
-    footer: 'Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى',
+    footer: 'Developed by Al Hudaa Program | طُوِّر بواسطة برنامج الهدى',
 
     // Reports
     rptWeekly: 'تقرير أسبوعي', rptMonthly: 'تقرير شهري',
@@ -406,7 +406,7 @@ thankMsg: "شكرًا لتقييمك.",
     aboutDesc: 'Designed to help Quran teachers track student progress, record daily memorization & revision, and send reports to parents.',
     aboutDescEn: 'تطبيق إدارة حلقات التحفيظ مصمم لمساعدة المعلمين في متابعة بيانات الطلاب.',
     whatsNew: 'What\'s New',
-    footer: 'Made by Al Hudaa Program',
+    footer: 'Developed by Al Hudaa Program',
 
     // Reports
     rptWeekly: 'Weekly Report', rptMonthly: 'Monthly Report',
