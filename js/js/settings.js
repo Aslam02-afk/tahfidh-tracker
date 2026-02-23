@@ -152,26 +152,61 @@ function enqueueFeedback(item) {
   saveFeedbackQueue(q);
 }
 
+/* -------- Telegram direct config -------- */
+const TG_CONFIG_KEY = "tt_tg_config_v1";
+
+function loadTgConfig() {
+  try { return JSON.parse(localStorage.getItem(TG_CONFIG_KEY) || "null"); } catch { return null; }
+}
+
+window.saveTgConfig = function() {
+  const token  = (qs("tgBotToken")?.value  || "").trim();
+  const chatId = (qs("tgChatId")?.value    || "").trim();
+  if (!token || !chatId) { alert("الرجاء إدخال Bot Token و Chat ID"); return; }
+  localStorage.setItem(TG_CONFIG_KEY, JSON.stringify({ token, chatId }));
+  alert("✅ تم الحفظ");
+};
+
+(function prefillTgConfig() {
+  const cfg = loadTgConfig();
+  if (!cfg) return;
+  if (qs("tgBotToken"))  qs("tgBotToken").value  = cfg.token  || "";
+  if (qs("tgChatId"))    qs("tgChatId").value    = cfg.chatId || "";
+})();
+
 async function sendFeedbackToBackend(payload) {
-  const body = JSON.stringify({
-    rating:    payload.rating,
-    comment:   payload.comment || "",
-    timestamp: payload.timestamp
-  });
-  // Retry up to 3 times with delays to handle Render cold-start (~30s wake-up)
-  const delays = [0, 15000, 30000];
-  for (let i = 0; i < delays.length; i++) {
-    if (delays[i]) await new Promise(r => setTimeout(r, delays[i]));
-    try {
-      const res = await fetch(FEEDBACK_API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body
-      });
-      if (res.ok) return;
-    } catch (_) {}
+  const cfg = loadTgConfig();
+  if (cfg && cfg.token && cfg.chatId) {
+    // Direct Telegram API — no Render server needed
+    const stars = "⭐".repeat(payload.rating);
+    const text  = [
+      "━━━━━━━━━━━━━━━━━━",
+      "⭐ Tahfidh Tracker – New Rating",
+      "━━━━━━━━━━━━━━━━━━",
+      "",
+      "📊 Rating: " + payload.rating + " / 5  " + stars,
+      "💬 Feedback:\n" + (payload.comment || "No comment"),
+      "",
+      "🕒 Time: " + payload.timestamp,
+      "",
+      "━━━━━━━━━━━━━━━━━━"
+    ].join("\n");
+    const tgRes  = await fetch(
+      "https://api.telegram.org/bot" + cfg.token + "/sendMessage",
+      { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: cfg.chatId, text }) }
+    );
+    const tgData = await tgRes.json();
+    if (!tgData.ok) throw new Error(tgData.description || "Telegram error");
+    return;
   }
-  throw new Error("feedback_failed");
+  // Fallback: Render server
+  const res = await fetch(FEEDBACK_API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ rating: payload.rating, comment: payload.comment || "", timestamp: payload.timestamp })
+  });
+  if (!res.ok) throw new Error("feedback_failed");
 }
 
 async function flushFeedbackQueue() {
@@ -234,33 +269,12 @@ async function submitRating() {
     createdAt: new Date().toISOString()
   };
 
-  // Always show thank-you popup (even if queued)
-  const submitBtn = qs("rateSubmitBtn");
-  if (submitBtn) submitBtn.disabled = true;
-
-  try {
-    if (!navigator.onLine) {
-      enqueueFeedback(payload);
-      closeRateModal();
-      openThankYouModal(selectedStars);
-      resetRateForm();
-      return;
-    }
-
-    await sendFeedbackToBackend(payload);
-    closeRateModal();
-    openThankYouModal(selectedStars);
-    resetRateForm();
-  } catch (e) {
-    // Queue so it won't be lost
-    enqueueFeedback(payload);
-    closeRateModal();
-    openThankYouModal(selectedStars);
-    resetRateForm();
-  } finally {
-    if (submitBtn) submitBtn.disabled = false;
-    flushFeedbackQueue().catch(() => {});
-  }
+  // Show thank-you immediately, send in background
+  enqueueFeedback(payload);
+  closeRateModal();
+  openThankYouModal(selectedStars);
+  resetRateForm();
+  flushFeedbackQueue().catch(() => {});
 }
 
 /* -------- wiring events -------- */
