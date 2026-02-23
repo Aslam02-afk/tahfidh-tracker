@@ -29,11 +29,28 @@
   }
 
   // --- Attendance buttons ---
+  var ATT_COLORS = {
+    present: '#16A34A',
+    absent:  '#DC2626',
+    late:    '#D97706',
+    excused: '#7C3AED'
+  };
   window.setAtt = function(status) {
     currentAtt = status;
     ['present','absent','late','excused'].forEach(function(s) {
       var btn = document.getElementById('att' + s.charAt(0).toUpperCase() + s.slice(1));
-      if (btn) btn.className = 'btn ' + (s === status ? 'btn-primary' : 'btn-secondary');
+      if (!btn) return;
+      if (s === status) {
+        btn.className = 'btn';
+        btn.style.background = ATT_COLORS[s];
+        btn.style.color = '#fff';
+        btn.style.borderColor = ATT_COLORS[s];
+      } else {
+        btn.className = 'btn btn-secondary';
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }
     });
   };
 

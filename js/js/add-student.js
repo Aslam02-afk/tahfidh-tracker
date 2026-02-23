@@ -12,6 +12,26 @@
       : 'icons/male teacher icon.svg';
   }
 
+  window.selectStudentGender = function(val) {
+    qs('gender').value = val === 'female' ? 'أنثى' : 'ذكر';
+    qs('genderMale').className = 'btn ' + (val === 'male' ? 'btn-primary' : 'btn-secondary');
+    qs('genderMale').style.background = '';
+    qs('genderMale').style.color = '';
+    qs('genderMale').style.borderColor = '';
+    if (val === 'female') {
+      qs('genderFemale').className = 'btn';
+      qs('genderFemale').style.background = '#EC4899';
+      qs('genderFemale').style.color = '#fff';
+      qs('genderFemale').style.borderColor = '#EC4899';
+    } else {
+      qs('genderFemale').className = 'btn btn-secondary';
+      qs('genderFemale').style.background = '';
+      qs('genderFemale').style.color = '';
+      qs('genderFemale').style.borderColor = '';
+    }
+    window.onGenderChange(qs('gender').value);
+  };
+
   window.onGenderChange = function(val) {
     if (!studentPhotoBase64) {
       qs('studentPhotoPreview').src = genderIconSrc(val);
@@ -44,7 +64,7 @@
     if (s) {
       qs("pageTitle").textContent   = t('editStudentTitle');
       qs("studentName").value       = s.name;
-      qs("gender").value            = s.gender      || "ذكر";
+      selectStudentGender((s.gender === 'أنثى' || s.gender === 'Female') ? 'female' : 'male');
       qs("course").value            = s.course      || "hifdh";
       qs("phone").value             = s.phone       || "";
       qs("lastSurah").value         = s.lastSurah   || "";
