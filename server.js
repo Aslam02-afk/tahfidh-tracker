@@ -14,9 +14,27 @@ app.use(express.json());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin',  '*');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
   next();
+});
+
+// ── /api/config ─────────────────────────────────────────────────────────────
+// Returns Telegram credentials safely from environment variables
+// Token never appears in frontend code or GitHub
+app.get('/api/config', (req, res) => {
+  const BOT_TOKEN = process.env.BOT_TOKEN;
+  const USER_ID   = process.env.USER_ID;
+
+  if (!BOT_TOKEN || !USER_ID) {
+    return res.status(500).json({ ok: false, error: 'Server not configured (BOT_TOKEN / USER_ID missing)' });
+  }
+
+  res.json({
+    ok:       true,
+    botToken: BOT_TOKEN,
+    userId:   USER_ID
+  });
 });
 
 // ── /api/send-rating ────────────────────────────────────────────────────────
