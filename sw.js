@@ -1,5 +1,5 @@
 // Service Worker – Tahfidh Tracker
-const CACHE = 'tahfidh-v25';
+const CACHE = 'tahfidh-v26';
 
 const PRECACHE = [
   './',
@@ -46,6 +46,8 @@ const PRECACHE = [
   'themes/Pink_theme.png',
   'themes/green_theme.png',
   'themes/puple_theme.png',
+  // xlsx library — hosted locally so Excel export works offline
+  'js/libs/xlsx.full.min.js',
   // Quran data & font — cached so reader works fully offline
   'kfgqpc_hafs_smart_data/hafs_smart_v8.json',
   'kfgqpc_hafs_smart_font/HafsSmart_08.ttf',
