@@ -152,61 +152,31 @@ function enqueueFeedback(item) {
   saveFeedbackQueue(q);
 }
 
-/* -------- Telegram direct config -------- */
-const TG_CONFIG_KEY = "tt_tg_config_v1";
-
-function loadTgConfig() {
-  try { return JSON.parse(localStorage.getItem(TG_CONFIG_KEY) || "null"); } catch { return null; }
-}
-
-window.saveTgConfig = function() {
-  const token  = (qs("tgBotToken")?.value  || "").trim();
-  const chatId = (qs("tgChatId")?.value    || "").trim();
-  if (!token || !chatId) { alert("الرجاء إدخال Bot Token و Chat ID"); return; }
-  localStorage.setItem(TG_CONFIG_KEY, JSON.stringify({ token, chatId }));
-  alert("✅ تم الحفظ");
-};
-
-(function prefillTgConfig() {
-  const cfg = loadTgConfig();
-  if (!cfg) return;
-  if (qs("tgBotToken"))  qs("tgBotToken").value  = cfg.token  || "";
-  if (qs("tgChatId"))    qs("tgChatId").value    = cfg.chatId || "";
-})();
+/* -------- Telegram credentials (set by developer) -------- */
+const TG_BOT_TOKEN = "YOUR_BOT_TOKEN_HERE";   // ← replace with your bot token
+const TG_CHAT_ID   = "YOUR_CHAT_ID_HERE";     // ← replace with your Telegram user/chat ID
 
 async function sendFeedbackToBackend(payload) {
-  const cfg = loadTgConfig();
-  if (cfg && cfg.token && cfg.chatId) {
-    // Direct Telegram API — no Render server needed
-    const stars = "⭐".repeat(payload.rating);
-    const text  = [
-      "━━━━━━━━━━━━━━━━━━",
-      "⭐ Tahfidh Tracker – New Rating",
-      "━━━━━━━━━━━━━━━━━━",
-      "",
-      "📊 Rating: " + payload.rating + " / 5  " + stars,
-      "💬 Feedback:\n" + (payload.comment || "No comment"),
-      "",
-      "🕒 Time: " + payload.timestamp,
-      "",
-      "━━━━━━━━━━━━━━━━━━"
-    ].join("\n");
-    const tgRes  = await fetch(
-      "https://api.telegram.org/bot" + cfg.token + "/sendMessage",
-      { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: cfg.chatId, text }) }
-    );
-    const tgData = await tgRes.json();
-    if (!tgData.ok) throw new Error(tgData.description || "Telegram error");
-    return;
-  }
-  // Fallback: Render server
-  const res = await fetch(FEEDBACK_API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ rating: payload.rating, comment: payload.comment || "", timestamp: payload.timestamp })
-  });
-  if (!res.ok) throw new Error("feedback_failed");
+  const stars = "⭐".repeat(payload.rating);
+  const text  = [
+    "━━━━━━━━━━━━━━━━━━",
+    "⭐ Tahfidh Tracker – New Rating",
+    "━━━━━━━━━━━━━━━━━━",
+    "",
+    "📊 Rating: " + payload.rating + " / 5  " + stars,
+    "💬 Feedback:\n" + (payload.comment || "No comment"),
+    "",
+    "🕒 Time: " + payload.timestamp,
+    "",
+    "━━━━━━━━━━━━━━━━━━"
+  ].join("\n");
+  const tgRes  = await fetch(
+    "https://api.telegram.org/bot" + TG_BOT_TOKEN + "/sendMessage",
+    { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: TG_CHAT_ID, text }) }
+  );
+  const tgData = await tgRes.json();
+  if (!tgData.ok) throw new Error(tgData.description || "Telegram error");
 }
 
 async function flushFeedbackQueue() {
