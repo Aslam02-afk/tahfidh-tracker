@@ -1,5 +1,5 @@
 // Service Worker – Tahfidh Tracker
-const CACHE = 'tahfidh-v24';
+const CACHE = 'tahfidh-v25';
 
 const PRECACHE = [
   './',
@@ -45,10 +45,20 @@ const PRECACHE = [
   'icons/share icon.svg',
   'themes/Pink_theme.png',
   'themes/green_theme.png',
-  'themes/puple_theme.png'
+  'themes/puple_theme.png',
+  // Quran data & font — cached so reader works fully offline
+  'kfgqpc_hafs_smart_data/hafs_smart_v8.json',
+  'kfgqpc_hafs_smart_font/HafsSmart_08.ttf',
 ];
 
-// Install: cache all app shell files
+// These URLs require internet — never cache them
+const NETWORK_ONLY = [
+  '/api/',              // server endpoints (ratings, config)
+  'api.telegram.org',  // Telegram (sending reports)
+  'wa.me',             // WhatsApp report sharing
+];
+
+// ── INSTALL ──────────────────────────────────────────────────────────────────
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE)
@@ -57,29 +67,36 @@ self.addEventListener('install', e => {
   );
 });
 
-// Activate: delete old caches, claim clients, reload open tabs for instant update
+// ── ACTIVATE ─────────────────────────────────────────────────────────────────
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys()
       .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
       .then(() => self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
-      .then(clients => Promise.all(clients.map(client => client.navigate(client.url))))
+      .then(clients => Promise.all(
+        // Notify open tabs — safer than force reload so teachers don't lose unsaved data
+        clients.map(client => client.postMessage({ type: 'UPDATE_AVAILABLE' }))
+      ))
   );
 });
 
-// Fetch: cache-first for precached assets, network-first for navigation (HTML pages)
+// ── FETCH ─────────────────────────────────────────────────────────────────────
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
 
   const url = new URL(e.request.url);
 
-  // External requests (CDN, Telegram API, etc.) — network only, no caching
-  if (url.origin !== self.location.origin) {
-    return;
-  }
+  // NETWORK ONLY — never cache these (Telegram, WhatsApp, API calls)
+  const isNetworkOnly = NETWORK_ONLY.some(pattern =>
+    url.pathname.startsWith(pattern) || url.hostname.includes(pattern)
+  );
+  if (isNetworkOnly) return; // let browser handle it normally
 
-  // Navigation (HTML pages) — network-first so users always load fresh app on update
+  // External requests (CDN etc.) — skip caching
+  if (url.origin !== self.location.origin) return;
+
+  // NAVIGATION (HTML pages) — network-first so app always gets latest update
   if (e.request.mode === 'navigate') {
     e.respondWith(
       fetch(e.request)
@@ -87,12 +104,32 @@ self.addEventListener('fetch', e => {
           caches.open(CACHE).then(c => c.put(e.request, res.clone()));
           return res;
         })
-        .catch(() => caches.match(e.request).then(cached => cached || caches.match('index.html')))
+        .catch(() =>
+          caches.match(e.request).then(cached => cached || caches.match('index.html'))
+        )
     );
     return;
   }
 
-  // Everything else (JS, CSS, images) — cache-first, fall back to network
+  // QURAN DATA & FONT — cache-first (large files, no need to re-download)
+  const isHeavyStatic =
+    url.pathname.includes('hafs_smart_v8.json') ||
+    url.pathname.includes('HafsSmart_08.ttf');
+
+  if (isHeavyStatic) {
+    e.respondWith(
+      caches.match(e.request).then(cached => {
+        if (cached) return cached;
+        return fetch(e.request).then(res => {
+          caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+          return res;
+        });
+      })
+    );
+    return;
+  }
+
+  // EVERYTHING ELSE (JS, CSS, icons) — cache-first, fallback to network
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;

@@ -80,17 +80,32 @@ function sendContactMessage() {
 
   window.location.href = "mailto:" + email + "?subject=" + mailSubject + "&body=" + body;
 }
+
 /* =========================
    Rate Us (Tahfidh Tracker)
    - Uses current app language via getLang() + t()
    - Offline queue
-   - Sends to backend (NO token in app)
+   - Sends directly to Telegram (token from server env)
    ========================= */
 
-const FEEDBACK_API_URL = "https://tahfidh-tracker.onrender.com/api/send-rating";
 const FEEDBACK_QUEUE_KEY = "tt_feedback_queue_v1";
 
 var selectedStars = 0;
+
+// Cache config so we don't fetch every time
+var _telegramConfig = null;
+
+async function getTelegramConfig() {
+  if (_telegramConfig) return _telegramConfig;
+  try {
+    const res = await fetch('/api/config');
+    if (!res.ok) throw new Error('config_failed');
+    _telegramConfig = await res.json();
+    return _telegramConfig;
+  } catch {
+    return null;
+  }
+}
 
 function setTextSafe(id, text) {
   const el = qs(id);
@@ -98,7 +113,6 @@ function setTextSafe(id, text) {
 }
 
 function openRateModal() {
-  // Update text according to current language
   syncRateUIText();
   qs('rateModal')?.classList.add('show');
 }
@@ -152,16 +166,40 @@ function enqueueFeedback(item) {
   saveFeedbackQueue(q);
 }
 
+/* -------- Send directly to Telegram -------- */
 async function sendFeedbackToBackend(payload) {
-  const res = await fetch(FEEDBACK_API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      rating:    payload.rating,
-      comment:   payload.comment || "",
-      timestamp: payload.timestamp
-    })
-  });
+  // Get bot credentials from server (keeps token safe in env variables)
+  const config = await getTelegramConfig();
+  if (!config || !config.botToken || !config.userId) {
+    throw new Error("config_unavailable");
+  }
+
+  const stars    = "⭐".repeat(payload.rating);
+  const feedback = payload.comment?.trim() || "No comment";
+  const time     = payload.timestamp || new Date().toISOString();
+
+  const text = [
+    "━━━━━━━━━━━━━━━━━━",
+    "⭐ Tahfidh Tracker – New Rating",
+    "━━━━━━━━━━━━━━━━━━",
+    "",
+    `📊 Rating: ${payload.rating} / 5  ${stars}`,
+    `💬 Feedback:\n${feedback}`,
+    "",
+    `🕒 Time: ${time}`,
+    "",
+    "━━━━━━━━━━━━━━━━━━"
+  ].join("\n");
+
+  const res = await fetch(
+    `https://api.telegram.org/bot${config.botToken}/sendMessage`,
+    {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ chat_id: config.userId, text })
+    }
+  );
+
   if (!res.ok) throw new Error("feedback_failed");
 }
 
@@ -187,22 +225,21 @@ window.addEventListener("online", () => {
 
 /* -------- i18n text sync -------- */
 function syncRateUIText() {
-  // These keys must exist in your translations
-  setTextSafe("rateCardTitle", t("rateCardTitle"));
+  setTextSafe("rateCardTitle",    t("rateCardTitle"));
   setTextSafe("rateCardSubtitle", t("rateCardSubtitle"));
-  setTextSafe("rateModalTitle", t("rateModalTitle"));
+  setTextSafe("rateModalTitle",   t("rateModalTitle"));
 
   const nameInput = qs("rateName");
-  const msgInput = qs("rateMessage");
+  const msgInput  = qs("rateMessage");
   if (nameInput) nameInput.placeholder = t("rateNamePh");
-  if (msgInput) msgInput.placeholder = t("rateMsgPh");
+  if (msgInput)  msgInput.placeholder  = t("rateMsgPh");
 
   setTextSafe("rateCancelBtn", t("cancel"));
   setTextSafe("rateSubmitBtn", t("send"));
 }
 
 function syncThankYouText() {
-  setTextSafe("thankYouTitle", t("thankTitle"));
+  setTextSafe("thankYouTitle",   t("thankTitle"));
   setTextSafe("thankYouMessage", t("thankMsg"));
   setTextSafe("thankYouCloseBtn", t("ok"));
 }
@@ -235,18 +272,16 @@ async function submitRating() {
 
 /* -------- wiring events -------- */
 (function initRateUs() {
-  // Sync UI labels once (and after language changes, you already call applyLang() in switchLang)
   syncRateUIText();
   flushFeedbackQueue().catch(() => {});
 
-  // Card click
-  qs("rateCard")?.addEventListener("click", openRateModal);
+  // Prefetch config early so it's ready when teacher submits
+  getTelegramConfig().catch(() => {});
 
-  // Close/cancel
+  qs("rateCard")?.addEventListener("click", openRateModal);
   qs("rateCloseBtn")?.addEventListener("click", closeRateModal);
   qs("rateCancelBtn")?.addEventListener("click", closeRateModal);
 
-  // Stars
   document.querySelectorAll("#starContainer .tt-star").forEach(btn => {
     btn.addEventListener("click", () => {
       selectedStars = Number(btn.dataset.value);
@@ -254,13 +289,9 @@ async function submitRating() {
     });
   });
 
-  // Submit
   qs("rateSubmitBtn")?.addEventListener("click", submitRating);
-
-  // Thank you close
   qs("thankYouCloseBtn")?.addEventListener("click", closeThankYouModal);
 
-  // Optional: click outside to close thank-you
   qs("thankYouModal")?.addEventListener("click", (e) => {
     if (e.target === qs("thankYouModal")) closeThankYouModal();
   });
