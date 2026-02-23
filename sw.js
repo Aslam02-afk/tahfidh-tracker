@@ -1,5 +1,5 @@
 // Service Worker – Tahfidh Tracker
-const CACHE = 'tahfidh-v23';
+const CACHE = 'tahfidh-v24';
 
 const PRECACHE = [
   './',
@@ -8,6 +8,7 @@ const PRECACHE = [
   'record.html',
   'add-class.html',
   'add-student.html',
+  'student-detail.html',
   'settings.html',
   'contact.html',
   'quran.html',
@@ -22,10 +23,9 @@ const PRECACHE = [
   'js/js/export.js',
   'js/js/add-class.js',
   'js/js/add-student.js',
+  'js/js/student-detail.js',
   'js/js/settings.js',
   'js/js/quran.js',
-  'kfgqpc_hafs_smart_data/hafs_smart_v8.json',
-  'kfgqpc_hafs_smart_font/HafsSmart_08.ttf',
   'assets_icons/appicon-64.png',
   'assets_icons/appicon-128.png',
   'assets_icons/appicon-192.png',
@@ -43,29 +43,63 @@ const PRECACHE = [
   'icons/delete icon.svg',
   'icons/file icon.svg',
   'icons/share icon.svg',
-  'student-detail.html',
-  'js/js/student-detail.js',
-  'themes/arabic-patterns.svg',
-  'themes/BG.svg',
-  'themes/flower theme.svg'
+  'themes/Pink_theme.png',
+  'themes/green_theme.png',
+  'themes/puple_theme.png'
 ];
 
+// Install: cache all app shell files
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting())
+    caches.open(CACHE)
+      .then(c => c.addAll(PRECACHE))
+      .then(() => self.skipWaiting())
   );
 });
 
+// Activate: delete old caches, claim clients, reload open tabs for instant update
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
+      .then(clients => Promise.all(clients.map(client => client.navigate(client.url))))
   );
 });
 
+// Fetch: cache-first for precached assets, network-first for navigation (HTML pages)
 self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+
+  const url = new URL(e.request.url);
+
+  // External requests (CDN, Telegram API, etc.) — network only, no caching
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
+  // Navigation (HTML pages) — network-first so users always load fresh app on update
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request)
+        .then(res => {
+          caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+          return res;
+        })
+        .catch(() => caches.match(e.request).then(cached => cached || caches.match('index.html')))
+    );
+    return;
+  }
+
+  // Everything else (JS, CSS, images) — cache-first, fall back to network
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    caches.match(e.request).then(cached => {
+      if (cached) return cached;
+      return fetch(e.request).then(res => {
+        caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+        return res;
+      });
+    })
   );
 });
