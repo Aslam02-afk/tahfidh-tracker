@@ -411,6 +411,104 @@ html.dark .nav-btn.active .nav-icon img {
   opacity: 0.85;
   margin-top: 4px;
 }
+
+/* =========================
+   Splash Screen
+   ========================= */
+#splashScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(160deg, #0B1D35 0%, #0D2C54 50%, #0F3D6E 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+#splashScreen.hide {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.splash-logo {
+  width: 110px;
+  height: 110px;
+  border-radius: 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 4px rgba(201,162,77,0.3);
+  margin-bottom: 28px;
+  animation: splashPop 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+
+.splash-arabic {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #C9A24D;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  animation: splashFadeUp 0.6s ease 0.2s both;
+}
+
+.splash-english {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: splashFadeUp 0.6s ease 0.35s both;
+}
+
+.splash-divider {
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #C9A24D, transparent);
+  margin: 24px 0;
+  animation: splashFadeUp 0.6s ease 0.45s both;
+}
+
+.splash-welcome {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+  animation: splashFadeUp 0.6s ease 0.55s both;
+}
+
+.splash-loader {
+  position: absolute;
+  bottom: 48px;
+  display: flex;
+  gap: 6px;
+  animation: splashFadeUp 0.6s ease 0.7s both;
+}
+
+.splash-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #C9A24D;
+  animation: splashDot 1.2s ease-in-out infinite;
+}
+
+.splash-dot:nth-child(2) { animation-delay: 0.2s; }
+.splash-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes splashPop {
+  0%   { opacity: 0; transform: scale(0.6); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes splashFadeUp {
+  0%   { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes splashDot {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%       { opacity: 1;   transform: scale(1.2); }
+}
+
 /* =========================
    Rate Us (Card + Modals)
    Uses existing tokens/colors
@@ -474,7 +572,7 @@ html.dark .rate-card {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.55);
-  display: none;            /* default hidden */
+  display: none;
   align-items: center;
   justify-content: center;
   padding: 16px;
@@ -546,7 +644,7 @@ html.dark .tt-star {
   color: var(--accent);
 }
 
-/* Inputs inside modal – reuse your form look */
+/* Inputs inside modal */
 .tt-modal-box input,
 .tt-modal-box textarea {
   width: 100%;
@@ -569,9 +667,9 @@ html.dark .tt-star {
   margin-top: 14px;
 }
 
-.tt-actions .btn { flex: 1; }  /* your .btn already exists */
+.tt-actions .btn { flex: 1; }
 
-/* Thank you modal center – must override RTL rule */
+/* Thank you modal */
 .tt-thanks,
 html[dir="rtl"] .tt-modal-box.tt-thanks,
 html[dir="ltr"] .tt-modal-box.tt-thanks {
@@ -598,7 +696,5 @@ html[dir="ltr"] .tt-modal-box.tt-thanks {
   line-height: 1.6;
 }
 
-/* Respect RTL/LTR automatically (your html[dir] already handles body)
-   This ensures modals follow direction too. */
 html[dir="rtl"] .tt-modal-box { direction: rtl; text-align: right; }
 html[dir="ltr"] .tt-modal-box { direction: ltr; text-align: left; }
