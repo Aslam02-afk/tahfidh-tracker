@@ -419,11 +419,12 @@ html.dark .nav-btn.active .nav-icon img {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: linear-gradient(160deg, #0B1D35 0%, #0D2C54 50%, #0F3D6E 100%);
+  background: linear-gradient(160deg, #0D2C54 0%, #0D2C54 40%, #0F3D6E 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  direction: ltr;
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
