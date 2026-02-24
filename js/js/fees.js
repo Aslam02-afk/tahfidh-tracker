@@ -3,6 +3,14 @@
   const classId   = getQueryParam('classId');
   const studentId = getQueryParam('studentId');
 
+  // Back button — force reload class page so fee icon updates immediately
+  const backBtn = document.getElementById('backBtn');
+  if (backBtn) {
+    backBtn.onclick = () => {
+      location.href = `class.html?classId=${classId}`;
+    };
+  }
+
   let _student = null;
   let _halaqah = null;
   let _unpaidPeriods = [];
@@ -208,7 +216,8 @@
     // Send WhatsApp receipt
     sendPaymentReceipt(student, checked, amount, method);
 
-    // Re-render
+    // Re-render fees page with updated data
+    _student = dbLoad().students.find(s => s.id === studentId);
     renderFees();
   };
 

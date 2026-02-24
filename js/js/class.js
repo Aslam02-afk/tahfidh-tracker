@@ -73,9 +73,18 @@
       if (halaqah && halaqah.feesEnabled && s.feeStartMonth) {
         const paidPeriods = new Set();
         (s.feePayments || []).forEach(p => (p.months || []).forEach(m => paidPeriods.add(m)));
+
+        // Check all periods from start to now for any unpaid
         const now = new Date();
-        const currentPeriod = now.toISOString().slice(0, 7);
-        const hasBalance = !paidPeriods.has(currentPeriod) && s.feeStartMonth <= currentPeriod;
+        let cur = new Date(s.feeStartMonth + '-01');
+        const end = new Date(now.getFullYear(), now.getMonth(), 1);
+        let hasBalance = false;
+        while (cur <= end) {
+          const key = cur.toISOString().slice(0, 7);
+          if (!paidPeriods.has(key)) { hasBalance = true; break; }
+          cur.setMonth(cur.getMonth() + 1);
+        }
+
         const feeColor = hasBalance
           ? 'invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg)' // red
           : 'invert(48%) sepia(79%) saturate(476%) hue-rotate(86deg)';  // green
