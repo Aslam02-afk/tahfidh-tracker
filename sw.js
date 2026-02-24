@@ -1,5 +1,5 @@
 // Service Worker – Tahfidh Tracker
-const CACHE = 'tahfidh-v26';
+const CACHE = 'tahfidh-v28';
 
 const PRECACHE = [
   './',
@@ -9,6 +9,7 @@ const PRECACHE = [
   'add-class.html',
   'add-student.html',
   'student-detail.html',
+  'fees.html',
   'settings.html',
   'contact.html',
   'quran.html',
@@ -24,6 +25,7 @@ const PRECACHE = [
   'js/js/add-class.js',
   'js/js/add-student.js',
   'js/js/student-detail.js',
+  'js/js/fees.js',
   'js/js/settings.js',
   'js/js/quran.js',
   'assets_icons/appicon-64.png',
@@ -46,8 +48,6 @@ const PRECACHE = [
   'themes/Pink_theme.png',
   'themes/green_theme.png',
   'themes/puple_theme.png',
-  // xlsx library — hosted locally so Excel export works offline
-  'js/libs/xlsx.full.min.js',
   // Quran data & font — cached so reader works fully offline
   'kfgqpc_hafs_smart_data/hafs_smart_v8.json',
   'kfgqpc_hafs_smart_font/HafsSmart_08.ttf',

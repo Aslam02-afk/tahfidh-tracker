@@ -3,6 +3,23 @@
   const classId = getQueryParam("classId");
   const today   = new Date().toISOString().slice(0, 10);
 
+  // Get start of current week (Saturday as first day for Arabic calendar)
+  function getWeekStart() {
+    const d = new Date();
+    const day = d.getDay(); // 0=Sun, 6=Sat
+    const diff = (day >= 6) ? 0 : day + 1;
+    const start = new Date(d);
+    start.setDate(d.getDate() - diff);
+    start.setHours(0, 0, 0, 0);
+    return start.toISOString().slice(0, 10);
+  }
+
+  // Check if report was sent this week
+  function reportSentThisWeek(student) {
+    if (!student.lastWeeklyReport) return false;
+    return student.lastWeeklyReport >= getWeekStart();
+  }
+
   function renderPage() {
     const data    = dbLoad();
     const halaqah = data.halaqah.find(h => h.id === classId);
@@ -27,7 +44,9 @@
     }
 
     container.innerHTML = filtered.map(s => {
-      const hasRecord = data.records.some(r => r.studentId === s.id && r.date === today);
+      const hasRecord   = data.records.some(r => r.studentId === s.id && r.date === today);
+      const reportSent  = reportSentThisWeek(s);
+
       const courseKey = s.course === 'talqin' ? 'courseTalqin' : s.course === 'murajaah' ? 'courseMurajaah' : s.course === 'qaida' ? 'courseQaida' : 'courseHifdh';
       const courseBg  = s.course === 'murajaah' ? '#E0F2FE' : s.course === 'talqin' ? '#F3E8FF' : s.course === 'qaida' ? '#FEF9C3' : '#DCFCE7';
       const courseClr = s.course === 'murajaah' ? '#0369A1' : s.course === 'talqin' ? '#7C3AED' : s.course === 'qaida' ? '#92400E' : '#166534';
@@ -37,6 +56,35 @@
       const studentImgStyle = s.studentPhoto
         ? 'width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid var(--border); flex-shrink:0; cursor:pointer;'
         : 'width:44px; height:44px; border-radius:50%; border:2px solid var(--border); padding:8px; background:var(--bg); flex-shrink:0; cursor:pointer;';
+
+      // Report badge
+      const reportBadge = reportSent
+        ? `<div style="margin-top:6px; display:flex; align-items:center; gap:5px; font-size:0.78rem; color:#16A34A; font-weight:700;">
+            <span>✅</span>
+            <span>${getLang() === 'ar' ? 'تم إرسال التقرير الأسبوعي' : 'Weekly report sent'}</span>
+           </div>`
+        : `<div style="margin-top:6px; display:flex; align-items:center; gap:5px; font-size:0.78rem; color:#D97706; font-weight:700;">
+            <span>⚠️</span>
+            <span>${getLang() === 'ar' ? 'لم يُرسل التقرير بعد' : 'Report not sent yet'}</span>
+           </div>`;
+
+      // Fee icon
+      let feeIcon = '';
+      if (halaqah && halaqah.feesEnabled && s.feeStartMonth) {
+        const paidPeriods = new Set();
+        (s.feePayments || []).forEach(p => (p.months || []).forEach(m => paidPeriods.add(m)));
+        const now = new Date();
+        const currentPeriod = now.toISOString().slice(0, 7);
+        const hasBalance = !paidPeriods.has(currentPeriod) && s.feeStartMonth <= currentPeriod;
+        const feeColor = hasBalance
+          ? 'invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg)' // red
+          : 'invert(48%) sepia(79%) saturate(476%) hue-rotate(86deg)';  // green
+        feeIcon = `
+          <button style="background:none; border:none; cursor:pointer; padding:2px;"
+            onclick="event.stopPropagation(); location.href='fees.html?classId=${classId}&studentId=${s.id}'">
+            <img src="icons/fee icon.svg" style="width:22px; height:22px; filter:${feeColor};" alt="fees">
+          </button>`;
+      }
 
       return `
         <article class="card" style="cursor:pointer; position:relative;" onclick="location.href='student-detail.html?classId=${classId}&studentId=${s.id}'">
@@ -50,8 +98,10 @@
               <div style="margin-top:4px; font-size:0.82rem; color:${hasRecord ? '#16A34A' : 'var(--text-muted)'}; font-weight:700;">
                 ${hasRecord ? t('recordedToday') : t('notRecorded')}
               </div>
+              ${reportBadge}
             </div>
             <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+              ${feeIcon}
               <div style="font-size:1.5rem; cursor:pointer;" onclick="event.stopPropagation(); toggleStar('${s.id}')">${s.starred ? '★' : '☆'}</div>
               <a href="add-student.html?classId=${classId}&studentId=${s.id}"
                 style="display:flex; align-items:center; opacity:0.45;"

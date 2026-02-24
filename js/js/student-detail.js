@@ -3,6 +3,17 @@
   const classId   = getQueryParam('classId');
   const studentId = getQueryParam('studentId');
 
+  // ── Mark report as sent ──────────────────────────────────────────────────
+  window.markReportSent = function(type) {
+    const data    = dbLoad();
+    const student = data.students.find(s => s.id === studentId);
+    if (!student) return;
+    const today = new Date().toISOString().slice(0, 10);
+    if (type === 'weekly')  student.lastWeeklyReport  = today;
+    if (type === 'monthly') student.lastMonthlyReport = today;
+    saveStudent(student);
+  };
+
   window.showTab = function(name) {
     ['overview', 'records', 'progress'].forEach(function(tab) {
       var content = document.getElementById('tab-' + tab);
@@ -19,6 +30,52 @@
     var bg   = att === 'absent'  ? '#FEE2E2' : att === 'late' ? '#FEF3C7' : att === 'excused' ? '#EFF6FF' : att === 'present' ? '#F0FDF4' : '#F3F6FA';
     var text = att === 'absent'  ? t('absent') : att === 'late' ? t('lateLabel') : att === 'excused' ? t('excused') : att === 'present' ? t('present') : '—';
     return `<span style="background:${bg}; padding:3px 10px; border-radius:6px; font-size:0.78rem; font-weight:700;">${text}</span>`;
+  }
+
+  function getReportStatusBadge(student) {
+    const today     = new Date().toISOString().slice(0, 10);
+    const weekStart = (function() {
+      const d   = new Date();
+      const day = d.getDay();
+      const diff = (day >= 6) ? 0 : day + 1;
+      const s = new Date(d);
+      s.setDate(d.getDate() - diff);
+      s.setHours(0, 0, 0, 0);
+      return s.toISOString().slice(0, 10);
+    })();
+
+    const weeklySent  = student.lastWeeklyReport  && student.lastWeeklyReport  >= weekStart;
+    const monthlySent = student.lastMonthlyReport && student.lastMonthlyReport >= today.slice(0, 7);
+    const isAr        = getLang() === 'ar';
+
+    if (!weeklySent && !monthlySent) return '';
+
+    let badges = '';
+    if (weeklySent) {
+      const date = new Date(student.lastWeeklyReport + 'T00:00:00')
+        .toLocaleDateString(isAr ? 'ar-SA' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      badges += `
+        <div style="display:flex; align-items:center; gap:6px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:8px 12px; margin-bottom:6px;">
+          <span style="font-size:1.1rem;">✅</span>
+          <div>
+            <div style="font-size:0.82rem; font-weight:700; color:#16A34A;">${isAr ? 'تم إرسال التقرير الأسبوعي' : 'Weekly report sent'}</div>
+            <div style="font-size:0.72rem; color:#16A34A; opacity:0.8;">${date}</div>
+          </div>
+        </div>`;
+    }
+    if (monthlySent) {
+      const date = new Date(student.lastMonthlyReport + 'T00:00:00')
+        .toLocaleDateString(isAr ? 'ar-SA' : 'en-US', { month: 'long', day: 'numeric' });
+      badges += `
+        <div style="display:flex; align-items:center; gap:6px; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px; padding:8px 12px; margin-bottom:6px;">
+          <span style="font-size:1.1rem;">✅</span>
+          <div>
+            <div style="font-size:0.82rem; font-weight:700; color:#2563EB;">${isAr ? 'تم إرسال التقرير الشهري' : 'Monthly report sent'}</div>
+            <div style="font-size:0.72rem; color:#2563EB; opacity:0.8;">${date}</div>
+          </div>
+        </div>`;
+    }
+    return badges;
   }
 
   function renderDetail() {
@@ -139,15 +196,19 @@
         </section>`;
     }
 
+    // Report status badges
+    const reportStatus = getReportStatusBadge(student);
+
     ov += `
       <section class="card">
+        ${reportStatus}
         <button class="btn btn-primary btn-full" style="margin-bottom:8px; padding:0.85rem; font-size:1rem; display:flex; align-items:center; justify-content:center; gap:8px;"
-          onclick="showReportFormatModal('weekly', '${studentId}', '${classId}')">
+          onclick="markReportSent('weekly'); showReportFormatModal('weekly', '${studentId}', '${classId}')">
           <img src="icons/share icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="">
           ${t('sendWeeklyReport')}
         </button>
         <button class="btn btn-secondary btn-full" style="margin-bottom:8px; padding:0.85rem; font-size:1rem; display:flex; align-items:center; justify-content:center; gap:8px;"
-          onclick="showReportFormatModal('monthly', '${studentId}', '${classId}')">
+          onclick="markReportSent('monthly'); showReportFormatModal('monthly', '${studentId}', '${classId}')">
           <img src="icons/share icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="">
           ${t('sendMonthlyReport')}
         </button>

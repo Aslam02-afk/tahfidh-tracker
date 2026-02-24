@@ -57,6 +57,26 @@
     qs('studentPhotoInput').value = '';
   };
 
+  // ── Show fee section if class has fees enabled ────────────────────────────
+  const halaqah = getHalaqahById(classId);
+  if (halaqah && halaqah.feesEnabled) {
+    qs('studentFeeSection').style.display = 'block';
+    // Show currency label
+    if (halaqah.feeCurrency) {
+      qs('feeCurrencyLabel').textContent = halaqah.feeCurrency;
+    }
+    // Show fee period in label
+    const periodMap = { monthly: 'شهري', weekly: 'أسبوعي', term: 'فصل دراسي', custom: 'مخصص' };
+    if (halaqah.feePeriod) {
+      qs('feeAmountLabel').textContent = `مبلغ الرسوم (${periodMap[halaqah.feePeriod] || halaqah.feePeriod})`;
+    }
+    // Default start month to current month
+    if (!isEdit) {
+      const now = new Date();
+      qs('feeStartMonth').value = now.toISOString().slice(0, 7);
+    }
+  }
+
   qs("lastSurahWrap").innerHTML = surahSelect("lastSurah", "");
 
   if (isEdit) {
@@ -80,6 +100,11 @@
       } else {
         qs('studentPhotoPreview').src = genderIconSrc(s.gender || "ذكر");
       }
+      // Load fee fields
+      if (halaqah && halaqah.feesEnabled) {
+        if (s.feeStartMonth) qs('feeStartMonth').value = s.feeStartMonth;
+        if (s.feeAmount != null) qs('feeAmount').value = s.feeAmount;
+      }
     }
   }
 
@@ -90,36 +115,46 @@
     const examJuzVal     = qs("examJuz").value.trim();
     const examPercentVal = qs("examPercent").value.trim();
 
+    // Fee fields
+    const hasFees      = halaqah && halaqah.feesEnabled;
+    const feeStartMonth = hasFees ? (qs('feeStartMonth').value || '') : '';
+    const feeAmountVal  = hasFees ? qs('feeAmount').value.trim() : '';
+
     const student = isEdit
       ? Object.assign(getStudentById(studentId) || {}, {
           name,
-          gender:       qs("gender").value,
-          course:       qs("course").value,
-          phone:        qs("phone").value.trim(),
-          lastSurah:    qs("lastSurah").value,
-          examJuz:      examJuzVal !== "" ? Number(examJuzVal) : null,
-          examPercent:  examPercentVal !== "" ? Number(examPercentVal) : null,
-          examNotes:    qs("examNotes").value.trim(),
-          notes:        qs("notes").value.trim(),
-          studentPhoto: studentPhotoBase64 || ''
+          gender:        qs("gender").value,
+          course:        qs("course").value,
+          phone:         qs("phone").value.trim(),
+          lastSurah:     qs("lastSurah").value,
+          examJuz:       examJuzVal !== "" ? Number(examJuzVal) : null,
+          examPercent:   examPercentVal !== "" ? Number(examPercentVal) : null,
+          examNotes:     qs("examNotes").value.trim(),
+          notes:         qs("notes").value.trim(),
+          studentPhoto:  studentPhotoBase64 || '',
+          feeStartMonth: feeStartMonth,
+          feeAmount:     feeAmountVal !== "" ? Number(feeAmountVal) : null,
         })
       : {
-          id:           uid(),
+          id:            uid(),
           classId,
           name,
-          gender:       qs("gender").value,
-          course:       qs("course").value,
-          phone:        qs("phone").value.trim(),
-          lastSurah:    qs("lastSurah").value,
-          examJuz:      examJuzVal !== "" ? Number(examJuzVal) : null,
-          examPercent:  examPercentVal !== "" ? Number(examPercentVal) : null,
-          examNotes:    qs("examNotes").value.trim(),
-          notes:        qs("notes").value.trim(),
-          studentPhoto: studentPhotoBase64 || '',
-          absences:     0,
-          late:         0,
-          starred:      false,
-          attendance:   {}
+          gender:        qs("gender").value,
+          course:        qs("course").value,
+          phone:         qs("phone").value.trim(),
+          lastSurah:     qs("lastSurah").value,
+          examJuz:       examJuzVal !== "" ? Number(examJuzVal) : null,
+          examPercent:   examPercentVal !== "" ? Number(examPercentVal) : null,
+          examNotes:     qs("examNotes").value.trim(),
+          notes:         qs("notes").value.trim(),
+          studentPhoto:  studentPhotoBase64 || '',
+          absences:      0,
+          late:          0,
+          starred:       false,
+          attendance:    {},
+          feeStartMonth: feeStartMonth,
+          feeAmount:     feeAmountVal !== "" ? Number(feeAmountVal) : null,
+          feePayments:   [],
         };
 
     saveStudent(student);

@@ -62,12 +62,10 @@
     </div>
     <div class="form-group">
       <label class="form-label" data-i18n="classTime">وقت الحلقة</label>
-      <!-- Mode toggle -->
       <div style="display:flex; gap:10px; margin-bottom:10px;">
         <button type="button" id="modeSalah" class="btn btn-primary" style="flex:1; padding:0.55rem;" onclick="selectTimeMode('salah')" data-i18n="salahTime">وقت الصلاة</button>
         <button type="button" id="modeCustom" class="btn btn-secondary" style="flex:1; padding:0.55rem;" onclick="selectTimeMode('custom')" data-i18n="customTime">وقت مخصص</button>
       </div>
-      <!-- Salah buttons -->
       <div id="salahButtons" style="display:flex; gap:8px; flex-wrap:wrap;">
         <button type="button" id="salahFajr"    class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('fajr')"    data-i18n="fajr">الفجر</button>
         <button type="button" id="salahDhuhr"   class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('dhuhr')"   data-i18n="dhuhr">الظهر</button>
@@ -75,7 +73,6 @@
         <button type="button" id="salahMaghrib" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('maghrib')" data-i18n="maghrib">المغرب</button>
         <button type="button" id="salahIsha"    class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('isha')"    data-i18n="isha">العشاء</button>
       </div>
-      <!-- Custom time input -->
       <div id="customTimeWrap" style="display:none; margin-top:8px;">
         <input type="time" id="classTimeCustom" class="form-input" />
       </div>
@@ -114,6 +111,62 @@
       </div>
       <input type="hidden" id="cardTheme" value="none" />
     </div>
+
+    <!-- ══════════════════════════════════════
+         FEE SYSTEM SECTION
+    ══════════════════════════════════════ -->
+    <div class="form-group" style="border-top:2px solid var(--border); padding-top:16px; margin-top:8px;">
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <label class="form-label" style="margin:0;">💰 نظام الرسوم</label>
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+          <input type="checkbox" id="feesEnabled" onchange="toggleFeeSection(this.checked)"
+            style="width:20px; height:20px; cursor:pointer;" />
+          <span style="font-size:0.88rem; color:var(--text-muted);">تفعيل</span>
+        </label>
+      </div>
+    </div>
+
+    <div id="feeSectionWrap" style="display:none;">
+      <!-- Fee period -->
+      <div class="form-group">
+        <label class="form-label">دورية الرسوم</label>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button type="button" id="feePeriod-monthly" class="btn btn-primary"
+            style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;"
+            onclick="selectFeePeriod('monthly')">شهري</button>
+          <button type="button" id="feePeriod-weekly" class="btn btn-secondary"
+            style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;"
+            onclick="selectFeePeriod('weekly')">أسبوعي</button>
+          <button type="button" id="feePeriod-term" class="btn btn-secondary"
+            style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;"
+            onclick="selectFeePeriod('term')">فصل دراسي</button>
+          <button type="button" id="feePeriod-custom" class="btn btn-secondary"
+            style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;"
+            onclick="selectFeePeriod('custom')">مخصص</button>
+        </div>
+        <input type="hidden" id="feePeriod" value="monthly" />
+      </div>
+
+      <!-- Currency -->
+      <div class="form-group">
+        <label class="form-label">العملة</label>
+        <input id="feeCurrency" class="form-input" placeholder="مثال: SAR، USD، KES، ريال" />
+      </div>
+
+      <!-- Bank transfer -->
+      <div class="form-group">
+        <label class="form-label">💳 التحويل البنكي (اختياري)</label>
+        <input id="feeBankName" class="form-input" placeholder="اسم البنك" style="margin-bottom:8px;" />
+        <input id="feeBankAccount" class="form-input" placeholder="رقم الحساب / IBAN" />
+      </div>
+
+      <!-- STC Pay -->
+      <div class="form-group">
+        <label class="form-label">📱 STC Pay / دفع إلكتروني (اختياري)</label>
+        <input id="feeStcNumber" class="form-input" placeholder="رقم الجوال" />
+      </div>
+    </div>
+
     <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.05rem; padding:0.85rem; margin-top:6px;" data-i18n="saveClass">
       حفظ الحلقة
     </button>

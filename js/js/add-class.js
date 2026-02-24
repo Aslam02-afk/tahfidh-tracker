@@ -5,7 +5,7 @@
 
   var teacherPhotoBase64 = '';
 
-  // Gender / Time toggle helpers
+  // ── Gender / Time / Theme toggles ────────────────────────────────────────
   window.selectGender = function(val) {
     qs('teacherGender').value = val;
     qs('genderMale').className = 'btn ' + (val === 'male' ? 'btn-primary' : 'btn-secondary');
@@ -74,6 +74,20 @@
     qs('teacherPhotoInput').value = '';
   };
 
+  // ── Fee system ────────────────────────────────────────────────────────────
+  window.toggleFeeSection = function(enabled) {
+    qs('feeSectionWrap').style.display = enabled ? 'block' : 'none';
+  };
+
+  window.selectFeePeriod = function(period) {
+    qs('feePeriod').value = period;
+    ['monthly','weekly','term','custom'].forEach(function(p) {
+      var btn = document.getElementById('feePeriod-' + p);
+      if (btn) btn.className = 'btn ' + (p === period ? 'btn-primary' : 'btn-secondary');
+    });
+  };
+
+  // ── Load existing class for edit ─────────────────────────────────────────
   if (isEdit) {
     const h = getHalaqahById(classId);
     if (h) {
@@ -99,12 +113,26 @@
         qs('teacherPhotoPreview').src = h.teacherPhoto;
         qs('teacherPhotoClearBtn').style.display = 'block';
       }
+
+      // Load fee settings
+      if (h.feesEnabled) {
+        qs('feesEnabled').checked = true;
+        toggleFeeSection(true);
+        if (h.feePeriod)      selectFeePeriod(h.feePeriod);
+        if (h.feeCurrency)    qs('feeCurrency').value    = h.feeCurrency;
+        if (h.feeBankName)    qs('feeBankName').value    = h.feeBankName;
+        if (h.feeBankAccount) qs('feeBankAccount').value = h.feeBankAccount;
+        if (h.feeStcNumber)   qs('feeStcNumber').value   = h.feeStcNumber;
+      }
     }
   }
 
+  // ── Save ──────────────────────────────────────────────────────────────────
   qs("btnSave").onclick = () => {
     const name = qs("className").value.trim();
     if (!name) { alert(t('enterClassName')); return; }
+
+    const feesEnabled = qs('feesEnabled').checked;
 
     const halaqah = {
       id:              isEdit ? classId : uid(),
@@ -115,7 +143,14 @@
       classTimeCustom: qs("classTime").value === 'custom' ? (qs("classTimeCustom").value || '') : '',
       cardTheme:       qs("cardTheme").value || 'none',
       teacherPhoto:    teacherPhotoBase64 || '',
-      notes:           qs("notes").value.trim()
+      notes:           qs("notes").value.trim(),
+      // Fee system
+      feesEnabled:     feesEnabled,
+      feePeriod:       feesEnabled ? qs("feePeriod").value       : '',
+      feeCurrency:     feesEnabled ? qs("feeCurrency").value.trim() : '',
+      feeBankName:     feesEnabled ? qs("feeBankName").value.trim() : '',
+      feeBankAccount:  feesEnabled ? qs("feeBankAccount").value.trim() : '',
+      feeStcNumber:    feesEnabled ? qs("feeStcNumber").value.trim() : '',
     };
 
     saveClass(halaqah);
@@ -130,6 +165,9 @@
     }
   };
 
-  // Initialize time picker (new class defaults to salah/dhuhr)
-  if (!isEdit) selectSalahTime('dhuhr');
+  // Initialize
+  if (!isEdit) {
+    selectSalahTime('dhuhr');
+    selectFeePeriod('monthly');
+  }
 })();
