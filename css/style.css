@@ -494,6 +494,20 @@ html.dark .nav-btn.active .nav-icon img {
 .splash-dot:nth-child(2) { animation-delay: 0.2s; }
 .splash-dot:nth-child(3) { animation-delay: 0.4s; }
 
+.splash-dev {
+  position: absolute;
+  bottom: 28px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #C9A24D;
+  letter-spacing: 1.5px;
+  border-top: 1px solid rgba(201,162,77,0.3);
+  padding-top: 12px;
+  width: 200px;
+  text-align: center;
+  animation: splashFadeUp 0.6s ease 0.8s both;
+}
+
 @keyframes splashPop {
   0%   { opacity: 0; transform: scale(0.6); }
   100% { opacity: 1; transform: scale(1); }
