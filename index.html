@@ -91,10 +91,20 @@
   <script>
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 
+    // Only show splash on first visit — not when navigating back
     window.addEventListener('load', function () {
+      const splash = document.getElementById('splashScreen');
+      if (!splash) return;
+
+      if (sessionStorage.getItem('splashShown')) {
+        // Already shown this session — hide immediately
+        splash.style.display = 'none';
+        return;
+      }
+
+      // First visit — show splash then hide after 2.8s
+      sessionStorage.setItem('splashShown', '1');
       setTimeout(function () {
-        const splash = document.getElementById('splashScreen');
-        if (!splash) return;
         splash.classList.add('hide');
         setTimeout(function () { splash.style.display = 'none'; }, 650);
       }, 2800);
