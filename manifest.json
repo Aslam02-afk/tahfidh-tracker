@@ -1,6 +1,6 @@
 {
-  "name": "Tahfidh Tracker",
-  "short_name": "تحفيظ",
+  "name": "متتبع التحفيظ | Tahfidh Tracker",
+  "short_name": "متتبع التحفيظ",
   "description": "إدارة التحفيظ - برنامج الهدى",
   "start_url": "./index.html",
   "scope": "./",
