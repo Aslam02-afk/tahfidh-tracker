@@ -18,7 +18,7 @@
   <!-- ══════════════════════════════════════
        SPLASH SCREEN
   ══════════════════════════════════════ -->
-  <div id="splashScreen">
+  <div id="splashScreen" style="display:none;">
     <img class="splash-logo" src="assets_icons/appicon.svg" alt="Tahfidh Tracker" />
     <div class="splash-arabic">متتبع التحفيظ</div>
     <div class="splash-english">Tahfidh Tracker</div>
@@ -92,23 +92,25 @@
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 
     // Only show splash on first visit — not when navigating back
-    window.addEventListener('load', function () {
+    (function () {
       const splash = document.getElementById('splashScreen');
       if (!splash) return;
 
       if (sessionStorage.getItem('splashShown')) {
-        // Already shown this session — hide immediately
+        // Already shown — keep hidden
         splash.style.display = 'none';
         return;
       }
 
-      // First visit — show splash then hide after 2.8s
+      // First visit — show it immediately before anything renders
+      splash.style.display = 'flex';
       sessionStorage.setItem('splashShown', '1');
+
       setTimeout(function () {
         splash.classList.add('hide');
         setTimeout(function () { splash.style.display = 'none'; }, 650);
       }, 2800);
-    });
+    })();
   </script>
 </body>
 </html>
