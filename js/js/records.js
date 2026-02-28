@@ -136,6 +136,10 @@
           </div>
         </div>
         <div id="tahfidhOffMsg" style="display:none; text-align:center; padding:0.75rem; color:var(--text-muted); font-weight:700;">OFF</div>
+        <div class="form-group" style="margin-top:12px;">
+          <label class="form-label">ملاحظات الحفظ</label>
+          <textarea id="tNotes" class="form-input" rows="2" placeholder="ملاحظات..."></textarea>
+        </div>
       </section>`;
     }
 
@@ -174,6 +178,10 @@
           </div>
         </div>
         <div id="murajaahOffMsg" style="display:none; text-align:center; padding:0.75rem; color:var(--text-muted); font-weight:700;">OFF</div>
+        <div class="form-group" style="margin-top:12px;">
+          <label class="form-label">ملاحظات المراجعة</label>
+          <textarea id="mNotes" class="form-input" rows="2" placeholder="ملاحظات..."></textarea>
+        </div>
       </section>`;
     }
 
@@ -284,6 +292,7 @@
         if (qs('tAyahTo'))    qs('tAyahTo').value     = rec.tahfidh.ayahTo    || '';
         var tErr = rec.tahfidh.errors || 0;
         if (qs('tErrors')) { qs('tErrors').textContent = tErr; updateGrade('tahfidh', tErr); }
+        if (qs('tNotes'))  qs('tNotes').value = rec.tahfidh.notes || '';
       }
     }
 
@@ -301,6 +310,7 @@
         if (qs('mSurahTo'))   qs('mSurahTo').value    = rec.murajaah.surahTo   || '';
         var mErr = rec.murajaah.errors || 0;
         if (qs('mErrors')) { qs('mErrors').textContent = mErr; updateGrade('murajaah', mErr); }
+        if (qs('mNotes'))  qs('mNotes').value = rec.murajaah.notes || '';
       }
     }
 
@@ -356,7 +366,8 @@
         ayahTo:    tahfidhOn && qs('tAyahTo')    ? qs('tAyahTo').value    : '',
         errors:    tErr,
         score:     g_t.score,
-        rating:    g_t.rating   // '' when OFF — won't affect grade average
+        rating:    g_t.rating,   // '' when OFF — won't affect grade average
+        notes:     qs('tNotes') ? qs('tNotes').value : ''
       };
     }
 
@@ -366,7 +377,8 @@
         surahTo:   murajaahOn && qs('mSurahTo')   ? qs('mSurahTo').value   : '',
         errors:    mErr,
         score:     g_m.score,
-        rating:    g_m.rating   // '' when OFF — won't affect grade average
+        rating:    g_m.rating,   // '' when OFF — won't affect grade average
+        notes:     qs('mNotes') ? qs('mNotes').value : ''
       };
     }
 
@@ -390,4 +402,4 @@
     alert(t('savedAlert'));
     history.back();
   };
-})();
+})();ss
