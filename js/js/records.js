@@ -333,8 +333,10 @@
   qs('btnSave').onclick = function() {
     var tErr = (course === 'hifdh' && tahfidhOn && qs('tErrors')) ? (parseInt(qs('tErrors').textContent) || 0) : 0;
     var mErr = ((course === 'hifdh' || course === 'murajaah') && murajaahOn && qs('mErrors')) ? (parseInt(qs('mErrors').textContent) || 0) : 0;
-    var g_t  = calcGrade(tErr);
-    var g_m  = calcGrade(mErr);
+
+    // Only calculate grade when section is ON — save empty when OFF
+    var g_t = tahfidhOn  ? calcGrade(tErr) : { score: 0, rating: '' };
+    var g_m = murajaahOn ? calcGrade(mErr) : { score: 0, rating: '' };
 
     var record = {
       studentId:       studentId,
@@ -354,7 +356,7 @@
         ayahTo:    tahfidhOn && qs('tAyahTo')    ? qs('tAyahTo').value    : '',
         errors:    tErr,
         score:     g_t.score,
-        rating:    g_t.rating
+        rating:    g_t.rating   // '' when OFF — won't affect grade average
       };
     }
 
@@ -364,7 +366,7 @@
         surahTo:   murajaahOn && qs('mSurahTo')   ? qs('mSurahTo').value   : '',
         errors:    mErr,
         score:     g_m.score,
-        rating:    g_m.rating
+        rating:    g_m.rating   // '' when OFF — won't affect grade average
       };
     }
 

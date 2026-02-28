@@ -46,11 +46,13 @@ function fmtDate(dateStr) {
 /**
  * Helper: render a single record's day block (tahfidh + murajaah).
  * Skips tahfidh if the student is murajaah-only or if noHifdh is set for the day.
+ * Skips murajaah if murajaahEnabled === false for the day.
  */
 function renderRecordBlock(r, skipTahfidh, isAr) {
   const dayName = getDayName(r.date);
   let block = '' + dayName + ' – ' + fmtDate(r.date) + '\n\n';
 
+  // ── Tahfidh block ──────────────────────────────────────────
   if (!skipTahfidh && !r.noHifdh) {
     block += (isAr ? t('rptNewMemorization') : t('rptNewMemorization')) + '\n';
     block += r.tahfidh.surahFrom + ' (' + r.tahfidh.ayahFrom + '–' + r.tahfidh.ayahTo + ')\n';
@@ -58,9 +60,12 @@ function renderRecordBlock(r, skipTahfidh, isAr) {
     block += (isAr ? t('rating') : 'Evaluation') + ': ' + (r.tahfidh.rating || '') + '\n\n';
   }
 
-  block += (isAr ? t('rptRevision') : t('rptRevision')) + '\n';
-  block += t('rptFrom') + ' ' + r.murajaah.surahFrom + ' ' + t('rptTo') + ' ' + r.murajaah.surahTo + '\n';
-  block += (isAr ? t('errors') : 'Errors') + ': ' + (r.murajaah.errors || 0) + '\n\n';
+  // ── Murajaah block ─────────────────────────────────────────
+  if (!r.murajaahEnabled === false) {
+    block += (isAr ? t('rptRevision') : t('rptRevision')) + '\n';
+    block += t('rptFrom') + ' ' + r.murajaah.surahFrom + ' ' + t('rptTo') + ' ' + r.murajaah.surahTo + '\n';
+    block += (isAr ? t('errors') : 'Errors') + ': ' + (r.murajaah.errors || 0) + '\n\n';
+  }
 
   return block;
 }
@@ -106,6 +111,7 @@ function generateWeeklyReport(studentId, classId) {
       records.forEach(r => { text += renderRecordBlock(r, skipTahfidh, true); });
 
       if (!skipTahfidh) {
+        // Only count records where tahfidh was NOT turned off
         const hifdhRecords = records.filter(r => !r.noHifdh);
         const totalErrors = hifdhRecords.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
         const scores = hifdhRecords.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
@@ -135,6 +141,7 @@ function generateWeeklyReport(studentId, classId) {
       records.forEach(r => { text += renderRecordBlock(r, skipTahfidh, false); });
 
       if (!skipTahfidh) {
+        // Only count records where tahfidh was NOT turned off
         const hifdhRecords = records.filter(r => !r.noHifdh);
         const totalErrors = hifdhRecords.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
         const scores = hifdhRecords.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
@@ -198,6 +205,7 @@ function generateMonthlyReport(studentId, classId) {
       records.forEach(r => { text += renderRecordBlock(r, skipTahfidh, true); });
 
       if (!skipTahfidh) {
+        // Only count records where tahfidh was NOT turned off
         const hifdhRecords = records.filter(r => !r.noHifdh);
         const totalErrors = hifdhRecords.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
         const scores = hifdhRecords.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
@@ -229,6 +237,7 @@ function generateMonthlyReport(studentId, classId) {
       records.forEach(r => { text += renderRecordBlock(r, skipTahfidh, false); });
 
       if (!skipTahfidh) {
+        // Only count records where tahfidh was NOT turned off
         const hifdhRecords = records.filter(r => !r.noHifdh);
         const totalErrors = hifdhRecords.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
         const scores = hifdhRecords.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
@@ -327,14 +336,26 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
   const logoSrc     = halaqah && halaqah.teacherPhoto    ? halaqah.teacherPhoto : '';
   const appName     = isAr ? 'إدارة التحفيظ' : 'Tahfidh Management';
 
+  // ── Only count records where tahfidh was active ─────────────────────────
   const hifdhRecords = records.filter(function(r) { return !r.noHifdh && !skipTahfidh; });
   const totalTErrors = hifdhRecords.reduce(function(a, r) { return a + (r.tahfidh.errors || 0); }, 0);
   const hifdhScores  = hifdhRecords.map(function(r) { return ratingToScore(r.tahfidh.rating); }).filter(function(s) { return s > 0; });
   const avgHifdh     = hifdhScores.length ? hifdhScores.reduce(function(a, b) { return a + b; }, 0) / hifdhScores.length : 0;
-  const totalMErrors = records.reduce(function(a, r) { return a + (r.murajaah.errors || 0); }, 0);
-  const mScores      = records.map(function(r) { return ratingToScore(r.murajaah.rating); }).filter(function(s) { return s > 0; });
+
+  // ── Only count records where murajaah was active ─────────────────────────
+  const murajaahRecords = records.filter(function(r) { return !r.murajaahEnabled === false; });
+  const totalMErrors = murajaahRecords.reduce(function(a, r) { return a + (r.murajaah.errors || 0); }, 0);
+  const mScores      = murajaahRecords.map(function(r) { return ratingToScore(r.murajaah.rating); }).filter(function(s) { return s > 0; });
   const avgMurajaah  = mScores.length ? mScores.reduce(function(a, b) { return a + b; }, 0) / mScores.length : 0;
-  const overallRating = scoreToRating(skipTahfidh ? avgMurajaah : (avgHifdh + avgMurajaah) / 2);
+
+  // ── Overall rating based on what's active ────────────────────────────────
+  const overallRating = scoreToRating(
+    skipTahfidh
+      ? avgMurajaah
+      : (hifdhScores.length && mScores.length)
+        ? (avgHifdh + avgMurajaah) / 2
+        : hifdhScores.length ? avgHifdh : avgMurajaah
+  );
 
   function ratingColor(r) {
     if (r === 'ممتاز'       || r === 'Excellent')         return '#16A34A';
@@ -348,6 +369,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
   const thStyle      = 'background:#0D2C54;color:#fff;padding:10px 8px;font-size:0.82rem;font-weight:700;';
   const overallColor = ratingColor(overallRating);
 
+  // ── Tahfidh rows ──────────────────────────────────────────────────────────
   var hifdhRows = '';
   if (!skipTahfidh) {
     records.forEach(function(r) {
@@ -369,17 +391,24 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     });
   }
 
+  // ── Murajaah rows ─────────────────────────────────────────────────────────
   var mRows = '';
   records.forEach(function(r) {
-    const rc = ratingColor(r.murajaah.rating);
-    mRows += '<tr>'
-      + '<td>' + getDayName(r.date) + '</td>'
-      + '<td>' + fmtDate(r.date) + '</td>'
-      + '<td>' + (r.murajaah.surahFrom || '—') + '</td>'
-      + '<td>' + (r.murajaah.surahTo || '—') + '</td>'
-      + '<td>' + (r.murajaah.errors || 0) + '</td>'
-      + '<td style="color:' + rc + ';font-weight:700;">' + (r.murajaah.rating || '—') + '</td>'
-      + '</tr>';
+    if (r.murajaahEnabled === false) {
+      mRows += '<tr><td>' + getDayName(r.date) + '</td><td>' + fmtDate(r.date) + '</td>'
+        + '<td colspan="4" style="text-align:center;color:#6B7280;font-style:italic;">'
+        + (isAr ? 'لا مراجعة اليوم' : 'No revision today') + '</td></tr>';
+    } else {
+      const rc = ratingColor(r.murajaah.rating);
+      mRows += '<tr>'
+        + '<td>' + getDayName(r.date) + '</td>'
+        + '<td>' + fmtDate(r.date) + '</td>'
+        + '<td>' + (r.murajaah.surahFrom || '—') + '</td>'
+        + '<td>' + (r.murajaah.surahTo || '—') + '</td>'
+        + '<td>' + (r.murajaah.errors || 0) + '</td>'
+        + '<td style="color:' + rc + ';font-weight:700;">' + (r.murajaah.rating || '—') + '</td>'
+        + '</tr>';
+    }
   });
 
   const logoHtml = logoSrc
