@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>بيانات الطالب – Tahfidh Tracker</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="assets_icons/appicon.svg" />
   <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
   <link rel="manifest" href="manifest.json" />
 </head>
@@ -24,7 +25,7 @@
 </main>
 
 <!-- Report Format Modal -->
-<div id="reportFmtModal" class="tt-modal">
+<div id="reportFmtModal" class="tt-modal" onclick="if(event.target===this) closeReportFmtModal()">
   <div class="tt-modal-box" style="max-width:340px;">
     <h3 style="margin:0 0 16px; font-size:1.05rem;" data-i18n="reportFmtTitle">اختر صيغة التقرير</h3>
     <div style="display:flex; flex-direction:column; gap:10px;">
