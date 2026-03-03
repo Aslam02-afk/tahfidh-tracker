@@ -53,7 +53,7 @@
       }
     });
     // Hide all course sections when absent, show otherwise
-    var courseSection = qs('courseSection');
+    var courseSection = document.getElementById('courseSection');
     if (courseSection) {
       courseSection.style.display = (status === 'absent') ? 'none' : '';
     }
@@ -344,7 +344,6 @@
 
   // --- Init ---
   renderCourseSection();
-  setAtt('present');
   loadRecord(getDailyRecord(studentId, today));
 
   // --- Save ---
