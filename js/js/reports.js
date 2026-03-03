@@ -350,7 +350,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
           + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + getDayName(r.date) + '</td>'
           + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + fmtDate(r.date) + '</td>'
           + '<td colspan="3" style="background:#FEE2E2;text-align:center;color:#DC2626;font-weight:700;">🔴 ' + absentLbl + '</td>'
-          + '<td style="background:#FEE2E2;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
+          + '<td style="background:#FEE2E2;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
           + '</tr>';
       } else if (tahfidhOff(r)) {
         // Yellow row — not taken
@@ -358,7 +358,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
           + '<td style="background:#FEFCE8;">' + getDayName(r.date) + '</td>'
           + '<td style="background:#FEFCE8;">' + fmtDate(r.date) + '</td>'
           + '<td colspan="3" style="background:#FEFCE8;text-align:center;color:#B45309;font-weight:700;">🟡 ' + notTaken + '</td>'
-          + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
+          + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
           + '</tr>';
       } else {
         const hasData = r.tahfidh && r.tahfidh.surahFrom;
@@ -368,12 +368,12 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
             + '<td style="background:#FEFCE8;">' + getDayName(r.date) + '</td>'
             + '<td style="background:#FEFCE8;">' + fmtDate(r.date) + '</td>'
             + '<td colspan="3" style="background:#FEFCE8;text-align:center;color:#B45309;font-weight:700;">🟡 ' + noRecLbl + '</td>'
-            + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
+            + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
             + '</tr>';
         } else {
           const rc = r.tahfidh.rating ? ratingColor(r.tahfidh.rating) : '#B45309';
           const ratingDisplay = r.tahfidh.rating
-            ? '<span style="color:' + rc + ';font-weight:700;">' + r.tahfidh.rating + '</span>'
+            ? '<img src="icons/star icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:2px;margin-right:2px;"> <span style="color:' + rc + ';font-weight:700;">' + r.tahfidh.rating + '</span>'
             : '<span style="color:#B45309;font-weight:700;">🟡 ' + notTaken + '</span>';
           hifdhRows += '<tr>'
             + '<td>' + getDayName(r.date) + '</td>'
@@ -382,7 +382,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
             + '<td>' + (r.tahfidh.ayahFrom || '—') + ' – ' + (r.tahfidh.ayahTo || '—') + '</td>'
             + '<td>' + (r.tahfidh.errors || 0) + '</td>'
             + '<td>' + ratingDisplay + '</td>'
-            + '<td style="color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
+            + '<td style="color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
             + '</tr>';
         }
       }
@@ -397,14 +397,14 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
         + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + getDayName(r.date) + '</td>'
         + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + fmtDate(r.date) + '</td>'
         + '<td colspan="3" style="background:#FEE2E2;text-align:center;color:#DC2626;font-weight:700;">🔴 ' + absentLbl + '</td>'
-        + '<td style="background:#FEE2E2;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
+        + '<td style="background:#FEE2E2;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
         + '</tr>';
     } else if (murajaahOff(r)) {
       mRows += '<tr>'
         + '<td style="background:#FEFCE8;">' + getDayName(r.date) + '</td>'
         + '<td style="background:#FEFCE8;">' + fmtDate(r.date) + '</td>'
         + '<td colspan="3" style="background:#FEFCE8;text-align:center;color:#B45309;font-weight:700;">🟡 ' + notTaken + '</td>'
-        + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
+        + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
         + '</tr>';
     } else {
       const hasData = r.murajaah && r.murajaah.surahFrom;
@@ -413,12 +413,12 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
           + '<td style="background:#FEFCE8;">' + getDayName(r.date) + '</td>'
           + '<td style="background:#FEFCE8;">' + fmtDate(r.date) + '</td>'
           + '<td colspan="3" style="background:#FEFCE8;text-align:center;color:#B45309;font-weight:700;">🟡 ' + noRecLbl + '</td>'
-          + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
+          + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
           + '</tr>';
       } else {
         const rc = r.murajaah.rating ? ratingColor(r.murajaah.rating) : '#B45309';
         const ratingDisplay = r.murajaah.rating
-          ? '<span style="color:' + rc + ';font-weight:700;">' + r.murajaah.rating + '</span>'
+          ? '<img src="icons/star icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:2px;margin-right:2px;"> <span style="color:' + rc + ';font-weight:700;">' + r.murajaah.rating + '</span>'
           : '<span style="color:#B45309;font-weight:700;">🟡 ' + notTaken + '</span>';
         mRows += '<tr>'
           + '<td>' + getDayName(r.date) + '</td>'
@@ -427,7 +427,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
           + '<td>' + (r.murajaah.surahTo   || '—') + '</td>'
           + '<td>' + (r.murajaah.errors    || 0)   + '</td>'
           + '<td>' + ratingDisplay + '</td>'
-          + '<td style="color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
+          + '<td style="color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
           + '</tr>';
       }
     }
@@ -517,7 +517,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     + '<div class="summary-box">'
     + (!skipTahfidh ? '<div class="summary-item"><div class="val">' + totalTErrors + '</div><div class="lbl">' + (isAr ? 'أخطاء الحفظ' : 'Memorization Errors') + '</div></div>' : '')
     + '<div class="summary-item"><div class="val">' + totalMErrors + '</div><div class="lbl">' + (isAr ? 'أخطاء المراجعة' : 'Revision Errors') + '</div></div>'
-    + '<div class="summary-item"><div class="val" style="color:' + overallColor + ';text-shadow:0 0 8px rgba(255,255,255,0.3);">' + overallRating + '</div><div class="lbl">' + (isAr ? 'التقييم الإجمالي' : 'Overall Rating') + '</div></div>'
+    + '<div class="summary-item"><div class="val" style="color:' + overallColor + ';text-shadow:0 0 8px rgba(255,255,255,0.3);"><img src="icons/star icon.svg" style="width:28px;height:28px;vertical-align:middle;margin-bottom:4px;filter:drop-shadow(0 0 4px rgba(255,255,255,0.4));"><br>' + overallRating + '</div><div class="lbl">' + (isAr ? 'التقييم الإجمالي' : 'Overall Rating') + '</div></div>'
     + '</div>'
     + '<div style="text-align:center;margin:24px 0;padding:16px;background:#F0FDF4;border-radius:12px;border:1px solid #BBF7D0;">'
     + '<div style="font-size:1.1rem;font-weight:700;color:#166534;">' + (isAr ? 'جزاكم الله خيرًا' : 'Barak Allahu feek') + '</div>'

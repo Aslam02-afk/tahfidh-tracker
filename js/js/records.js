@@ -91,7 +91,9 @@
     var scoreEl = qs(sec === 'tahfidh' ? 'tScore' : 'mScore');
     var gradeEl = qs(sec === 'tahfidh' ? 'tGrade' : 'mGrade');
     if (scoreEl) scoreEl.textContent = g.score;
-    if (gradeEl) gradeEl.textContent = g.rating;
+    if (gradeEl) gradeEl.innerHTML = g.rating
+      ? '<img src="icons/star icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;opacity:0.85;"> ' + g.rating
+      : '';
   }
 
   // --- Render course-specific section ---
@@ -136,7 +138,7 @@
             <div class="card" style="padding:0.75rem;">
               <div style="font-weight:700; margin-bottom:4px;" data-i18n="score">الدرجة</div>
               <div id="tScore" style="font-size:1.4rem; font-weight:900; color:var(--primary);">100</div>
-              <div id="tGrade" style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">${t('excellent')}</div>
+              <div id="tGrade" style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;"><img src="icons/star icon.svg" style="width:13px;height:13px;vertical-align:middle;opacity:0.85;"> ${t('excellent')}</div>
             </div>
           </div>
         </div>
@@ -178,7 +180,7 @@
             <div class="card" style="padding:0.75rem;">
               <div style="font-weight:700; margin-bottom:4px;" data-i18n="score">الدرجة</div>
               <div id="mScore" style="font-size:1.4rem; font-weight:900; color:var(--primary);">100</div>
-              <div id="mGrade" style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">${t('excellent')}</div>
+              <div id="mGrade" style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;"><img src="icons/star icon.svg" style="width:13px;height:13px;vertical-align:middle;opacity:0.85;"> ${t('excellent')}</div>
             </div>
           </div>
         </div>
