@@ -52,6 +52,11 @@
         btn.style.borderColor = '';
       }
     });
+    // Hide all course sections when absent, show otherwise
+    var courseSection = qs('courseSection');
+    if (courseSection) {
+      courseSection.style.display = (status === 'absent') ? 'none' : '';
+    }
   };
 
   // --- Toggle tahfidh / murajaah section ---
@@ -276,6 +281,9 @@
 
     setAtt(rec.attendance || 'present');
 
+    // Load teacher comments
+    if (qs('teacherComments')) qs('teacherComments').value = rec.teacherComments || '';
+
     if (course === 'hifdh') {
       tahfidhOn = rec.tahfidhEnabled !== false && !rec.noHifdh;
       var tb2 = qs('tahfidhToggleBtn');
@@ -353,6 +361,7 @@
       classId:         classId,
       date:            currentDate,
       attendance:      currentAtt,
+      teacherComments: qs('teacherComments') ? qs('teacherComments').value : '',
       noHifdh:         course === 'hifdh' ? !tahfidhOn : true,
       tahfidhEnabled:  course === 'hifdh' ? tahfidhOn  : false,
       murajaahEnabled: (course === 'hifdh' || course === 'murajaah') ? murajaahOn : false
@@ -402,4 +411,4 @@
     alert(t('savedAlert'));
     history.back();
   };
-})();ss
+})();
