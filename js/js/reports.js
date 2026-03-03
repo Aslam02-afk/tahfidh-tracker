@@ -49,7 +49,9 @@ function renderRecordBlock(r, skipTahfidh, isAr) {
   let block = dayName + ' – ' + dateLabel + '\n';
 
   if (absent) {
-    block += absentLbl + '\n\n';
+    block += absentLbl + '\n';
+    if (r.teacherComments) block += '📝 ' + r.teacherComments + '\n';
+    block += '\n';
     return block;
   }
 
@@ -75,6 +77,8 @@ function renderRecordBlock(r, skipTahfidh, isAr) {
     block += (isAr ? t('rating') : 'Rating') + ': ' + (r.murajaah.rating || notTaken) + '\n';
   }
 
+  block += '\n';
+  if (r.teacherComments) block += '📝 ' + (isAr ? 'ملاحظة: ' : 'Note: ') + r.teacherComments + '\n';
   block += '\n';
   return block;
 }
@@ -342,26 +346,29 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     records.forEach(function(r) {
       if (isAbsent(r)) {
         // Red row — absent
-        hifdhRows += '<tr style="background:#FEE2E2;">'
-          + '<td style="color:#DC2626;font-weight:700;">' + getDayName(r.date) + '</td>'
-          + '<td style="color:#DC2626;font-weight:700;">' + fmtDate(r.date) + '</td>'
-          + '<td colspan="4" style="text-align:center;color:#DC2626;font-weight:700;">🔴 ' + absentLbl + '</td>'
+        hifdhRows += '<tr>'
+          + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + getDayName(r.date) + '</td>'
+          + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + fmtDate(r.date) + '</td>'
+          + '<td colspan="3" style="background:#FEE2E2;text-align:center;color:#DC2626;font-weight:700;">🔴 ' + absentLbl + '</td>'
+          + '<td style="background:#FEE2E2;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
           + '</tr>';
       } else if (tahfidhOff(r)) {
         // Yellow row — not taken
-        hifdhRows += '<tr style="background:#FEFCE8;">'
-          + '<td>' + getDayName(r.date) + '</td>'
-          + '<td>' + fmtDate(r.date) + '</td>'
-          + '<td colspan="4" style="text-align:center;color:#B45309;font-weight:700;">🟡 ' + notTaken + '</td>'
+        hifdhRows += '<tr>'
+          + '<td style="background:#FEFCE8;">' + getDayName(r.date) + '</td>'
+          + '<td style="background:#FEFCE8;">' + fmtDate(r.date) + '</td>'
+          + '<td colspan="3" style="background:#FEFCE8;text-align:center;color:#B45309;font-weight:700;">🟡 ' + notTaken + '</td>'
+          + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
           + '</tr>';
       } else {
         const hasData = r.tahfidh && r.tahfidh.surahFrom;
         if (!hasData) {
           // Yellow — present but no data entered
-          hifdhRows += '<tr style="background:#FEFCE8;">'
-            + '<td>' + getDayName(r.date) + '</td>'
-            + '<td>' + fmtDate(r.date) + '</td>'
-            + '<td colspan="4" style="text-align:center;color:#B45309;font-weight:700;">🟡 ' + noRecLbl + '</td>'
+          hifdhRows += '<tr>'
+            + '<td style="background:#FEFCE8;">' + getDayName(r.date) + '</td>'
+            + '<td style="background:#FEFCE8;">' + fmtDate(r.date) + '</td>'
+            + '<td colspan="3" style="background:#FEFCE8;text-align:center;color:#B45309;font-weight:700;">🟡 ' + noRecLbl + '</td>'
+            + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
             + '</tr>';
         } else {
           const rc = r.tahfidh.rating ? ratingColor(r.tahfidh.rating) : '#B45309';
@@ -375,6 +382,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
             + '<td>' + (r.tahfidh.ayahFrom || '—') + ' – ' + (r.tahfidh.ayahTo || '—') + '</td>'
             + '<td>' + (r.tahfidh.errors || 0) + '</td>'
             + '<td>' + ratingDisplay + '</td>'
+            + '<td style="color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
             + '</tr>';
         }
       }
@@ -385,24 +393,27 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
   var mRows = '';
   records.forEach(function(r) {
     if (isAbsent(r)) {
-      mRows += '<tr style="background:#FEE2E2;">'
-        + '<td style="color:#DC2626;font-weight:700;">' + getDayName(r.date) + '</td>'
-        + '<td style="color:#DC2626;font-weight:700;">' + fmtDate(r.date) + '</td>'
-        + '<td colspan="4" style="text-align:center;color:#DC2626;font-weight:700;">🔴 ' + absentLbl + '</td>'
+      mRows += '<tr>'
+        + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + getDayName(r.date) + '</td>'
+        + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + fmtDate(r.date) + '</td>'
+        + '<td colspan="3" style="background:#FEE2E2;text-align:center;color:#DC2626;font-weight:700;">🔴 ' + absentLbl + '</td>'
+        + '<td style="background:#FEE2E2;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
         + '</tr>';
     } else if (murajaahOff(r)) {
-      mRows += '<tr style="background:#FEFCE8;">'
-        + '<td>' + getDayName(r.date) + '</td>'
-        + '<td>' + fmtDate(r.date) + '</td>'
-        + '<td colspan="4" style="text-align:center;color:#B45309;font-weight:700;">🟡 ' + notTaken + '</td>'
+      mRows += '<tr>'
+        + '<td style="background:#FEFCE8;">' + getDayName(r.date) + '</td>'
+        + '<td style="background:#FEFCE8;">' + fmtDate(r.date) + '</td>'
+        + '<td colspan="3" style="background:#FEFCE8;text-align:center;color:#B45309;font-weight:700;">🟡 ' + notTaken + '</td>'
+        + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
         + '</tr>';
     } else {
       const hasData = r.murajaah && r.murajaah.surahFrom;
       if (!hasData) {
-        mRows += '<tr style="background:#FEFCE8;">'
-          + '<td>' + getDayName(r.date) + '</td>'
-          + '<td>' + fmtDate(r.date) + '</td>'
-          + '<td colspan="4" style="text-align:center;color:#B45309;font-weight:700;">🟡 ' + noRecLbl + '</td>'
+        mRows += '<tr>'
+          + '<td style="background:#FEFCE8;">' + getDayName(r.date) + '</td>'
+          + '<td style="background:#FEFCE8;">' + fmtDate(r.date) + '</td>'
+          + '<td colspan="3" style="background:#FEFCE8;text-align:center;color:#B45309;font-weight:700;">🟡 ' + noRecLbl + '</td>'
+          + '<td style="background:#FEFCE8;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
           + '</tr>';
       } else {
         const rc = r.murajaah.rating ? ratingColor(r.murajaah.rating) : '#B45309';
@@ -416,6 +427,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
           + '<td>' + (r.murajaah.surahTo   || '—') + '</td>'
           + '<td>' + (r.murajaah.errors    || 0)   + '</td>'
           + '<td>' + ratingDisplay + '</td>'
+          + '<td style="color:#6B7280;font-size:0.78rem;">' + (r.teacherComments || '') + '</td>'
           + '</tr>';
       }
     }
@@ -485,6 +497,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
         + '<th style="' + thStyle + '">' + (isAr ? 'الآيات'   : 'Ayahs') + '</th>'
         + '<th style="' + thStyle + '">' + (isAr ? 'الأخطاء'  : 'Errors') + '</th>'
         + '<th style="' + thStyle + '">' + (isAr ? 'التقييم'  : 'Rating') + '</th>'
+        + '<th style="' + thStyle + '">' + (isAr ? 'ملاحظات'  : 'Notes')  + '</th>'
         + '</tr></thead><tbody>'
         + (hifdhRows || '<tr><td colspan="6" style="text-align:center;padding:16px;color:#6B7280;">' + (isAr ? 'لا توجد سجلات' : 'No records') + '</td></tr>')
         + '</tbody></table>'
@@ -497,6 +510,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     + '<th style="' + thStyle + '">' + (isAr ? 'إلى سورة'   : 'To Surah')  + '</th>'
     + '<th style="' + thStyle + '">' + (isAr ? 'الأخطاء'    : 'Errors')    + '</th>'
     + '<th style="' + thStyle + '">' + (isAr ? 'التقييم'    : 'Rating')    + '</th>'
+    + '<th style="' + thStyle + '">' + (isAr ? 'ملاحظات'    : 'Notes')     + '</th>'
     + '</tr></thead><tbody>'
     + (mRows || '<tr><td colspan="6" style="text-align:center;padding:16px;color:#6B7280;">' + (isAr ? 'لا توجد سجلات' : 'No records') + '</td></tr>')
     + '</tbody></table>'
