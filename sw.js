@@ -1,5 +1,5 @@
-// Service Worker – Tahfidh Tracker v35
-const CACHE = 'tahfidh-v37';
+// Service Worker – Tahfidh Tracker v38
+const CACHE = 'tahfidh-v38';
 
 // ── ESSENTIAL files only — must exist on server ───────────────────────────
 const PRECACHE = [
@@ -51,6 +51,8 @@ const OPTIONAL = [
   'icons/file icon.svg',
   'icons/share icon.svg',
   'icons/fee icon.svg',
+  'icons/star icon.svg',
+  'icons/comments icon.svg',
   'themes/Pink_theme.png',
   'themes/green_theme.png',
   'themes/greenlight_theme.png',
