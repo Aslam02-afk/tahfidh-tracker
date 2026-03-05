@@ -2,25 +2,68 @@
   "name": "متتبع التحفيظ | Tahfidh Tracker",
   "short_name": "متتبع التحفيظ",
   "description": "تطبيق لمتابعة حفظ القرآن الكريم - برنامج الهدى | Quran memorization tracker by Al Hudaa Program",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0D2C54",
   "theme_color": "#0D2C54",
   "lang": "ar",
   "dir": "rtl",
   "orientation": "portrait",
-  "categories": ["education", "productivity"],
+  "categories": [
+    "education",
+    "productivity"
+  ],
   "prefer_related_applications": false,
   "icons": [
-    { "src": "assets_icons/appicon.svg",      "sizes": "any",       "type": "image/svg+xml", "purpose": "any" },
-    { "src": "assets_icons/appicon-64.png",   "sizes": "64x64",     "type": "image/png",     "purpose": "any" },
-    { "src": "assets_icons/appicon-128.png",  "sizes": "128x128",   "type": "image/png",     "purpose": "any" },
-    { "src": "assets_icons/appicon-192.png",  "sizes": "192x192",   "type": "image/png",     "purpose": "any" },
-    { "src": "assets_icons/appicon-192.png",  "sizes": "192x192",   "type": "image/png",     "purpose": "maskable" },
-    { "src": "assets_icons/appicon-512.png",  "sizes": "512x512",   "type": "image/png",     "purpose": "any" },
-    { "src": "assets_icons/appicon-512.png",  "sizes": "512x512",   "type": "image/png",     "purpose": "maskable" },
-    { "src": "assets_icons/appicon-1024.png", "sizes": "1024x1024", "type": "image/png",     "purpose": "any" }
+    {
+      "src": "assets_icons/appicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets_icons/appicon-64.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets_icons/appicon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets_icons/appicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets_icons/appicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets_icons/appicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets_icons/appicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets_icons/appicon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ],
   "screenshots": [
     {
