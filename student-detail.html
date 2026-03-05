@@ -29,23 +29,27 @@
   <div class="tt-modal-box" style="max-width:340px;">
     <h3 style="margin:0 0 16px; font-size:1.05rem;" data-i18n="reportFmtTitle">اختر صيغة التقرير</h3>
     <div style="display:flex; flex-direction:column; gap:10px;">
+
       <button class="btn btn-primary btn-full" style="padding:0.85rem; font-size:1rem; display:flex; align-items:center; justify-content:center; gap:10px;"
         onclick="submitReportFormat('pdf')">
-        <span style="font-size:1.3rem;">📄</span>
+        <img src="icons/printer icon.svg" style="width:24px; height:24px; filter:brightness(0) invert(1);" alt="">
         <span data-i18n="reportFmtPdf">PDF احترافي</span>
       </button>
+
       <button class="btn btn-secondary btn-full" style="padding:0.85rem; font-size:1rem; display:flex; align-items:center; justify-content:center; gap:10px;"
         onclick="submitReportFormat('img')">
-        <span style="font-size:1.3rem;">🖼️</span>
+        <img src="icons/image icon.svg" style="width:24px; height:24px;" alt="">
         <span data-i18n="reportFmtImg">صورة للمشاركة</span>
       </button>
+
       <button class="btn btn-secondary btn-full" style="padding:0.85rem; font-size:1rem; display:flex; align-items:center; justify-content:center; gap:10px;"
         onclick="submitReportFormat('msg')">
-        <span style="font-size:1.3rem;">💬</span>
+        <img src="icons/whatsapp icon.svg" style="width:24px; height:24px;" alt="">
         <span data-i18n="reportFmtMsg">رسالة واتساب</span>
       </button>
+
       <button class="btn btn-full" style="padding:0.7rem; font-size:0.9rem; background:#F3F4F6; color:#374151;"
-        onclick="closeReportFmtModal()">إلغاء</button>
+        onclick="closeReportFmtModal()" data-i18n="cancel">إلغاء</button>
     </div>
   </div>
 </div>

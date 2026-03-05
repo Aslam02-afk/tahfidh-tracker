@@ -32,6 +32,7 @@ function fmtDate(dateStr) {
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 function isAbsent(r)         { return r.attendance === 'absent'; }
+function isExcused(r)        { return r.attendance === 'excused'; }
 function tahfidhOff(r)       { return r.noHifdh || r.tahfidhEnabled === false; }
 function murajaahOff(r)      { return r.murajaahEnabled === false; }
 function noTahfidhRating(r)  { return !r.tahfidh || !r.tahfidh.rating; }
@@ -39,17 +40,26 @@ function noMurajaahRating(r) { return !r.murajaah || !r.murajaah.rating; }
 
 // ── WhatsApp text block per day ────────────────────────────────────────────
 function renderRecordBlock(r, skipTahfidh, isAr) {
-  const absent    = isAbsent(r);
-  const dayName   = getDayName(r.date);
-  const dateLabel = fmtDate(r.date);
-  const noRecord  = isAr ? '⚠️ لا يوجد سجل' : '⚠️ No record';
-  const absentLbl = isAr ? '🔴 غائب'         : '🔴 Absent';
-  const notTaken  = isAr ? '🟡 لم يؤدِ'      : '🟡 Not taken';
+  const absent      = isAbsent(r);
+  const excused     = isExcused(r);
+  const dayName     = getDayName(r.date);
+  const dateLabel   = fmtDate(r.date);
+  const noRecord    = isAr ? '⚠️ لا يوجد سجل' : '⚠️ No record';
+  const absentLbl   = isAr ? '🔴 غائب'          : '🔴 Absent';
+  const excusedLbl  = isAr ? '🟣 معذور'          : '🟣 Excused';
+  const notTaken    = isAr ? '🟡 لم يؤدِ'       : '🟡 Not taken';
 
   let block = dayName + ' – ' + dateLabel + '\n';
 
   if (absent) {
     block += absentLbl + '\n';
+    if (r.teacherComments) block += '📝 ' + r.teacherComments + '\n';
+    block += '\n';
+    return block;
+  }
+
+  if (excused) {
+    block += excusedLbl + '\n';
     if (r.teacherComments) block += '📝 ' + r.teacherComments + '\n';
     block += '\n';
     return block;
@@ -214,8 +224,8 @@ function _generateWhatsAppReport(studentId, classId, fromDate, toDate) {
   const toLabel     = new Date(toDate   + 'T00:00:00').toLocaleDateString(locale);
 
   // Active records only (not absent, section on)
-  const hifdhActive    = records.filter(r => !isAbsent(r) && !tahfidhOff(r) && !skipTahfidh);
-  const murajaahActive = records.filter(r => !isAbsent(r) && !murajaahOff(r));
+  const hifdhActive    = records.filter(r => !isAbsent(r) && !isExcused(r) && !tahfidhOff(r) && !skipTahfidh);
+  const murajaahActive = records.filter(r => !isAbsent(r) && !isExcused(r) && !murajaahOff(r));
 
   const totalTErr  = hifdhActive.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
   const tScores    = hifdhActive.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
@@ -306,14 +316,18 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
   const className   = halaqah ? halaqah.name           : '';
   const teacherName = halaqah ? (halaqah.teacher || '') : '';
   const logoSrc     = halaqah && halaqah.teacherPhoto   ? halaqah.teacherPhoto : '';
-  const appName     = isAr ? 'إدارة التحفيظ' : 'Tahfidh Management';
+  const appName     = isAr ? 'متتبع التحفيظ | Tahfidh Tracker' : 'Tahfidh Tracker | متتبع التحفيظ';
+  const absentCount  = records.filter(r => r.attendance === 'absent').length;
+  const lateCount    = records.filter(r => r.attendance === 'late').length;
+  const excusedCount = records.filter(r => r.attendance === 'excused').length;
   const notTaken    = isAr ? 'لم يؤدِ' : 'Not taken';
   const absentLbl   = isAr ? 'غائب'    : 'Absent';
+  const excusedLbl  = isAr ? 'معذور'   : 'Excused';
   const noRecLbl    = isAr ? 'لا يوجد سجل' : 'No record';
 
   // ── Summary calculations (active records only) ──────────────────────────
-  const hifdhActive    = records.filter(r => !isAbsent(r) && !tahfidhOff(r) && !skipTahfidh);
-  const murajaahActive = records.filter(r => !isAbsent(r) && !murajaahOff(r));
+  const hifdhActive    = records.filter(r => !isAbsent(r) && !isExcused(r) && !tahfidhOff(r) && !skipTahfidh);
+  const murajaahActive = records.filter(r => !isAbsent(r) && !isExcused(r) && !murajaahOff(r));
 
   const totalTErrors = hifdhActive.reduce((a, r) => a + (r.tahfidh.errors || 0), 0);
   const hifdhScores  = hifdhActive.map(r => ratingToScore(r.tahfidh.rating)).filter(s => s > 0);
@@ -351,6 +365,14 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
           + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + fmtDate(r.date) + '</td>'
           + '<td colspan="3" style="background:#FEE2E2;text-align:center;color:#DC2626;font-weight:700;">🔴 ' + absentLbl + '</td>'
           + '<td style="background:#FEE2E2;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
+          + '</tr>';
+      } else if (isExcused(r)) {
+        // Purple row — excused
+        hifdhRows += '<tr>'
+          + '<td style="background:#F3E8FF;color:#7C3AED;font-weight:700;">' + getDayName(r.date) + '</td>'
+          + '<td style="background:#F3E8FF;color:#7C3AED;font-weight:700;">' + fmtDate(r.date) + '</td>'
+          + '<td colspan="3" style="background:#F3E8FF;text-align:center;color:#7C3AED;font-weight:700;">🟣 ' + excusedLbl + '</td>'
+          + '<td style="background:#F3E8FF;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
           + '</tr>';
       } else if (tahfidhOff(r)) {
         // Yellow row — not taken
@@ -398,6 +420,13 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
         + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + fmtDate(r.date) + '</td>'
         + '<td colspan="3" style="background:#FEE2E2;text-align:center;color:#DC2626;font-weight:700;">🔴 ' + absentLbl + '</td>'
         + '<td style="background:#FEE2E2;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
+        + '</tr>';
+    } else if (isExcused(r)) {
+      mRows += '<tr>'
+        + '<td style="background:#F3E8FF;color:#7C3AED;font-weight:700;">' + getDayName(r.date) + '</td>'
+        + '<td style="background:#F3E8FF;color:#7C3AED;font-weight:700;">' + fmtDate(r.date) + '</td>'
+        + '<td colspan="3" style="background:#F3E8FF;text-align:center;color:#7C3AED;font-weight:700;">🟣 ' + excusedLbl + '</td>'
+        + '<td style="background:#F3E8FF;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
         + '</tr>';
     } else if (murajaahOff(r)) {
       mRows += '<tr>'
@@ -447,6 +476,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
   // Legend HTML
   const legendHtml = '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;font-size:0.8rem;">'
     + '<span style="display:flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;background:#FEE2E2;border-radius:3px;display:inline-block;"></span> ' + (isAr ? 'غائب' : 'Absent') + '</span>'
+    + '<span style="display:flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;background:#F3E8FF;border-radius:3px;display:inline-block;"></span> ' + (isAr ? 'معذور' : 'Excused') + '</span>'
     + '<span style="display:flex;align-items:center;gap:4px;"><span style="width:14px;height:14px;background:#FEFCE8;border-radius:3px;display:inline-block;"></span> ' + (isAr ? 'لم يؤدِ / لا سجل' : 'Not taken / No record') + '</span>'
     + '</div>';
 
@@ -485,7 +515,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     + '<div style="background:#F3F6FA;padding:12px;border-radius:10px;"><div style="color:#6B7280;font-size:0.78rem;">' + (isAr ? 'اسم الطالب' : 'Student Name') + '</div><div style="font-weight:900;font-size:1rem;margin-top:3px;">' + student.name + '</div></div>'
     + '<div style="background:#F3F6FA;padding:12px;border-radius:10px;"><div style="color:#6B7280;font-size:0.78rem;">' + (isAr ? 'الفترة' : 'Period') + '</div><div style="font-weight:700;font-size:0.88rem;margin-top:3px;">' + periodLabel + '</div></div>'
     + '<div style="background:#F3F6FA;padding:12px;border-radius:10px;"><div style="color:#6B7280;font-size:0.78rem;">' + (isAr ? 'أيام التسجيل' : 'Days Recorded') + '</div><div style="font-weight:900;font-size:1rem;margin-top:3px;">' + records.length + '</div></div>'
-    + '<div style="background:#F3F6FA;padding:12px;border-radius:10px;"><div style="color:#6B7280;font-size:0.78rem;">' + (isAr ? 'الغياب / التأخر' : 'Absent / Late') + '</div><div style="font-weight:700;font-size:0.88rem;margin-top:3px;">' + (student.absences || 0) + ' / ' + (student.late || 0) + '</div></div>'
+    + '<div style="background:#F3F6FA;padding:12px;border-radius:10px;"><div style="color:#6B7280;font-size:0.78rem;">' + (isAr ? 'الغياب / التأخر / العذر' : 'Absent / Late / Excused') + '</div><div style="font-weight:700;font-size:0.88rem;margin-top:3px;">' + absentCount + ' / ' + lateCount + ' / ' + excusedCount + '</div></div>'
     + '</div>'
     + legendHtml
     + (!skipTahfidh ? (

@@ -52,10 +52,10 @@
         btn.style.borderColor = '';
       }
     });
-    // Hide all course sections when absent, show otherwise
+    // Hide all course sections when absent or excused, show otherwise
     var courseSection = document.getElementById('courseSection');
     if (courseSection) {
-      courseSection.style.display = (status === 'absent') ? 'none' : '';
+      courseSection.style.display = (status === 'absent' || status === 'excused') ? 'none' : '';
     }
   };
 
