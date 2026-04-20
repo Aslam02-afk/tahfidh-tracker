@@ -1,6 +1,6 @@
 /* =========================
    Tahfidh Tracker – Style
-   Modern Islamic Design
+   Modern Islamic Design v2
    ========================= */
 
 /* -------- KFGQPC Uthmanic Font -------- */
@@ -14,55 +14,59 @@
 
 /* -------- Root Colors -------- */
 :root {
-  --primary: #0D2C54;
-  --secondary: #0F766E;
-  --accent: #C9A24D;
-  --green: #2A400D;
-  --bg: #F4F6F8;
-  --card-bg: #FFFFFF;
-  --text-main: #1F2937;
-  --text-muted: #6B7280;
-  --border: #E5E7EB;
-  --success: #2A400D;
-  --warning: #F59E0B;
-  --danger: #DC2626;
-  --radius: 18px;
+  --primary:     #0D2C54;
+  --secondary:   #0F766E;
+  --accent:      #C9A24D;
+  --bg:          #F4F6F8;
+  --card-bg:     #FFFFFF;
+  --text-main:   #1F2937;
+  --text-muted:  #6B7280;
+  --border:      #E5E7EB;
+  --success:     #2A400D;
+  --warning:     #F59E0B;
+  --danger:      #DC2626;
+  --radius:      18px;
+  --shadow-sm:   0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md:   0 8px 24px rgba(0,0,0,0.09);
+  --shadow-lg:   0 16px 40px rgba(0,0,0,0.13);
 }
 
 /* -------- Reset -------- */
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html {
-  font-size: 16px;
-}
+html { font-size: 16px; }
 
 body {
   font-family: "Segoe UI", Tahoma, "Arial", sans-serif;
-  background: var(--bg);
+  background: #F4F6F8;
   color: var(--text-main);
   min-height: 100vh;
   direction: rtl;
-  background-image:
-    radial-gradient(circle at 15% 15%, rgba(201,162,77,0.045) 2px, transparent 2px),
-    radial-gradient(circle at 85% 85%, rgba(201,162,77,0.045) 2px, transparent 2px),
-    radial-gradient(circle at 50% 50%, rgba(13,44,84,0.025) 1px, transparent 1px);
-  background-size: 60px 60px, 60px 60px, 30px 30px;
-  background-attachment: fixed;
+  /* Clean background — no dots */
 }
 
-/* LTR (English) font override */
 html[lang="en"] body,
 html[dir="ltr"] body {
   font-family: "Roboto", "Segoe UI", Tahoma, sans-serif;
 }
 
+/* -------- Page fade-in on load -------- */
+body {
+  animation: pageFadeIn 0.35s ease both;
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* -------- Header -------- */
 .app-header {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: #fff;
   padding: 12px 16px;
   display: flex;
@@ -71,39 +75,33 @@ html[dir="ltr"] body {
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 16px rgba(13,44,84,0.25);
 }
 
-.app-header::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgba(201,162,77,.08) 2px, transparent 2px),
-    radial-gradient(circle at 80% 70%, rgba(201,162,77,.08) 2px, transparent 2px);
-  background-size: 40px 40px;
-  pointer-events: none;
-}
-
-.header-center { text-align: center; }
 .app-title {
   font-size: 1.15rem;
   font-weight: 800;
   letter-spacing: 0.3px;
 }
+
 .app-subtitle { font-size: .8rem; opacity: .9; }
 
 .menu-btn,
 .lang-switcher {
   background: rgba(255,255,255,0.15);
-  border: none;
+  border: 1px solid rgba(255,255,255,0.2);
   color: #fff;
   padding: 0.45rem 0.8rem;
   border-radius: 12px;
   font-size: 1rem;
   cursor: pointer;
-  position: relative;
-  z-index: 1;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.menu-btn:active,
+.lang-switcher:active {
+  background: rgba(255,255,255,0.28);
+  transform: scale(0.95);
 }
 
 /* -------- Main -------- */
@@ -118,27 +116,14 @@ html[dir="ltr"] body {
   border-radius: var(--radius);
   padding: 1.1rem;
   margin-bottom: 1rem;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
   position: relative;
-  overflow: hidden;
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 25% 25%, rgba(201,162,77,0.08) 2px, transparent 2px),
-    radial-gradient(circle at 75% 75%, rgba(201,162,77,0.08) 2px, transparent 2px);
-  background-size: 40px 40px;
-  pointer-events: none;
+  /* No dot pattern — clean background */
 }
 
 /* -------- Forms -------- */
-.form-group {
-  margin-bottom: 0.9rem;
-}
+.form-group { margin-bottom: 0.9rem; }
 
 .form-label {
   font-weight: 700;
@@ -152,9 +137,24 @@ html[dir="ltr"] body {
   width: 100%;
   padding: 0.65rem 0.8rem;
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   font-family: inherit;
   font-size: 0.95rem;
+  background: var(--card-bg);
+  color: var(--text-main);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(15,118,110,0.12);
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 80px;
 }
 
 /* -------- Buttons -------- */
@@ -166,37 +166,63 @@ html[dir="ltr"] body {
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ripple effect on tap */
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.18);
+  opacity: 0;
+  transition: opacity 0.2s;
+  border-radius: inherit;
+}
+
+.btn:active::after { opacity: 1; }
+
+.btn:active {
+  transform: scale(0.97);
+  box-shadow: none !important;
+}
+
+.btn:hover:not(:active) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(13,44,84,0.18);
 }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
+  box-shadow: 0 4px 12px rgba(13,44,84,0.2);
 }
 
 .btn-secondary {
   background: var(--primary);
   color: #fff;
+  box-shadow: 0 4px 12px rgba(13,44,84,0.15);
 }
 
 .btn-success {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
+  box-shadow: 0 4px 12px rgba(13,44,84,0.2);
 }
 
 .btn-warning {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, #D97706, #F59E0B);
   color: #fff;
 }
 
-.btn-full {
-  width: 100%;
+.btn-danger {
+  background: linear-gradient(135deg, #B91C1C, #DC2626);
+  color: #fff;
 }
 
-.btn:hover {
-  transform: translateY(-1px);
-  opacity: 0.95;
-}
+.btn-full { width: 100%; }
 
 /* -------- Grid -------- */
 .grid-2 {
@@ -217,6 +243,7 @@ html[dir="ltr"] body {
   padding: 0.4rem 0;
   border-top: 1px solid var(--border);
   z-index: 100;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
 }
 
 .nav-btn {
@@ -227,11 +254,14 @@ html[dir="ltr"] body {
   font-size: 0.7rem;
   cursor: pointer;
   padding: 4px 8px;
+  transition: color 0.2s, transform 0.15s;
+  border-radius: 12px;
+  flex: 1;
 }
 
-.nav-btn.active {
-  color: var(--primary);
-}
+.nav-btn:active { transform: scale(0.9); }
+
+.nav-btn.active { color: var(--primary); }
 
 .nav-icon {
   font-size: 1.25rem;
@@ -244,7 +274,8 @@ html[dir="ltr"] body {
 .nav-icon img {
   width: 22px;
   height: 22px;
-  opacity: 0.55;
+  opacity: 0.5;
+  transition: opacity 0.2s, filter 0.2s;
 }
 
 .nav-btn.active .nav-icon img {
@@ -255,7 +286,31 @@ html[dir="ltr"] body {
 .nav-text {
   font-size: 0.68rem;
   margin-top: 2px;
+  font-weight: 600;
 }
+
+/* -------- Skeleton Loader -------- */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 10px;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-line {
+  height: 14px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.skeleton-line.short { width: 55%; }
+.skeleton-line.medium { width: 75%; }
+.skeleton-line.full { width: 100%; }
 
 /* -------- Footer -------- */
 .branding-footer {
@@ -268,33 +323,29 @@ html[dir="ltr"] body {
 
 /* -------- Responsive -------- */
 @media (max-width: 640px) {
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
+  .grid-2 { grid-template-columns: 1fr; }
 }
 
 /* -------- Dark Mode -------- */
 html.dark {
-  --bg: #0F172A;
-  --card-bg: #1E293B;
+  --bg:        #0F172A;
+  --card-bg:   #1E293B;
   --text-main: #F1F5F9;
-  --text-muted: #94A3B8;
-  --border: #334155;
+  --text-muted:#94A3B8;
+  --border:    #334155;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 16px 40px rgba(0,0,0,0.5);
 }
 
 html.dark body {
-  background-color: var(--bg);
+  background: var(--bg);
   color: var(--text-main);
-  background-image:
-    radial-gradient(circle at 15% 15%, rgba(201,162,77,0.03) 2px, transparent 2px),
-    radial-gradient(circle at 85% 85%, rgba(201,162,77,0.03) 2px, transparent 2px),
-    radial-gradient(circle at 50% 50%, rgba(96,165,250,0.015) 1px, transparent 1px);
 }
 
 html.dark .card {
   background: var(--card-bg);
   border-color: var(--border);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
 html.dark .form-input,
@@ -304,20 +355,36 @@ html.dark .form-select {
   border-color: var(--border);
 }
 
-html.dark .btn-secondary { background: #1E3A5F; color: #fff; }
+html.dark .form-input:focus,
+html.dark .form-select:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(15,118,110,0.2);
+}
 
-html.dark .bottom-nav { background: #1E293B; border-color: var(--border); }
+html.dark .btn-secondary { background: #1E3A5F; color: #fff; }
+html.dark .bottom-nav { background: #1E293B; border-color: var(--border); box-shadow: 0 -4px 16px rgba(0,0,0,0.3); }
 html.dark .nav-btn { color: var(--text-muted); }
 html.dark .nav-btn.active { color: #60A5FA; }
-
-html.dark .nav-icon img {
-  filter: invert(0.6);
-}
+html.dark .nav-icon img { filter: invert(0.6); }
 html.dark .nav-btn.active .nav-icon img {
   filter: brightness(0) saturate(100%) invert(60%) sepia(44%) saturate(900%) hue-rotate(196deg) brightness(102%) contrast(96%);
 }
 
-* { transition: background-color 0.25s, color 0.25s, border-color 0.25s; }
+html.dark .skeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+
+/* -------- Smooth theme transition -------- */
+*, *::before, *::after {
+  transition: background-color 0.25s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Exclude transforms from global transition to avoid sluggish buttons */
+.btn, .nav-btn, .menu-btn, .lang-switcher, .card {
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+              box-shadow 0.15s, transform 0.15s, opacity 0.15s;
+}
 
 /* -------- Theme Picker -------- */
 .theme-grid {
@@ -326,6 +393,7 @@ html.dark .nav-btn.active .nav-icon img {
   gap: 10px;
   margin-top: 10px;
 }
+
 .theme-btn {
   border: 2px solid var(--border);
   border-radius: 14px;
@@ -333,13 +401,26 @@ html.dark .nav-btn.active .nav-icon img {
   overflow: hidden;
   background: var(--card-bg);
   padding: 0;
-  transition: border-color 0.2s, transform 0.15s;
+  transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.theme-btn:hover { transform: translateY(-2px); border-color: var(--secondary); }
-.theme-btn.theme-active { border-color: var(--secondary); border-width: 3px; }
+
+.theme-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--secondary);
+  box-shadow: var(--shadow-md);
+}
+
+.theme-btn:active { transform: scale(0.95); }
+
+.theme-btn.theme-active {
+  border-color: var(--secondary);
+  border-width: 3px;
+  box-shadow: 0 0 0 3px rgba(15,118,110,0.15);
+}
+
 .theme-preview {
   width: 100%;
   height: 64px;
@@ -347,6 +428,7 @@ html.dark .nav-btn.active .nav-icon img {
   background-position: center;
   background-color: var(--bg);
 }
+
 .theme-label {
   font-size: 0.7rem;
   font-weight: 700;
@@ -362,9 +444,7 @@ html.dark .nav-btn.active .nav-icon img {
   margin-bottom: 12px;
 }
 
-.quran-nav select {
-  flex: 1;
-}
+.quran-nav select { flex: 1; }
 
 .ayah-text {
   font-family: 'KFGQPC Hafs', serif;
@@ -425,7 +505,7 @@ html.dark .nav-btn.active .nav-icon img {
   align-items: center;
   justify-content: center;
   direction: ltr;
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.65s ease, transform 0.65s ease;
 }
 
 #splashScreen.hide {
@@ -438,7 +518,7 @@ html.dark .nav-btn.active .nav-icon img {
   width: 110px;
   height: 110px;
   border-radius: 28px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,162,77,0.15);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,162,77,0.2);
   margin-bottom: 28px;
   animation: splashPop 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
 }
@@ -509,13 +589,13 @@ html.dark .nav-btn.active .nav-icon img {
   width: 0;
   border-right: 2px solid #C9A24D;
   animation:
-    typingAnim 2s steps(30, end) 1s forwards,
-    blinkCursor 0.7s step-end 1s 5;
+    typingAnim 2.2s steps(30, end) 1s forwards,
+    blinkCursor 0.6s step-end 1s 6;
 }
 
 @keyframes typingAnim {
-  0%   { width: 0; }
-  100% { width: 230px; }
+  from { width: 0; }
+  to   { width: 230px; }
 }
 
 @keyframes blinkCursor {
@@ -524,13 +604,13 @@ html.dark .nav-btn.active .nav-icon img {
 }
 
 @keyframes splashPop {
-  0%   { opacity: 0; transform: scale(0.6); }
-  100% { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 @keyframes splashFadeUp {
-  0%   { opacity: 0; transform: translateY(16px); }
-  100% { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes splashDot {
@@ -539,32 +619,26 @@ html.dark .nav-btn.active .nav-icon img {
 }
 
 /* =========================
-   Rate Us (Card + Modals)
-   Uses existing tokens/colors
+   Rate Us
    ========================= */
-
-/* Rate card (matches your card style but clickable) */
 .rate-card {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 14px;
+  padding: 14px;
   border-radius: 14px;
   border: 1px solid var(--border);
-  background: rgba(255,255,255,0.75);
-  position: relative;
+  background: var(--card-bg);
   cursor: pointer;
-  z-index: 1;
-}
-
-html.dark .rate-card {
-  background: rgba(30,41,59,0.75);
+  transition: transform 0.15s, box-shadow 0.2s;
 }
 
 .rate-card:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+  box-shadow: var(--shadow-md);
 }
+
+.rate-card:active { transform: scale(0.98); }
 
 .rate-card .card-left {
   width: 44px;
@@ -578,25 +652,13 @@ html.dark .rate-card {
   flex: 0 0 44px;
 }
 
-.rate-card .card-title {
-  font-weight: 800;
-  font-size: 0.95rem;
-}
+.rate-card .card-title   { font-weight: 800; font-size: 0.95rem; }
+.rate-card .card-subtitle { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+.rate-card .card-arrow   { margin-inline-start: auto; font-size: 22px; color: var(--text-muted); opacity: 0.8; }
 
-.rate-card .card-subtitle {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
-.rate-card .card-arrow {
-  margin-inline-start: auto;
-  font-size: 22px;
-  color: var(--text-muted);
-  opacity: 0.8;
-}
-
-/* Modal overlay + box */
+/* =========================
+   Modals
+   ========================= */
 .tt-modal {
   position: fixed;
   inset: 0;
@@ -606,6 +668,13 @@ html.dark .rate-card {
   justify-content: center;
   padding: 16px;
   z-index: 2000;
+  backdrop-filter: blur(3px);
+  animation: modalBgIn 0.2s ease both;
+}
+
+@keyframes modalBgIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .tt-modal.show { display: flex; }
@@ -616,8 +685,14 @@ html.dark .rate-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.22);
+  box-shadow: var(--shadow-lg);
   padding: 16px;
+  animation: modalBoxIn 0.25s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+@keyframes modalBoxIn {
+  from { opacity: 0; transform: scale(0.92) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .tt-modal-header {
@@ -641,8 +716,10 @@ html.dark .rate-card {
   border-radius: 12px;
   cursor: pointer;
   font-weight: 800;
+  transition: background 0.2s, transform 0.15s;
 }
 
+.tt-icon-btn:active { transform: scale(0.9); }
 html.dark .tt-icon-btn { background: rgba(255,255,255,0.06); }
 
 /* Stars */
@@ -661,17 +738,17 @@ html.dark .tt-icon-btn { background: rgba(255,255,255,0.06); }
   font-size: 22px;
   cursor: pointer;
   text-align: center;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
 
-html.dark .tt-star {
-  background: rgba(201,162,77,0.05);
-}
+.tt-star:active { transform: scale(0.9); }
 
 .tt-star.active {
   border-color: rgba(201,162,77,0.6);
   background: rgba(201,162,77,0.14);
-  color: var(--accent);
 }
+
+html.dark .tt-star { background: rgba(201,162,77,0.05); }
 
 /* Inputs inside modal */
 .tt-modal-box input,
@@ -680,16 +757,23 @@ html.dark .tt-star {
   margin-top: 10px;
   padding: 0.65rem 0.8rem;
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   font-family: inherit;
   font-size: 0.95rem;
   background: transparent;
   color: var(--text-main);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.tt-modal-box input:focus,
+.tt-modal-box textarea:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(15,118,110,0.12);
 }
 
 .tt-modal-box textarea { min-height: 90px; resize: vertical; }
 
-/* Modal actions */
 .tt-actions {
   display: flex;
   gap: 10px;
@@ -699,31 +783,10 @@ html.dark .tt-star {
 .tt-actions .btn { flex: 1; }
 
 /* Thank you modal */
-.tt-thanks,
-html[dir="rtl"] .tt-modal-box.tt-thanks,
-html[dir="ltr"] .tt-modal-box.tt-thanks {
-  text-align: center;
-}
-
-.tt-thanks .tt-thanks-icon {
-  font-size: 44px;
-  margin: 8px 0 6px;
-  display: block;
-}
-
-.tt-thanks-stars {
-  font-size: 1.5rem;
-  letter-spacing: 3px;
-  margin: 4px 0 8px;
-  display: block;
-}
-
-.tt-thanks p {
-  margin-top: 4px;
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
+.tt-thanks { text-align: center; }
+.tt-thanks .tt-thanks-icon { font-size: 44px; margin: 8px 0 6px; display: block; }
+.tt-thanks-stars { font-size: 1.5rem; letter-spacing: 3px; margin: 4px 0 8px; display: block; }
+.tt-thanks p { margin-top: 4px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
 
 html[dir="rtl"] .tt-modal-box { direction: rtl; text-align: right; }
 html[dir="ltr"] .tt-modal-box { direction: ltr; text-align: left; }
