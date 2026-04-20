@@ -7,6 +7,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>متتبع التحفيظ | Tahfidh Tracker</title>
+  <!-- Preload critical resources to speed up app load (reduces Android splash time) -->
+  <link rel="preload" href="css/style.css" as="style" />
+  <link rel="preload" href="js/js/db.js" as="script" />
+  <link rel="preload" href="js/js/home.js" as="script" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/svg+xml" href="assets_icons/appicon.svg" />
   <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
@@ -91,25 +95,38 @@
   <script>
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 
-    // Only show splash on first visit — not when navigating back
+    // ── Backup reminder on home load ──────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function() {
+      checkBackupReminder();
+    });
+
+    // ── Splash screen — show once per session ─────────────────────────────
     (function () {
       const splash = document.getElementById('splashScreen');
       if (!splash) return;
 
       if (sessionStorage.getItem('splashShown')) {
-        // Already shown — keep hidden
         splash.style.display = 'none';
         return;
       }
 
-      // First visit — show it immediately before anything renders
+      // First visit — show splash
       splash.style.display = 'flex';
       sessionStorage.setItem('splashShown', '1');
 
+      // "Developed by Al Hudaa Program" = 30 chars
+      // typing starts at 1000ms, ~55ms per char = ~1650ms to finish
+      // + 1000ms pause after typing = total ~3650ms before fade
+      // We use 4500ms to give comfortable margin
+      const SPLASH_DURATION = 4500;  // ms — enough for full typing + pause
+      const FADE_DURATION   = 650;   // ms — fade out
+
       setTimeout(function () {
         splash.classList.add('hide');
-        setTimeout(function () { splash.style.display = 'none'; }, 650);
-      }, 2800);
+        setTimeout(function () {
+          splash.style.display = 'none';
+        }, FADE_DURATION);
+      }, SPLASH_DURATION);
     })();
   </script>
 </body>
