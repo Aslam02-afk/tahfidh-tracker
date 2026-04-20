@@ -24,7 +24,6 @@ function updateDarkIcon() {
   btn.innerHTML = `<img src="icons/${isDark ? 'night time icon' : 'day time icon'}.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="">`;
 }
 
-// Call on every page load
 initDarkMode();
 updateDarkIcon();
 
@@ -56,7 +55,6 @@ function applyTheme(theme) {
 function initTheme() {
   const saved = localStorage.getItem('appTheme') || 'none';
   applyTheme(saved);
-  // Mark active button in settings if on that page
   document.querySelectorAll('[data-theme]').forEach(btn => {
     btn.classList.toggle('theme-active', btn.dataset.theme === saved);
   });
@@ -71,6 +69,96 @@ function setTheme(theme) {
 }
 
 initTheme();
+
+// ===== Bottom Nav — auto inject on every page =====
+(function injectBottomNav() {
+  // Don't inject if already exists
+  if (document.querySelector('.bottom-nav')) return;
+
+  const page = location.pathname.split('/').pop() || 'index.html';
+
+  const nav = document.createElement('nav');
+  nav.className = 'bottom-nav';
+  nav.innerHTML = `
+    <button class="nav-btn ${page === 'index.html' || page === '' ? 'active' : ''}" onclick="location.href='index.html'">
+      <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="home">الرئيسية</div>
+    </button>
+    <button class="nav-btn ${page === 'quran.html' ? 'active' : ''}" onclick="location.href='quran.html'">
+      <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="quran">القرآن</div>
+    </button>
+    <button class="nav-btn ${page === 'settings.html' ? 'active' : ''}" onclick="location.href='settings.html'">
+      <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="settings">الإعدادات</div>
+    </button>
+  `;
+  document.body.appendChild(nav);
+})();
+
+// ===== Bottom Nav — inject on every page =====
+(function injectBottomNav() {
+  // Don't inject if already exists
+  if (document.querySelector('.bottom-nav')) return;
+
+  const page = window.location.pathname.split('/').pop() || 'index.html';
+
+  const nav = document.createElement('nav');
+  nav.className = 'bottom-nav';
+  nav.innerHTML = `
+    <button class="nav-btn ${page === 'index.html' || page === '' ? 'active' : ''}" onclick="location.href='index.html'">
+      <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="home">الرئيسية</div>
+    </button>
+    <button class="nav-btn ${page === 'quran.html' ? 'active' : ''}" onclick="location.href='quran.html'">
+      <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="quran">القرآن</div>
+    </button>
+    <button class="nav-btn ${page === 'settings.html' ? 'active' : ''}" onclick="location.href='settings.html'">
+      <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="settings">الإعدادات</div>
+    </button>
+  `;
+
+  // Insert before closing body tag
+  document.body.appendChild(nav);
+
+  // Apply active icon color for dark mode
+  updateDarkIcon();
+})();
+
+// ===== Bottom Nav — inject on every page =====
+(function injectBottomNav() {
+  // Don't inject if already exists in HTML
+  if (document.querySelector('.bottom-nav')) return;
+
+  const page = window.location.pathname.split('/').pop() || 'index.html';
+  const isHome     = page === 'index.html' || page === '';
+  const isQuran    = page === 'quran.html';
+  const isSettings = page === 'settings.html';
+
+  const nav = document.createElement('nav');
+  nav.className = 'bottom-nav';
+  nav.innerHTML = `
+    <button class="nav-btn ${isHome ? 'active' : ''}" onclick="location.href='index.html'">
+      <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="home">الرئيسية</div>
+    </button>
+    <button class="nav-btn ${isQuran ? 'active' : ''}" onclick="location.href='quran.html'">
+      <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="quran">القرآن</div>
+    </button>
+    <button class="nav-btn ${isSettings ? 'active' : ''}" onclick="location.href='settings.html'">
+      <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="settings">الإعدادات</div>
+    </button>
+  `;
+
+  document.body.appendChild(nav);
+
+  // Re-apply i18n to new nav elements if available
+  if (typeof applyI18n === 'function') applyI18n();
+})();
 
 // ===== Surah List =====
 const SURAHS = [
@@ -100,7 +188,6 @@ function surahSelect(id, selected) {
   return `<select id="${id}" class="form-input form-select"><option value="">${t('chooseSurah')}</option>${surahOptions(selected)}</select>`;
 }
 
-// Searchable surah input for record page (uses native <datalist>)
 function surahSearchInput(id, selected) {
   const listId = id + '_list';
   return `<div style="position:relative;">
