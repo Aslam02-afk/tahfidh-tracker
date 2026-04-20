@@ -107,7 +107,7 @@ body {
 /* -------- Main -------- */
 .main-content {
   padding: 1.25rem;
-  padding-bottom: 6rem;
+  padding-bottom: 8rem;
 }
 
 /* -------- Cards -------- */
@@ -317,8 +317,13 @@ textarea.form-input {
   text-align: center;
   font-size: 0.7rem;
   color: var(--text-muted);
-  margin-top: 2rem;
-  padding-bottom: 1rem;
+  padding: 0.5rem 1rem 1rem;
+}
+
+/* Hide footer on pages that have a bottom nav */
+.bottom-nav ~ .branding-footer,
+body:has(.bottom-nav) .branding-footer {
+  display: none;
 }
 
 /* -------- Responsive -------- */
