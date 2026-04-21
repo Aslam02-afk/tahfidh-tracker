@@ -192,9 +192,185 @@ function getSurahType(num) {
   return s ? s[4] : '';
 }
 
-// ── Render a page ─────────────────────────────────────────────────────────
-function renderPage(pageNum) {
+// ── Strip end-of-ayah marker glyph from font text ────────────────────────
+// The KFGQPC Hafs Smart font encodes ayah-end markers as the very last
+// PUA character in each verse string (preceded by U+200F RTL mark).
+// Strip it so the clean Quranic text is displayed without duplicate markers.
+function stripAyahMarker(text) {
+  return text.replace(/[\u200f\s]*([\ue000-\uf8ff])$/, '').trimEnd();
+}
+
+// ── Build page HTML (without touching DOM) ────────────────────────────────
+function buildPageHTML(pageNum) {
+  const verses = quranData[pageNum];
+  if (!verses || !verses.length) {
+    return '<div style="text-align:center;color:var(--mushaf-muted);padding:40px;">لا توجد بيانات لهذه الصفحة</div>';
+  }
+
+  const juz  = getJuz(pageNum);
+  const surahsOnPage = [...new Set(verses.map(v => v.sura_no || v.surah_number || v.chapter || v.s))];
+  const firstSurah = surahsOnPage[0];
+  const lastSurah  = surahsOnPage[surahsOnPage.length - 1];
+  const headerName = firstSurah === lastSurah
+    ? `سورة ${getSurahName(firstSurah)}`
+    : `${getSurahName(firstSurah)} – ${getSurahName(lastSurah)}`;
+
+  let html = `
+    <div class="mushaf-page">
+      <div class="corner-bl"></div>
+      <div class="corner-br"></div>
+      <div class="mushaf-page-inner">
+        <div class="mushaf-header">
+          <span>الجزء ${juz}</span>
+          <span class="hizb">۝</span>
+          <span>${headerName}</span>
+        </div>
+        <div class="mushaf-lines">
+  `;
+
+  let lastSurahNum = null;
+  let lineBuffer   = '';
+
+  for (const v of verses) {
+    const surahNum = v.sura_no       || v.surah_number || v.chapter || v.s;
+    const ayahNum  = v.aya_no        || v.verse_number || v.verse   || v.v || v.ayah;
+    const rawText  = v.aya_text      || v.text_uthmani || v.text    || v.t || '';
+    const text     = stripAyahMarker(rawText);
+
+    if (surahNum !== lastSurahNum) {
+      if (lineBuffer) {
+        html += `<span class="mushaf-line">${lineBuffer}</span>`;
+        lineBuffer = '';
+      }
+      const surahName = getSurahName(surahNum);
+      const surahType = getSurahType(surahNum);
+      const surahMeta = SURAH_META.find(x => x[0] === surahNum);
+      const ayahCount = surahMeta ? surahMeta[3] : '';
+
+      html += `
+        <div class="surah-frame">
+          <div class="surah-frame-inner">
+            <div class="surah-name">سورة ${surahName}</div>
+            <div class="surah-info-small">${surahType} · ${ayahCount} آية</div>
+          </div>
+        </div>
+      `;
+      if (!NO_BASMALAH.includes(surahNum) && ayahNum === 1) {
+        html += `<div class="basmalah">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</div>`;
+      }
+      lastSurahNum = surahNum;
+    }
+
+    lineBuffer += text + ' ';
+  }
+
+  if (lineBuffer) {
+    html += `<span class="mushaf-line">${lineBuffer}</span>`;
+  }
+
+  html += `
+        </div>
+        <div class="mushaf-footer">${pageNum}</div>
+      </div>
+    </div>
+  `;
+  return html;
+}
+
+// ── Animated page transition ───────────────────────────────────────────────
+let _animating = false;
+
+function renderPage(pageNum, direction) {
   pageNum = Math.max(1, Math.min(604, pageNum));
+  currentPage = pageNum;
+  localStorage.setItem('quranPage', pageNum);
+
+  document.getElementById('pageNum').textContent = pageNum;
+  document.getElementById('btnPrev').disabled = pageNum <= 1;
+  document.getElementById('btnNext').disabled = pageNum >= 604;
+  document.getElementById('loadingState').style.display = 'none';
+  _updateSelectorLabels(pageNum);
+
+  const scroll    = document.getElementById('mushafScroll');
+  const container = document.getElementById('mushafPage');
+  container.style.display = 'block';
+
+  const newHTML = buildPageHTML(pageNum);
+
+  // No animation on first load or jump navigation
+  if (!direction || !container.innerHTML.trim()) {
+    container.innerHTML = newHTML;
+    scroll.scrollTo({ top: 0, behavior: 'instant' });
+    return;
+  }
+
+  if (_animating) return;
+  _animating = true;
+
+  // direction: 1 = going forward (next), -1 = going backward (prev)
+  // Current page slides OUT to the left if going forward, right if going back
+  const outX = direction === 1 ? '-100%' : '100%';
+  const inX  = direction === 1 ?  '100%' : '-100%';
+
+  // Create new page element positioned off-screen
+  const next = document.createElement('div');
+  next.style.cssText = `
+    position: absolute; inset: 0;
+    padding: 12px; padding-bottom: 5rem;
+    overflow-y: auto;
+    transform: translateX(${inX});
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    will-change: transform;
+  `;
+  next.innerHTML = newHTML;
+
+  // Wrap scroll area in relative container if not already
+  scroll.style.position = 'relative';
+  scroll.style.overflow  = 'hidden';
+  scroll.appendChild(next);
+
+  // Slide out current content
+  container.style.transition  = 'transform 0.35s cubic-bezier(0.4,0,0.2,1)';
+  container.style.willChange  = 'transform';
+  container.style.position    = 'absolute';
+  container.style.inset       = '0';
+  container.style.padding     = '12px';
+  container.style.paddingBottom = '5rem';
+  container.style.overflowY  = 'auto';
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      container.style.transform = `translateX(${outX})`;
+      next.style.transform      = 'translateX(0)';
+
+      next.addEventListener('transitionend', () => {
+        // Swap: replace container content, reset styles
+        container.innerHTML     = newHTML;
+        container.style.transform   = '';
+        container.style.transition  = '';
+        container.style.position    = '';
+        container.style.inset       = '';
+        container.style.padding     = '';
+        container.style.paddingBottom = '';
+        container.style.overflowY  = '';
+        container.style.willChange  = '';
+        scroll.style.position = '';
+        scroll.style.overflow  = '';
+        next.remove();
+        scroll.scrollTo({ top: 0, behavior: 'instant' });
+        _animating = false;
+      }, { once: true });
+    });
+  });
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────
+function goPage(n, direction) {
+  if (n < 1 || n > 604 || _animating) return;
+  const dir = direction !== undefined ? direction : (n > currentPage ? 1 : -1);
+  renderPage(n, dir);
+  document.getElementById('gotoBar').classList.remove('show');
+}
   currentPage = pageNum;
   localStorage.setItem('quranPage', pageNum);
 
@@ -455,17 +631,16 @@ document.addEventListener('touchstart', e => {
 document.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - touchStartX;
   const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
-  // Only horizontal swipe (not scroll)
-  if (Math.abs(dx) > 60 && dy < 80) {
-    if (dx < 0) goPage(currentPage + 1); // swipe left = next
-    else         goPage(currentPage - 1); // swipe right = prev
+  if (Math.abs(dx) > 50 && dy < 80) {
+    if (dx < 0) goPage(currentPage + 1, 1);   // swipe left  = next page
+    else         goPage(currentPage - 1, -1);  // swipe right = prev page
   }
 }, { passive: true });
 
 // ── Keyboard navigation ───────────────────────────────────────────────────
 document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowLeft')  goPage(currentPage + 1);
-  if (e.key === 'ArrowRight') goPage(currentPage - 1);
+  if (e.key === 'ArrowLeft')  goPage(currentPage + 1, 1);
+  if (e.key === 'ArrowRight') goPage(currentPage - 1, -1);
 });
 
 // ── Init ──────────────────────────────────────────────────────────────────
