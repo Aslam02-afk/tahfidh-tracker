@@ -286,9 +286,8 @@ function renderPage(pageNum) {
       lastSurahNum = surahNum;
     }
 
-    // Build line text with ayah marker
-    const marker = `<span class="ayah-marker">﴿${toArabicNum(ayahNum)}﴾</span>`;
-    lineBuffer += text + ' ' + marker + ' ';
+    // Build line text — no extra marker, font already includes verse end marks
+    lineBuffer += text + ' ';
   }
 
   // Flush remaining buffer
@@ -309,6 +308,23 @@ function renderPage(pageNum) {
 
   // Scroll to top
   document.getElementById('mushafScroll').scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Update selector bar labels
+  _updateSelectorLabels(pageNum);
+}
+
+function _updateSelectorLabels(pageNum) {
+  const juzNum = getJuz(pageNum);
+  // Find which surah starts on or before this page
+  let currentSurah = SURAH_META[0];
+  for (const s of SURAH_META) {
+    if (s[2] <= pageNum) currentSurah = s;
+    else break;
+  }
+  const surahLabel = document.getElementById('currentSurahLabel');
+  const juzLabel   = document.getElementById('currentJuzLabel');
+  if (surahLabel) surahLabel.textContent = currentSurah[1];
+  if (juzLabel)   juzLabel.textContent   = 'الجزء ' + juzNum;
 }
 
 // ── Arabic numerals ───────────────────────────────────────────────────────
@@ -341,7 +357,58 @@ function doGoto() {
   }
 }
 
-// ── Surah modal ───────────────────────────────────────────────────────────
+// ── Juz metadata ─────────────────────────────────────────────────────────
+const JUZ_META = [
+  [1,  'الجزء الأول',     1],   [2,  'الجزء الثاني',    22],
+  [3,  'الجزء الثالث',   42],   [4,  'الجزء الرابع',    62],
+  [5,  'الجزء الخامس',   82],   [6,  'الجزء السادس',   102],
+  [7,  'الجزء السابع',  121],   [8,  'الجزء الثامن',   142],
+  [9,  'الجزء التاسع',  162],   [10, 'الجزء العاشر',   182],
+  [11, 'الجزء الحادي عشر', 201],[12, 'الجزء الثاني عشر', 222],
+  [13, 'الجزء الثالث عشر', 242],[14, 'الجزء الرابع عشر', 262],
+  [15, 'الجزء الخامس عشر', 282],[16, 'الجزء السادس عشر', 302],
+  [17, 'الجزء السابع عشر', 322],[18, 'الجزء الثامن عشر', 342],
+  [19, 'الجزء التاسع عشر', 362],[20, 'الجزء العشرون',   382],
+  [21, 'الجزء الحادي والعشرون', 402],[22, 'الجزء الثاني والعشرون', 422],
+  [23, 'الجزء الثالث والعشرون', 442],[24, 'الجزء الرابع والعشرون', 462],
+  [25, 'الجزء الخامس والعشرون', 482],[26, 'الجزء السادس والعشرون', 502],
+  [27, 'الجزء السابع والعشرون', 522],[28, 'الجزء الثامن والعشرون', 542],
+  [29, 'الجزء التاسع والعشرون', 562],[30, 'الجزء الثلاثون',        582],
+];
+
+function openJuzModal() {
+  buildJuzList(JUZ_META);
+  document.getElementById('juzModal').classList.add('show');
+  document.getElementById('juzSearch').value = '';
+  document.getElementById('juzSearch').focus();
+}
+
+function closeJuzModal() {
+  document.getElementById('juzModal').classList.remove('show');
+}
+
+function buildJuzList(list) {
+  const container = document.getElementById('juzList');
+  container.innerHTML = list.map(j => `
+    <div class="surah-modal-item" onclick="goJuz(${j[2]}, ${j[0]})">
+      <div class="snum">${j[0]}</div>
+      <div class="sname">${j[1]}</div>
+      <div class="spage">ص ${j[2]}</div>
+    </div>
+  `).join('');
+}
+
+function filterJuz(q) {
+  const filtered = JUZ_META.filter(j =>
+    j[1].includes(q) || String(j[0]).includes(q)
+  );
+  buildJuzList(filtered);
+}
+
+function goJuz(page, juzNum) {
+  closeJuzModal();
+  goPage(page);
+}
 function openSurahModal() {
   buildSurahList(SURAH_META);
   document.getElementById('surahModal').classList.add('show');
