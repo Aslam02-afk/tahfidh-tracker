@@ -145,7 +145,7 @@ async function loadQuranData() {
     // Group by page_number
     pagesByNum = {};
     for (const v of verses) {
-      const pg = v.page_number || v.page || v.p;
+      const pg = v.page || v.page_number || v.p;
       if (!pg) continue;
       if (!pagesByNum[pg]) pagesByNum[pg] = [];
       pagesByNum[pg].push(v);
@@ -218,7 +218,7 @@ function renderPage(pageNum) {
   const hizb = getHizb(pageNum);
 
   // Get unique surahs on this page
-  const surahsOnPage = [...new Set(verses.map(v => v.surah_number || v.chapter || v.s))];
+  const surahsOnPage = [...new Set(verses.map(v => v.sura_no || v.surah_number || v.chapter || v.s))];
 
   // Header surah name (first surah on page)
   const firstSurah = surahsOnPage[0];
@@ -250,9 +250,9 @@ function renderPage(pageNum) {
   let lineCount    = 0;
 
   for (const v of verses) {
-    const surahNum  = v.surah_number || v.chapter || v.s;
-    const ayahNum   = v.verse_number  || v.verse   || v.v || v.ayah;
-    const text      = v.text_uthmani  || v.text     || v.t || '';
+    const surahNum  = v.sura_no       || v.surah_number || v.chapter || v.s;
+    const ayahNum   = v.aya_no        || v.verse_number || v.verse   || v.v || v.ayah;
+    const text      = v.aya_text      || v.text_uthmani || v.text    || v.t || '';
 
     // New surah starts on this page
     if (surahNum !== lastSurahNum) {

@@ -29,9 +29,10 @@ updateDarkIcon();
 
 // ===== Theme System =====
 const THEME_FILES = {
-  'arabic': 'themes/arabic-patterns.svg',
-  'flower':  'themes/flower theme.svg',
-  'bg':      'themes/BG.svg'
+  'green':  'themes/green_theme.svg',
+  'pink':   'themes/Pink_theme.svg',
+  'purple': 'themes/puple_theme.svg',
+  'bg':     'themes/BG.svg'
 };
 
 function applyTheme(theme) {
@@ -69,63 +70,6 @@ function setTheme(theme) {
 }
 
 initTheme();
-
-// ===== Bottom Nav — auto inject on every page =====
-(function injectBottomNav() {
-  // Don't inject if already exists
-  if (document.querySelector('.bottom-nav')) return;
-
-  const page = location.pathname.split('/').pop() || 'index.html';
-
-  const nav = document.createElement('nav');
-  nav.className = 'bottom-nav';
-  nav.innerHTML = `
-    <button class="nav-btn ${page === 'index.html' || page === '' ? 'active' : ''}" onclick="location.href='index.html'">
-      <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="home">الرئيسية</div>
-    </button>
-    <button class="nav-btn ${page === 'quran.html' ? 'active' : ''}" onclick="location.href='quran.html'">
-      <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="quran">القرآن</div>
-    </button>
-    <button class="nav-btn ${page === 'settings.html' ? 'active' : ''}" onclick="location.href='settings.html'">
-      <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="settings">الإعدادات</div>
-    </button>
-  `;
-  document.body.appendChild(nav);
-})();
-
-// ===== Bottom Nav — inject on every page =====
-(function injectBottomNav() {
-  // Don't inject if already exists
-  if (document.querySelector('.bottom-nav')) return;
-
-  const page = window.location.pathname.split('/').pop() || 'index.html';
-
-  const nav = document.createElement('nav');
-  nav.className = 'bottom-nav';
-  nav.innerHTML = `
-    <button class="nav-btn ${page === 'index.html' || page === '' ? 'active' : ''}" onclick="location.href='index.html'">
-      <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="home">الرئيسية</div>
-    </button>
-    <button class="nav-btn ${page === 'quran.html' ? 'active' : ''}" onclick="location.href='quran.html'">
-      <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="quran">القرآن</div>
-    </button>
-    <button class="nav-btn ${page === 'settings.html' ? 'active' : ''}" onclick="location.href='settings.html'">
-      <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="settings">الإعدادات</div>
-    </button>
-  `;
-
-  // Insert before closing body tag
-  document.body.appendChild(nav);
-
-  // Apply active icon color for dark mode
-  updateDarkIcon();
-})();
 
 // ===== Bottom Nav — inject on every page =====
 (function injectBottomNav() {
