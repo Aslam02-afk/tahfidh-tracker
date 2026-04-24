@@ -101,9 +101,7 @@ function getSurahType(num) {
   return s ? s[4] : '';
 }
 
-function stripAyahMarker(text) {
-  return text.replace(/[\u200f\s]*([\ue000-\uf8ff\u06dd])$/, '').trimEnd();
-}
+function stripAyahMarker(text) { return text; } // keep font markers intact
 
 // ── Load data ─────────────────────────────────────────────────────────────
 async function loadQuranData() {
