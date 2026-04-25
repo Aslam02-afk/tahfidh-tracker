@@ -61,7 +61,7 @@
 
     /* ── Page navigator ── */
     .page-nav {
-      background: var(--primary, #0D2C54);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -72,7 +72,7 @@
       gap: 8px;
     }
 
-    html.dark .page-nav { background: #0D2C54; }
+    html.dark .page-nav { background: linear-gradient(135deg, #0D2C54, #0F766E); }
 
     .page-nav-btn {
       background: rgba(201,162,77,0.15);
@@ -153,73 +153,22 @@
       padding-bottom: 5rem;
     }
 
-    /* ── Mushaf page ── */
+    /* ── Mushaf page — clean, no frame ── */
     .mushaf-page {
       background: var(--mushaf-bg);
-      border-radius: 4px;
-      border: 1.5px solid var(--mushaf-border);
-      box-shadow:
-        0 0 0 6px rgba(201,162,77,0.08),
-        0 8px 32px rgba(0,0,0,0.5);
       max-width: 480px;
       margin: 0 auto;
       position: relative;
-      overflow: hidden;
     }
 
-    /* Decorative corner ornaments */
-    .mushaf-page::before,
-    .mushaf-page::after {
-      content: '';
-      position: absolute;
-      width: 24px;
-      height: 24px;
-      border-color: var(--mushaf-border);
-      border-style: solid;
-      opacity: 0.6;
-    }
-
-    .mushaf-page::before {
-      top: 6px;
-      right: 6px;
-      border-width: 2px 2px 0 0;
-      border-radius: 0 4px 0 0;
-    }
-
-    .mushaf-page::after {
-      top: 6px;
-      left: 6px;
-      border-width: 2px 0 0 2px;
-      border-radius: 4px 0 0 0;
-    }
+    .mushaf-page::before, .mushaf-page::after { display: none; }
 
     .mushaf-page-inner {
-      padding: 20px 18px 16px;
+      padding: 12px 14px 16px;
       position: relative;
     }
 
-    /* Bottom corner ornaments via JS-injected divs */
-    .corner-bl, .corner-br {
-      position: absolute;
-      width: 24px;
-      height: 24px;
-      border-color: var(--mushaf-border);
-      border-style: solid;
-      opacity: 0.6;
-      bottom: 6px;
-    }
-
-    .corner-bl {
-      left: 6px;
-      border-width: 0 0 2px 2px;
-      border-radius: 0 0 0 4px;
-    }
-
-    .corner-br {
-      right: 6px;
-      border-width: 0 2px 2px 0;
-      border-radius: 0 0 4px 0;
-    }
+    .corner-bl, .corner-br { display: none; }
 
     /* ── Page header (Juz + Surah info) ── */
     .mushaf-header {
@@ -491,13 +440,13 @@
     .selector-bar {
       display: flex;
       align-items: center;
-      background: var(--secondary, #0F766E);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       padding: 8px 12px;
       gap: 0;
-      border-bottom: 1px solid rgba(201,162,77,0.3);
+      border-bottom: 1px solid rgba(201,162,77,0.4);
     }
 
-    html.dark .selector-bar { background: #0F766E; }
+    html.dark .selector-bar { background: linear-gradient(135deg, #0D2C54, #0F766E); }
 
     .selector-btn {
       flex: 1;
