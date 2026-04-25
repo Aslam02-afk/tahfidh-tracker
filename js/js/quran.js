@@ -177,8 +177,8 @@ function renderPage(pageNum, direction) {
   localStorage.setItem('quranPage', pageNum);
 
   document.getElementById('pageNum').textContent       = pageNum;
-  document.getElementById('btnPrev').disabled          = pageNum <= 1;
-  document.getElementById('btnNext').disabled          = pageNum >= 604;
+  document.getElementById('btnPrev').disabled = pageNum >= 604; // › goes forward
+  document.getElementById('btnNext').disabled = pageNum <= 1;   // ‹ goes back
   document.getElementById('loadingState').style.display = 'none';
   _updateSelectorLabels(pageNum);
 
@@ -310,14 +310,15 @@ document.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - touchStartX;
   const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
   if (Math.abs(dx) > 50 && dy < 80) {
-    if (dx < 0) goPage(currentPage + 1,  1);
-    else         goPage(currentPage - 1, -1);
+    // RTL: swipe left = prev page, swipe right = next page
+    if (dx < 0) goPage(currentPage - 1, -1);
+    else         goPage(currentPage + 1,  1);
   }
 }, { passive: true });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowLeft')  goPage(currentPage + 1,  1);
-  if (e.key === 'ArrowRight') goPage(currentPage - 1, -1);
+  if (e.key === 'ArrowLeft')  goPage(currentPage - 1, -1);
+  if (e.key === 'ArrowRight') goPage(currentPage + 1,  1);
 });
 
 // ── Init ──────────────────────────────────────────────────────────────────

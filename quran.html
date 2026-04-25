@@ -553,11 +553,11 @@
 
 <!-- Page Navigator -->
 <div class="page-nav">
-  <button class="page-nav-btn" id="btnPrev" onclick="goPage(currentPage - 1, -1)">›</button>
+  <button class="page-nav-btn" id="btnPrev" onclick="goPage(currentPage + 1, 1)">›</button>
   <div class="page-number-display" onclick="toggleGoto()">
     صفحة <span id="pageNum">1</span> <span style="color:#888;font-size:0.75rem;">/ 604</span>
   </div>
-  <button class="page-nav-btn" id="btnNext" onclick="goPage(currentPage + 1, 1)">‹</button>
+  <button class="page-nav-btn" id="btnNext" onclick="goPage(currentPage - 1, -1)">‹</button>
 </div>
 
 <!-- Go To Page Bar -->
