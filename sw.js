@@ -1,5 +1,5 @@
-// Service Worker – Tahfidh Tracker v54
-const CACHE = 'tahfidh-v54';
+// Service Worker – Tahfidh Tracker v55
+const CACHE = 'tahfidh-v55';
 
 // ── ESSENTIAL files only — must exist on server ───────────────────────────
 const PRECACHE = [
