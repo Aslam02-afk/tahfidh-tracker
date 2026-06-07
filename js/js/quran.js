@@ -171,10 +171,11 @@ function detectFields(verse) {
   return { pageField, surahField, ayahField, textField };
 }
 
-let FIELDS = null;
-let quranData    = null;
-let pagesByNum   = {};
-let BASMALAH_TEXT = '﷽'; // Unicode fallback — replaced with actual data text on load
+let FIELDS        = null;
+let currentPage   = parseInt(localStorage.getItem('quranPage') || '1');
+let quranData     = null;
+let pagesByNum    = {};
+let BASMALAH_TEXT = '﷽';
 
 // ── Load data ─────────────────────────────────────────────────────────────
 async function loadQuranData() {
