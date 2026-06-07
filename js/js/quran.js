@@ -129,8 +129,49 @@ const JUZ_PAGES = [
 // Al-Fatiha (1) Basmalah IS verse 1 — don't add separately
 const NO_BASMALAH = [1, 9];
 
-// ── State ─────────────────────────────────────────────────────────────────
-let currentPage  = parseInt(localStorage.getItem('quranPage') || '1');
+// ── Smart field name detector ─────────────────────────────────────────────
+function detectFields(verse) {
+  console.log('[Quran] Sample verse keys:', Object.keys(verse));
+  console.log('[Quran] Sample verse:', JSON.stringify(verse));
+
+  // Page field
+  const pageField =
+    'page_number' in verse ? 'page_number' :
+    'page'        in verse ? 'page'        :
+    'page_no'     in verse ? 'page_no'     :
+    'p'           in verse ? 'p'           : null;
+
+  // Surah field
+  const surahField =
+    'surah_number' in verse ? 'surah_number' :
+    'chapter'      in verse ? 'chapter'      :
+    'sura_no'      in verse ? 'sura_no'      :
+    'surah'        in verse ? 'surah'        :
+    'sura'         in verse ? 'sura'         :
+    's'            in verse ? 's'            : null;
+
+  // Ayah field
+  const ayahField =
+    'verse_number' in verse ? 'verse_number' :
+    'verse'        in verse ? 'verse'        :
+    'aya_no'       in verse ? 'aya_no'       :
+    'ayah'         in verse ? 'ayah'         :
+    'aya'          in verse ? 'aya'          :
+    'v'            in verse ? 'v'            : null;
+
+  // Text field
+  const textField =
+    'text_uthmani' in verse ? 'text_uthmani' :
+    'aya_text'     in verse ? 'aya_text'     :
+    'text'         in verse ? 'text'         :
+    'aya'          in verse ? 'aya'          :
+    't'            in verse ? 't'            : null;
+
+  console.log('[Quran] Detected fields → page:', pageField, '| surah:', surahField, '| ayah:', ayahField, '| text:', textField);
+  return { pageField, surahField, ayahField, textField };
+}
+
+let FIELDS = null;
 let quranData    = null;
 let pagesByNum   = {};
 let BASMALAH_TEXT = '﷽'; // Unicode fallback — replaced with actual data text on load
@@ -144,22 +185,24 @@ async function loadQuranData() {
     // Support both array and object formats
     const verses = Array.isArray(json) ? json : (json.verses || json.data || Object.values(json));
 
-    // Group by page_number
+    // Detect field names from first verse
+    FIELDS = detectFields(verses[0]);
+
+    // Group by page number using detected field
     pagesByNum = {};
     for (const v of verses) {
-      const pg = v.page_number || v.page || v.p;
+      const pg = FIELDS.pageField ? v[FIELDS.pageField] : null;
       if (!pg) continue;
       if (!pagesByNum[pg]) pagesByNum[pg] = [];
       pagesByNum[pg].push(v);
     }
 
-    // Extract real Basmalah from surah 1 verse 1 (correct Uthmani encoding)
+    // Extract real Basmalah from surah 1 verse 1
     const fatihaV1 = verses.find(v =>
-      (v.surah_number || v.chapter || v.s) === 1 &&
-      (v.verse_number  || v.verse   || v.v || v.ayah) === 1
+      v[FIELDS.surahField] === 1 && v[FIELDS.ayahField] === 1
     );
-    if (fatihaV1) {
-      BASMALAH_TEXT = fatihaV1.text_uthmani || fatihaV1.text || fatihaV1.t || BASMALAH_TEXT;
+    if (fatihaV1 && FIELDS.textField) {
+      BASMALAH_TEXT = fatihaV1[FIELDS.textField] || BASMALAH_TEXT;
     }
 
     quranData = pagesByNum;
@@ -229,7 +272,7 @@ function renderPage(pageNum) {
   const hizb = getHizb(pageNum);
 
   // Get unique surahs on this page
-  const surahsOnPage = [...new Set(verses.map(v => v.surah_number || v.chapter || v.s))];
+  const surahsOnPage = [...new Set(verses.map(v => FIELDS.surahField ? v[FIELDS.surahField] : null).filter(Boolean))];
 
   // Header surah name (first surah on page)
   const firstSurah = surahsOnPage[0];
@@ -261,9 +304,9 @@ function renderPage(pageNum) {
   let lineCount    = 0;
 
   for (const v of verses) {
-    const surahNum  = v.surah_number || v.chapter || v.s;
-    const ayahNum   = v.verse_number  || v.verse   || v.v || v.ayah;
-    const text      = v.text_uthmani  || v.text     || v.t || '';
+    const surahNum  = FIELDS.surahField ? v[FIELDS.surahField] : null;
+    const ayahNum   = FIELDS.ayahField  ? v[FIELDS.ayahField]  : null;
+    const text      = FIELDS.textField  ? v[FIELDS.textField]  : '';
 
     // New surah starts on this page
     if (surahNum !== lastSurahNum) {
