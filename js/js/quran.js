@@ -187,10 +187,16 @@ async function loadQuranData() {
     const verses = Array.isArray(json) ? json : (json.verses || json.data || Object.values(json));
 
     // Detect field names from first verse
-    FIELDS = detectFields(verses[0]);
+    FIELDS = {
+      pageField:  'page',
+      surahField: 'sura_no',
+      ayahField:  'aya_no',
+      textField:  'aya_text',
+      juzField:   'jozz',
+      surahArField: 'sura_name_ar'
+    };
 
-    // TEMP DEBUG — remove after fix
-    alert('Keys: ' + Object.keys(verses[0]).join(', ') + '\n\nFirst verse: ' + JSON.stringify(verses[0]).substring(0, 300));
+    // FIELDS set — ready to render
 
     // Group by page number using detected field
     pagesByNum = {};
@@ -272,18 +278,19 @@ function renderPage(pageNum) {
     return;
   }
 
-  const juz  = getJuz(pageNum);
+  // Get juz from first verse on page (comes directly from data)
+  const juz  = verses[0] ? (verses[0][FIELDS.juzField] || getJuz(pageNum)) : getJuz(pageNum);
   const hizb = getHizb(pageNum);
 
   // Get unique surahs on this page
   const surahsOnPage = [...new Set(verses.map(v => FIELDS.surahField ? v[FIELDS.surahField] : null).filter(Boolean))];
 
-  // Header surah name (first surah on page)
-  const firstSurah = surahsOnPage[0];
-  const lastSurah  = surahsOnPage[surahsOnPage.length - 1];
-  const headerName = firstSurah === lastSurah
-    ? `سورة ${getSurahName(firstSurah)}`
-    : `${getSurahName(firstSurah)} – ${getSurahName(lastSurah)}`;
+  // Header surah name from data
+  const firstSurahName = verses.find(v => v[FIELDS.surahField] === surahsOnPage[0])?.[FIELDS.surahArField] || getSurahName(surahsOnPage[0]);
+  const lastSurahName  = verses.find(v => v[FIELDS.surahField] === surahsOnPage[surahsOnPage.length-1])?.[FIELDS.surahArField] || getSurahName(surahsOnPage[surahsOnPage.length-1]);
+  const headerName = surahsOnPage[0] === surahsOnPage[surahsOnPage.length-1]
+    ? `سورة ${firstSurahName}`
+    : `${firstSurahName} – ${lastSurahName}`;
 
   // Build page HTML
   let html = `
@@ -321,16 +328,17 @@ function renderPage(pageNum) {
         lineCount++;
       }
 
-      const surahName = getSurahName(surahNum);
-      const surahType = getSurahType(surahNum);
-      const surahMeta = SURAH_META.find(x => x[0] === surahNum);
-      const ayahCount = surahMeta ? surahMeta[3] : '';
+      // Get surah name from data directly
+      const surahNameAr = v[FIELDS.surahArField] || getSurahName(surahNum);
+      const surahMeta   = SURAH_META.find(x => x[0] === surahNum);
+      const surahType   = surahMeta ? surahMeta[4] : '';
+      const ayahCount   = surahMeta ? surahMeta[3] : '';
 
       // Surah frame
       html += `
         <div class="surah-frame">
           <div class="surah-frame-inner">
-            <div class="surah-name">سورة ${surahName}</div>
+            <div class="surah-name">سورة ${surahNameAr}</div>
             <div class="surah-info-small">${surahType} · ${ayahCount} آية</div>
           </div>
         </div>
