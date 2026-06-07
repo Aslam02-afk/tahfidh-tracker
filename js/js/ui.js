@@ -29,10 +29,9 @@ updateDarkIcon();
 
 // ===== Theme System =====
 const THEME_FILES = {
-  'green':  'themes/green_theme.svg',
-  'pink':   'themes/Pink_theme.svg',
-  'purple': 'themes/puple_theme.svg',
-  'bg':     'themes/BG.svg'
+  'arabic': 'themes/arabic-patterns.svg',
+  'flower':  'themes/flower theme.svg',
+  'bg':      'themes/BG.svg'
 };
 
 function applyTheme(theme) {
@@ -70,6 +69,132 @@ function setTheme(theme) {
 }
 
 initTheme();
+
+// ===== Bottom Nav — auto inject on every page =====
+(function injectBottomNav() {
+  if (document.querySelector('.bottom-nav')) return;
+
+  const page = location.pathname.split('/').pop() || 'index.html';
+
+  const nav = document.createElement('nav');
+  nav.className = 'bottom-nav';
+  nav.innerHTML = `
+    <button class="nav-btn ${page === 'index.html' || page === '' ? 'active' : ''}" onclick="location.href='index.html'">
+      <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="home">الرئيسية</div>
+    </button>
+    <button class="nav-btn ${page === 'quran.html' ? 'active' : ''}" onclick="location.href='quran.html'">
+      <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="quran">القرآن</div>
+    </button>
+    <button class="nav-btn ${page === 'settings.html' ? 'active' : ''}" onclick="location.href='settings.html'">
+      <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="settings">الإعدادات</div>
+    </button>
+  `;
+  document.body.appendChild(nav);
+
+  // ── YouTube-style hide on scroll ──────────────────────────────────────
+  const THRESHOLD  = 8;    // px — ignore tiny scroll jitter
+  const NAV_HEIGHT = 64;   // px — height of nav bar
+
+  let lastScrollY   = window.scrollY;
+  let ticking       = false;
+  let navHidden     = false;
+
+  function updateNav() {
+    const currentScrollY = window.scrollY;
+    const delta = currentScrollY - lastScrollY;
+
+    // At the very top — always show
+    if (currentScrollY <= 10) {
+      showNav();
+      lastScrollY = currentScrollY;
+      ticking = false;
+      return;
+    }
+
+    // Scrolling DOWN past threshold → hide
+    if (delta > THRESHOLD && !navHidden) {
+      hideNav();
+    }
+    // Scrolling UP past threshold → show
+    else if (delta < -THRESHOLD && navHidden) {
+      showNav();
+    }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+  }
+
+  function hideNav() {
+    navHidden = true;
+    nav.style.transform = `translateY(${NAV_HEIGHT + 2}px)`;
+  }
+
+  function showNav() {
+    navHidden = false;
+    nav.style.transform = 'translateY(0)';
+  }
+
+  // Use requestAnimationFrame for smooth performance
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(updateNav);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Also handle scrollable divs inside the page (e.g. mushaf-scroll)
+  document.addEventListener('scroll', function(e) {
+    if (e.target !== window && e.target.scrollTop !== undefined) {
+      const el = e.target;
+      const delta = el.scrollTop - (el._lastScrollTop || 0);
+
+      if (el.scrollTop <= 10) {
+        showNav();
+      } else if (delta > THRESHOLD && !navHidden) {
+        hideNav();
+      } else if (delta < -THRESHOLD && navHidden) {
+        showNav();
+      }
+
+      el._lastScrollTop = el.scrollTop;
+    }
+  }, { passive: true, capture: true });
+
+})();
+
+// ===== Bottom Nav — inject on every page =====
+(function injectBottomNav() {
+  // Don't inject if already exists
+  if (document.querySelector('.bottom-nav')) return;
+
+  const page = window.location.pathname.split('/').pop() || 'index.html';
+
+  const nav = document.createElement('nav');
+  nav.className = 'bottom-nav';
+  nav.innerHTML = `
+    <button class="nav-btn ${page === 'index.html' || page === '' ? 'active' : ''}" onclick="location.href='index.html'">
+      <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="home">الرئيسية</div>
+    </button>
+    <button class="nav-btn ${page === 'quran.html' ? 'active' : ''}" onclick="location.href='quran.html'">
+      <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="quran">القرآن</div>
+    </button>
+    <button class="nav-btn ${page === 'settings.html' ? 'active' : ''}" onclick="location.href='settings.html'">
+      <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
+      <div class="nav-text" data-i18n="settings">الإعدادات</div>
+    </button>
+  `;
+
+  // Insert before closing body tag
+  document.body.appendChild(nav);
+
+  // Apply active icon color for dark mode
+  updateDarkIcon();
+})();
 
 // ===== Bottom Nav — inject on every page =====
 (function injectBottomNav() {

@@ -1,5 +1,5 @@
-// Service Worker – Tahfidh Tracker v55
-const CACHE = 'tahfidh-v55';
+// Service Worker – Tahfidh Tracker v46
+const CACHE = 'tahfidh-v46';
 
 // ── ESSENTIAL files only — must exist on server ───────────────────────────
 const PRECACHE = [
@@ -35,7 +35,6 @@ const OPTIONAL = [
   'manifest.json',
   'assets_icons/appicon.svg',
   'assets_icons/appicon-64.png',
-  'assets_icons/appicon-128.png',
   'assets_icons/appicon-192.png',
   'assets_icons/appicon-512.png',
   'icons/home icon.svg',
@@ -59,6 +58,7 @@ const OPTIONAL = [
   'icons/whatsapp icon.svg',
   'themes/Pink_theme.png',
   'themes/green_theme.png',
+  'themes/greenlight_theme.png',
   'themes/puple_theme.png',
   'kfgqpc_hafs_smart_data/hafs_smart_v8.json',
   'kfgqpc_hafs_smart_font/HafsSmart_08.ttf',
