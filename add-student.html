@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>إضافة طالب – Tahfidh Tracker</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="assets_icons/appicon.svg" />
   <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
   <link rel="manifest" href="manifest.json" />
 </head>
@@ -29,7 +30,7 @@
       <label class="form-label" data-i18n="gender">الجنس</label>
       <div style="display:flex; gap:10px;">
         <button type="button" id="genderMale" class="btn btn-primary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:0.6rem;" onclick="selectStudentGender('male')">
-          <img src="icons/male teacher icon.svg" style="width:24px; height:24px;" alt="">
+          <img src="icons/male teacher icon.svg" style="width:24px; height:24px; filter:brightness(0) invert(1);" alt="">
           <span data-i18n="male">ذكر</span>
         </button>
         <button type="button" id="genderFemale" class="btn btn-secondary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:0.6rem;" onclick="selectStudentGender('female')">
@@ -59,10 +60,10 @@
     <div class="form-group">
       <label class="form-label" data-i18n="courseLabel">المسار</label>
       <select id="course" class="form-input form-select">
-        <option value="hifdh" data-i18n="courseHifdh">حفظ</option>
-        <option value="talqin" data-i18n="courseTalqin">تلقين</option>
+        <option value="hifdh"    data-i18n="courseHifdh">حفظ</option>
+        <option value="talqin"   data-i18n="courseTalqin">تلقين</option>
         <option value="murajaah" data-i18n="courseMurajaah">مراجعة</option>
-        <option value="qaida" data-i18n="courseQaida">القاعدة</option>
+        <option value="qaida"    data-i18n="courseQaida">القاعدة</option>
       </select>
     </div>
     <div class="form-group">
@@ -90,17 +91,15 @@
       <textarea id="notes" class="form-input" rows="3" data-i18n-ph="notesPh" placeholder="أي معلومات إضافية..."></textarea>
     </div>
 
-    <!-- ══════════════════════════════════════
-         FEE SECTION (shown only if class has fees enabled)
-    ══════════════════════════════════════ -->
+    <!-- Fee Section -->
     <div id="studentFeeSection" style="display:none; border-top:2px solid var(--border); padding-top:16px; margin-top:8px;">
-      <div style="font-size:0.95rem; font-weight:800; margin-bottom:12px; color:var(--primary);">💰 إعدادات الرسوم</div>
-
+      <div style="font-size:0.95rem; font-weight:800; margin-bottom:12px; color:var(--primary);">
+        <img src="icons/fee icon.svg" style="width:18px;height:18px;vertical-align:middle;margin-left:6px;"> إعدادات الرسوم
+      </div>
       <div class="form-group">
         <label class="form-label">تاريخ بدء الرسوم</label>
         <input id="feeStartMonth" class="form-input" type="month" />
       </div>
-
       <div class="form-group">
         <label class="form-label" id="feeAmountLabel">مبلغ الرسوم لهذا الطالب</label>
         <div style="display:flex; align-items:center; gap:8px;">
