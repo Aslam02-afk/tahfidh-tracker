@@ -188,6 +188,9 @@ async function loadQuranData() {
     // Detect field names from first verse
     FIELDS = detectFields(verses[0]);
 
+    // TEMP DEBUG — remove after fix
+    alert('Keys: ' + Object.keys(verses[0]).join(', ') + '\n\nFirst verse: ' + JSON.stringify(verses[0]).substring(0, 300));
+
     // Group by page number using detected field
     pagesByNum = {};
     for (const v of verses) {
