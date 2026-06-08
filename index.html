@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0D2C54" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -27,7 +27,7 @@
     <div class="splash-arabic">متتبع التحفيظ</div>
     <div class="splash-english">Tahfidh Tracker</div>
     <div class="splash-divider"></div>
-    <div class="splash-welcome">أهلاً بك في متتبع التحفيظ</div>
+    <div class="splash-welcome">أهلاً بك في متتبع التحفيظ 🌙</div>
     <div class="splash-loader">
       <div class="splash-dot"></div>
       <div class="splash-dot"></div>
@@ -71,22 +71,15 @@
     </button>
   </main>
 
-  <nav class="bottom-nav">
-    <button class="nav-btn active">
-      <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="home">الرئيسية</div>
-    </button>
-    <button class="nav-btn" onclick="location.href='quran.html'">
-      <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="quran">القرآن</div>
-    </button>
-    <button class="nav-btn" onclick="location.href='settings.html'">
-      <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="settings">الإعدادات</div>
-    </button>
-  </nav>
-
-  <footer class="branding-footer" data-i18n="footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
+  <footer class="branding-footer">
+    <div id="watermark" style="
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      opacity: 0.7;
+      letter-spacing: 0.5px;
+      padding: 0.5rem 0 1rem;
+    "></div>
+  </footer>
 
   <script src="js/js/db.js"></script>
   <script src="js/js/i18n.js"></script>
@@ -98,6 +91,13 @@
     // ── Backup reminder on home load ──────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function() {
       checkBackupReminder();
+      // Dynamic watermark based on language
+      const wm = document.getElementById('watermark');
+      if (wm) {
+        wm.textContent = getLang() === 'en'
+          ? '⚡ Powered by AL HUDAA Program'
+          : '⚡ برعاية برنامج الهدى';
+      }
     });
 
     // ── Splash screen — show once per session ─────────────────────────────
