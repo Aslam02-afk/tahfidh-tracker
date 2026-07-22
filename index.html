@@ -91,6 +91,7 @@
     // ── Backup reminder on home load ──────────────────────────────────────
     document.addEventListener('DOMContentLoaded', function() {
       checkBackupReminder();
+      checkRatePrompt();
       // Dynamic watermark based on language
       const wm = document.getElementById('watermark');
       if (wm) {
@@ -129,5 +130,32 @@
       }, SPLASH_DURATION);
     })();
   </script>
+  <!-- Rate Prompt Modal -->
+  <div class="tt-modal" id="ratePromptModal" onclick="if(event.target===this) document.getElementById('ratePromptModal').classList.remove('show')">
+    <div class="tt-modal-box" style="text-align:center; max-width:360px;">
+      <div style="font-size:3rem; margin-bottom:8px;">⭐</div>
+      <div style="font-size:1.1rem; font-weight:900; color:var(--primary); margin-bottom:6px;">
+        هل أعجبك التطبيق؟
+      </div>
+      <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); margin-bottom:4px;">
+        Enjoying Tahfidh Tracker?
+      </div>
+      <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.6; margin:10px 0 18px;">
+        يسعدنا معرفة رأيك — تقييمك يساعدنا على التحسين المستمر<br>
+        <span style="font-size:0.78rem;">Your feedback helps us improve the app</span>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-secondary" style="flex:1;"
+          onclick="document.getElementById('ratePromptModal').classList.remove('show')">
+          لاحقاً / Later
+        </button>
+        <button class="btn btn-primary" style="flex:1;"
+          onclick="document.getElementById('ratePromptModal').classList.remove('show'); location.href='settings.html#rate'">
+          تقييم / Rate ⭐
+        </button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

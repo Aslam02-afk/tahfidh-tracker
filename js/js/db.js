@@ -61,12 +61,12 @@ function _tryEmergencyRestore() {
 
 // ── Show a notice when auto-restore happens ───────────────────────────────
 function _showRestoreNotice() {
-  // Delay to let the page render first
   setTimeout(function() {
-    const isAr = getLang && getLang() === 'ar';
-    const msg = isAr
-      ? '⚠️ تم استعادة بياناتك تلقائيًا من النسخة الاحتياطية.\nيُرجى تصدير نسخة احتياطية الآن من الإعدادات.'
-      : '⚠️ Your data was automatically restored from backup.\nPlease export a backup now from Settings.';
+    const msg =
+      '⚠️ تم استعادة بياناتك تلقائيًا من النسخة الاحتياطية.\n' +
+      'يُرجى تصدير نسخة احتياطية الآن من الإعدادات.\n\n' +
+      '⚠️ Your data was automatically restored from backup.\n' +
+      'Please export a backup now from Settings.';
     alert(msg);
   }, 1000);
 }
@@ -85,10 +85,11 @@ function checkBackupReminder() {
 
     localStorage.setItem(DB_REMIND_KEY, String(now));
 
-    const isAr = getLang && getLang() === 'ar';
-    const msg = isAr
-      ? '💾 تذكير: يُنصح بتصدير نسخة احتياطية من بياناتك أسبوعيًا.\nهل تريد الذهاب إلى الإعدادات الآن؟'
-      : '💾 Reminder: It is recommended to export a backup weekly.\nGo to Settings now?';
+    const msg =
+      '💾 تذكير: يُنصح بتصدير نسخة احتياطية من بياناتك أسبوعيًا.\n' +
+      'هل تريد الذهاب إلى الإعدادات الآن؟\n\n' +
+      '💾 Reminder: It is recommended to export a backup weekly.\n' +
+      'Go to Settings now?';
 
     if (confirm(msg)) {
       window.location.href = 'settings.html';
@@ -198,4 +199,40 @@ function getLastBackupTime() {
   const ts = localStorage.getItem(DB_BACKUP_TS);
   if (!ts) return null;
   return new Date(ts);
+}
+
+// ===== Rate App Prompt — once per version =====
+const APP_VERSION      = '1.3.0';
+const RATE_PROMPT_KEY  = 'tahfidh_rate_prompted_v';
+
+function checkRatePrompt() {
+  try {
+    // Only show on index.html (home page)
+    const page = location.pathname.split('/').pop() || 'index.html';
+    if (page !== 'index.html' && page !== '') return;
+
+    // Already prompted for this version
+    if (localStorage.getItem(RATE_PROMPT_KEY + APP_VERSION)) return;
+
+    // Only if there's actual data (real user)
+    const data = dbLoad();
+    if (!data.students.length && !data.records.length) return;
+
+    // Listen for page hide (app close / tab switch / navigate away)
+    window.addEventListener('pagehide', _showRatePrompt, { once: true });
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'hidden') _showRatePrompt();
+    }, { once: true });
+
+  } catch {}
+}
+
+function _showRatePrompt() {
+  try {
+    if (localStorage.getItem(RATE_PROMPT_KEY + APP_VERSION)) return;
+    localStorage.setItem(RATE_PROMPT_KEY + APP_VERSION, '1');
+    // Show beautiful HTML modal
+    const modal = document.getElementById('ratePromptModal');
+    if (modal) modal.classList.add('show');
+  } catch {}
 }
