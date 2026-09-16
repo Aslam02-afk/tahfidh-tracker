@@ -352,9 +352,9 @@ function renderPage(pageNum) {
       lastSurahNum = surahNum;
     }
 
-    // Build line text with ayah marker
-    const marker = `<span class="ayah-marker">﴿${toArabicNum(ayahNum)}﴾</span>`;
-    lineBuffer += text + ' ' + marker + ' ';
+    // aya_text already contains the ayah end marker embedded in the text
+    // No need to add a separate marker — just use text as-is
+    lineBuffer += text + ' ';
   }
 
   // Flush remaining buffer
