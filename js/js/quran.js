@@ -334,13 +334,13 @@ function renderPage(pageNum) {
       const surahType   = surahMeta ? surahMeta[4] : '';
       const ayahCount   = surahMeta ? surahMeta[3] : '';
 
-      // Surah frame
+      // Surah name — clean text, no box or border
       html += `
-        <div class="surah-frame">
-          <div class="surah-frame-inner">
-            <div class="surah-name">سورة ${surahNameAr}</div>
-            <div class="surah-info-small">${surahType} · ${ayahCount} آية</div>
-          </div>
+        <div style="text-align:center; margin:14px 0 6px; direction:rtl;">
+          <span style="font-family:'KFGQPC Hafs',serif; font-size:1.1rem; font-weight:700; color:var(--mushaf-header);">
+            ﴾ سورة ${surahNameAr} ﴿
+          </span>
+          <div style="font-size:0.68rem; color:var(--mushaf-muted); margin-top:3px;">${surahType} · ${ayahCount} آية</div>
         </div>
       `;
 
