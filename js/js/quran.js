@@ -442,7 +442,8 @@ function goSurah(page) {
   goPage(page);
 }
 
-// ── Swipe gestures ────────────────────────────────────────────────────────
+// ── Swipe gestures — RTL Arabic book direction ────────────────────────────
+// In an Arabic book: swipe RIGHT → next page (forward), swipe LEFT → prev page (back)
 let touchStartX = 0;
 let touchStartY = 0;
 
@@ -454,17 +455,18 @@ document.addEventListener('touchstart', e => {
 document.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - touchStartX;
   const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
-  // Only horizontal swipe (not scroll)
   if (Math.abs(dx) > 60 && dy < 80) {
-    if (dx < 0) goPage(currentPage + 1); // swipe left = next
-    else         goPage(currentPage - 1); // swipe right = prev
+    if (dx > 0) goPage(currentPage + 1); // swipe right = next page (Arabic forward)
+    else         goPage(currentPage - 1); // swipe left  = prev page (Arabic back)
   }
 }, { passive: true });
 
-// ── Keyboard navigation ───────────────────────────────────────────────────
+// ── Keyboard navigation — RTL ─────────────────────────────────────────────
+// ArrowRight = forward in Arabic book = next page
+// ArrowLeft  = backward in Arabic book = prev page
 document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowLeft')  goPage(currentPage + 1);
-  if (e.key === 'ArrowRight') goPage(currentPage - 1);
+  if (e.key === 'ArrowRight') goPage(currentPage + 1);
+  if (e.key === 'ArrowLeft')  goPage(currentPage - 1);
 });
 
 // ── Init ──────────────────────────────────────────────────────────────────
