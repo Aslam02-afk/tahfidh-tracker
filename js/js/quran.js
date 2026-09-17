@@ -373,6 +373,13 @@ function renderPage(pageNum) {
 
   container.innerHTML = html;
 
+  // Save last read page
+  saveLastRead(pageNum);
+
+  // Update bookmark button and page overlays
+  updateBookmarkBtn();
+  updatePageOverlay();
+
   // Scroll to top
   document.getElementById('mushafScroll').scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -468,6 +475,163 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') goPage(currentPage + 1);
   if (e.key === 'ArrowLeft')  goPage(currentPage - 1);
 });
+
+// ── Bookmarks ─────────────────────────────────────────────────────────────
+const BK_KEY       = 'quran_bookmarks';
+const LAST_READ_KEY = 'quran_last_read';
+
+function loadBookmarks() {
+  try { return JSON.parse(localStorage.getItem(BK_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveBookmarks(bks) {
+  localStorage.setItem(BK_KEY, JSON.stringify(bks));
+}
+
+function isBookmarked(page) {
+  return loadBookmarks().some(b => b.page === page);
+}
+
+function toggleBookmark() {
+  const bks = loadBookmarks();
+  const idx  = bks.findIndex(b => b.page === currentPage);
+  if (idx >= 0) {
+    // Remove bookmark
+    bks.splice(idx, 1);
+    saveBookmarks(bks);
+    showToast('تم حذف الإشارة | Bookmark removed');
+  } else {
+    // Add bookmark
+    const surahsOnPage = quranData[currentPage]
+      ? [...new Set(quranData[currentPage].map(v => v[FIELDS.surahArField] || ''))]
+      : [];
+    bks.unshift({
+      page: currentPage,
+      surah: surahsOnPage[0] || '',
+      time: new Date().toLocaleString('ar-SA')
+    });
+    saveBookmarks(bks);
+    showToast('تمت الإشارة | Bookmarked ✅');
+  }
+  updateBookmarkBtn();
+  updatePageOverlay();
+}
+
+function updateBookmarkBtn() {
+  const btn = document.getElementById('bkBtn');
+  if (!btn) return;
+  btn.classList.toggle('active', isBookmarked(currentPage));
+}
+
+function openBkModal() {
+  renderBkList();
+  document.getElementById('bkModal').classList.add('show');
+}
+
+function closeBkModal() {
+  document.getElementById('bkModal').classList.remove('show');
+}
+
+function renderBkList() {
+  const bks  = loadBookmarks();
+  const list = document.getElementById('bkList');
+  if (!bks.length) {
+    list.innerHTML = '<div class="bk-empty">📖 لا توجد إشارات مرجعية بعد<br><small>No bookmarks yet</small></div>';
+    return;
+  }
+  list.innerHTML = bks.map((b, i) => `
+    <div class="bk-item" onclick="goFromBookmark(${b.page})">
+      <div class="bk-pg">${b.page}</div>
+      <div class="bk-info">
+        <div class="bk-name">سورة ${b.surah || '—'}</div>
+        <div class="bk-time">${b.time}</div>
+      </div>
+      <button class="bk-del" onclick="event.stopPropagation(); deleteBookmark(${i})">🗑</button>
+    </div>
+  `).join('');
+}
+
+function deleteBookmark(idx) {
+  const bks = loadBookmarks();
+  bks.splice(idx, 1);
+  saveBookmarks(bks);
+  renderBkList();
+  updateBookmarkBtn();
+  updatePageOverlay();
+}
+
+function goFromBookmark(page) {
+  closeBkModal();
+  goPage(page);
+}
+
+// Long press to open bookmarks list
+let longPressTimer = null;
+document.addEventListener('touchstart', e => {
+  longPressTimer = setTimeout(() => {
+    openBkModal();
+  }, 600);
+}, { passive: true });
+
+document.addEventListener('touchend',   () => clearTimeout(longPressTimer), { passive: true });
+document.addEventListener('touchmove',  () => clearTimeout(longPressTimer), { passive: true });
+
+// ── Last read ─────────────────────────────────────────────────────────────
+function saveLastRead(page) {
+  localStorage.setItem(LAST_READ_KEY, String(page));
+}
+
+function getLastRead() {
+  return parseInt(localStorage.getItem(LAST_READ_KEY) || '0');
+}
+
+// ── Page overlay (bookmark ribbon + last read badge) ──────────────────────
+function updatePageOverlay() {
+  // Remove existing overlays
+  document.querySelectorAll('.bookmark-ribbon, .last-read-badge').forEach(el => el.remove());
+
+  const page = document.querySelector('.mushaf-page');
+  if (!page) return;
+
+  // Bookmark ribbon
+  if (isBookmarked(currentPage)) {
+    const ribbon = document.createElement('div');
+    ribbon.className = 'bookmark-ribbon';
+    ribbon.innerHTML = '<span class="bk-icon">🔖</span>';
+    ribbon.onclick = () => toggleBookmark();
+    page.appendChild(ribbon);
+  }
+
+  // Last read badge
+  if (getLastRead() === currentPage) {
+    const badge = document.createElement('div');
+    badge.className = 'last-read-badge';
+    badge.textContent = '📍 آخر قراءة | Last read';
+    page.appendChild(badge);
+  }
+}
+
+// ── Toast notification ────────────────────────────────────────────────────
+function showToast(msg) {
+  let toast = document.getElementById('quranToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'quranToast';
+    toast.style.cssText = `
+      position:fixed; bottom:90px; left:50%; transform:translateX(-50%);
+      background:rgba(13,44,84,0.92); color:#fff; padding:8px 20px;
+      border-radius:20px; font-size:0.82rem; font-weight:700;
+      z-index:9999; pointer-events:none; transition:opacity 0.3s;
+      white-space:nowrap; backdrop-filter:blur(4px);
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 2000);
+}
 
 // ── Init ──────────────────────────────────────────────────────────────────
 loadQuranData();
