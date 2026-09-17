@@ -295,15 +295,12 @@ function renderPage(pageNum) {
   // Build page HTML
   let html = `
     <div class="mushaf-page">
-      <div class="corner-bl"></div>
-      <div class="corner-br"></div>
       <div class="mushaf-page-inner">
 
-        <!-- Header -->
+        <!-- Header — Mushaf Madani style: surah name left, juz+hizb right -->
         <div class="mushaf-header">
-          <span>الجزء ${juz}</span>
-          <span class="hizb">۝</span>
-          <span>${headerName}</span>
+          <span class="mushaf-header-surah">${firstSurahName}</span>
+          <span class="mushaf-header-juz">الجزء ${juz}</span>
         </div>
 
         <div class="mushaf-lines">
@@ -334,13 +331,13 @@ function renderPage(pageNum) {
       const surahType   = surahMeta ? surahMeta[4] : '';
       const ayahCount   = surahMeta ? surahMeta[3] : '';
 
-      // Surah name — clean text, no box or border
+      // Surah frame with SVG — King Fahd Mushaf style
       html += `
-        <div style="text-align:center; margin:14px 0 6px; direction:rtl;">
-          <span style="font-family:'KFGQPC Hafs',serif; font-size:1.1rem; font-weight:700; color:var(--mushaf-header);">
-            ﴾ سورة ${surahNameAr} ﴿
-          </span>
-          <div style="font-size:0.68rem; color:var(--mushaf-muted); margin-top:3px;">${surahType} · ${ayahCount} آية</div>
+        <div class="surah-frame-wrap">
+          <img src="icons/surah-frame.svg" class="surah-frame-svg" alt="" />
+          <div class="surah-frame-text">
+            <div class="surah-name-arabic">سُورَةُ ${surahNameAr}</div>
+          </div>
         </div>
       `;
 

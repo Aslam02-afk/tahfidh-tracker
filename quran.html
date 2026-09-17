@@ -215,7 +215,65 @@
     }
 
     /* ── Page header — hidden ── */
-    .mushaf-header { display: none; }
+    .mushaf-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 6px 10px;
+      border-bottom: 1px solid rgba(201,162,77,0.25);
+      margin-bottom: 10px;
+      direction: rtl;
+    }
+
+    .mushaf-header-surah {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--mushaf-muted);
+      font-family: 'KFGQPC Hafs', serif;
+    }
+
+    .mushaf-header-juz {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--mushaf-muted);
+    }
+
+    /* ── Surah frame SVG ── */
+    .surah-frame-wrap {
+      position: relative;
+      text-align: center;
+      margin: 14px 0 8px;
+      direction: rtl;
+    }
+
+    .surah-frame-svg {
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .surah-frame-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      pointer-events: none;
+    }
+
+    .surah-name-arabic {
+      font-family: 'KFGQPC Hafs', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--mushaf-header);
+      text-align: center;
+      direction: rtl;
+      white-space: nowrap;
+    }
+
+    html.dark .surah-name-arabic { color: var(--mushaf-border); }
 
     /* ── Surah name frame ── */
     .surah-frame {
