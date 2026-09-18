@@ -238,42 +238,47 @@
       color: var(--mushaf-muted);
     }
 
-    /* ── Surah frame SVG ── */
+    /* ── Surah frame — 3 layered SVGs ── */
     .surah-frame-wrap {
       position: relative;
       text-align: center;
       margin: 14px 0 8px;
       direction: rtl;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .surah-frame-svg {
-      width: 100%;
-      max-width: 340px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
-
-    .surah-frame-text {
+    .surah-layer {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       width: 100%;
-      pointer-events: none;
+      max-width: 340px;
+      height: auto;
+      display: block;
     }
 
-    .surah-name-arabic {
-      font-family: 'KFGQPC Hafs', serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--mushaf-header);
-      text-align: center;
-      direction: rtl;
-      white-space: nowrap;
+    /* Frame is the base — sets the height of the container */
+    .surah-layer-frame {
+      position: relative;
+      top: auto;
+      left: auto;
+      transform: none;
     }
 
-    html.dark .surah-name-arabic { color: var(--mushaf-border); }
+    /* سورة label — upper portion of frame */
+    .surah-layer-label {
+      max-width: 80px;
+      top: 28%;
+    }
+
+    /* Surah name — center of frame */
+    .surah-layer-name {
+      max-width: 200px;
+      top: 62%;
+    }
 
     /* ── Surah name frame ── */
     .surah-frame {

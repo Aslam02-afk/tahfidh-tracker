@@ -331,13 +331,13 @@ function renderPage(pageNum) {
       const surahType   = surahMeta ? surahMeta[4] : '';
       const ayahCount   = surahMeta ? surahMeta[3] : '';
 
-      // Surah frame with SVG — King Fahd Mushaf style
+      // Surah frame — 3 layered SVGs: frame + سورة label + surah name
+      const surahSvgNum = String(surahNum).padStart(3, '0');
       html += `
         <div class="surah-frame-wrap">
-          <img src="icons/surah-frame.svg" class="surah-frame-svg" alt="" />
-          <div class="surah-frame-text">
-            <div class="surah-name-arabic">سُورَةُ ${surahNameAr}</div>
-          </div>
+          <img src="icons/surah-frame.svg" class="surah-layer surah-layer-frame" alt="" />
+          <img src="icons/surah-label.svg" class="surah-layer surah-layer-label" alt="سورة" />
+          <img src="icons/surah-${surahSvgNum}.svg" class="surah-layer surah-layer-name" alt="${surahNameAr}" />
         </div>
       `;
 

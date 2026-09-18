@@ -1,5 +1,5 @@
 // Service Worker – Tahfidh Tracker v55
-const CACHE = 'tahfidh-v55';
+const CACHE = 'tahfidh-v57';
 
 // ── ESSENTIAL files only — must exist on server ───────────────────────────
 const PRECACHE = [
@@ -52,6 +52,7 @@ const OPTIONAL = [
   'icons/share icon.svg',
   'icons/fee icon.svg',
   'icons/surah-frame.svg',
+  // Individual surah frames surah-001.svg to surah-114.svg cached on first access
   'icons/star icon.svg',
   'icons/comments icon.svg',
   'icons/printer icon.svg',
