@@ -94,7 +94,7 @@
       qs("pageTitle").textContent   = t('editClassTitle');
       qs("className").value         = h.name;
       qs("teacherName").value       = h.teacher || "";
-      qs("notes").value             = h.notes   || "";
+      if (qs("notes")) qs("notes").value = h.notes || "";
       qs("btnDelete").style.display = "block";
       if (h.cardTheme) selectCardTheme(h.cardTheme);
       if (h.teacherGender) selectGender(h.teacherGender);
@@ -143,7 +143,7 @@
       classTimeCustom: qs("classTime").value === 'custom' ? (qs("classTimeCustom").value || '') : '',
       cardTheme:       qs("cardTheme").value || 'none',
       teacherPhoto:    teacherPhotoBase64 || '',
-      notes:           qs("notes").value.trim(),
+      notes:           qs("notes") ? qs("notes").value.trim() : '',
       // Fee system
       feesEnabled:     feesEnabled,
       feePeriod:       feesEnabled ? qs("feePeriod").value       : '',
