@@ -74,6 +74,81 @@
     qs('teacherPhotoInput').value = '';
   };
 
+  // ── Class days ────────────────────────────────────────────────────────────
+  var selectedDays = []; // array of day numbers 0=Sun,1=Mon,...,6=Sat
+
+  window.toggleDay = function(day) {
+    var idx = selectedDays.indexOf(day);
+    if (idx >= 0) {
+      selectedDays.splice(idx, 1);
+    } else {
+      selectedDays.push(day);
+    }
+    updateDayButtons();
+  };
+
+  function updateDayButtons() {
+    for (var d = 0; d <= 6; d++) {
+      var btn = document.getElementById('day-' + d);
+      if (!btn) continue;
+      btn.className = 'btn ' + (selectedDays.includes(d) ? 'btn-primary' : 'btn-secondary');
+    }
+  }
+
+  // ── Class days ────────────────────────────────────────────────────────────
+  var selectedDays = []; // array of day numbers 0=Sun, 1=Mon ... 6=Sat
+
+  window.toggleDay = function(day) {
+    const idx = selectedDays.indexOf(day);
+    if (idx >= 0) {
+      selectedDays.splice(idx, 1);
+    } else {
+      selectedDays.push(day);
+    }
+    updateDayButtons();
+  };
+
+  function updateDayButtons() {
+    [0,1,2,3,4,5,6].forEach(function(d) {
+      var btn = document.getElementById('day-' + d);
+      if (!btn) return;
+      if (selectedDays.includes(d)) {
+        btn.className = 'btn btn-primary';
+        btn.style.background = '';
+        btn.style.color = '';
+      } else {
+        btn.className = 'btn btn-secondary';
+        btn.style.background = '';
+        btn.style.color = '';
+      }
+    });
+  }
+
+  // ── Class days ────────────────────────────────────────────────────────────
+  const ALL_DAYS = ['sat','sun','mon','tue','wed','thu','fri'];
+
+  function getSelectedDays() {
+    try { return JSON.parse(qs('classDays').value || '[]'); }
+    catch { return []; }
+  }
+
+  function setSelectedDays(days) {
+    qs('classDays').value = JSON.stringify(days);
+    ALL_DAYS.forEach(function(d) {
+      var btn = document.getElementById('day-' + d);
+      if (!btn) return;
+      btn.className = 'btn ' + (days.includes(d) ? 'btn-primary' : 'btn-secondary');
+    });
+  }
+
+  window.toggleDay = function(day) {
+    var days = getSelectedDays();
+    var idx  = days.indexOf(day);
+    if (idx >= 0) days.splice(idx, 1);
+    else days.push(day);
+    setSelectedDays(days);
+  };
+
   // ── Fee system ────────────────────────────────────────────────────────────
   window.toggleFeeSection = function(enabled) {
     qs('feeSectionWrap').style.display = enabled ? 'block' : 'none';
@@ -114,6 +189,17 @@
         qs('teacherPhotoClearBtn').style.display = 'block';
       }
 
+      // Load class days
+      if (h.classDays && h.classDays.length) {
+        selectedDays = h.classDays.slice();
+        updateDayButtons();
+      }
+
+      // Load class days
+      if (h.classDays && h.classDays.length) {
+        setSelectedDays(h.classDays);
+      }
+
       // Load fee settings
       if (h.feesEnabled) {
         qs('feesEnabled').checked = true;
@@ -144,6 +230,8 @@
       cardTheme:       qs("cardTheme").value || 'none',
       teacherPhoto:    teacherPhotoBase64 || '',
       notes:           qs("notes") ? qs("notes").value.trim() : '',
+      classDays:       getSelectedDays(),
+      classDays:       selectedDays.slice(),
       // Fee system
       feesEnabled:     feesEnabled,
       feePeriod:       feesEnabled ? qs("feePeriod").value       : '',

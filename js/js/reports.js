@@ -199,10 +199,25 @@ function submitReportFormat(format) {
 }
 
 // ── Get records between two dates ──────────────────────────────────────────
-function _getRecords(studentId, fromDate, toDate) {
-  const data = dbLoad();
+// Map JS getDay() number to our day string keys
+const DAY_MAP = ['sun','mon','tue','wed','thu','fri','sat'];
+
+function _getRecords(studentId, fromDate, toDate, classId) {
+  const data      = dbLoad();
+  const halaqah   = classId ? data.halaqah.find(h => h.id === classId) : null;
+  const classDays = halaqah && halaqah.classDays && halaqah.classDays.length
+    ? halaqah.classDays   // e.g. ['sat','mon','wed']
+    : null;               // null = all days, no restriction
+
   return data.records.filter(function(r) {
-    return r.studentId === studentId && r.date >= fromDate && r.date <= toDate;
+    if (r.studentId !== studentId) return false;
+    if (r.date < fromDate || r.date > toDate) return false;
+    // Skip off days if class has specific days configured
+    if (classDays) {
+      const dayStr = DAY_MAP[new Date(r.date + 'T00:00:00').getDay()];
+      if (!classDays.includes(dayStr)) return false;
+    }
+    return true;
   }).sort(function(a, b) { return a.date.localeCompare(b.date); });
 }
 
@@ -217,7 +232,7 @@ function _generateWhatsAppReport(studentId, classId, fromDate, toDate) {
   const className   = halaqah ? halaqah.name : '';
   const teacherName = halaqah ? (halaqah.teacher || '') : '';
   const skipTahfidh = student.course === 'murajaah';
-  const records     = _getRecords(studentId, fromDate, toDate);
+  const records     = _getRecords(studentId, fromDate, toDate, classId);
   const isAr        = getLang() === 'ar';
   const locale      = isAr ? 'ar-SA' : 'en-US';
   const fromLabel   = new Date(fromDate + 'T00:00:00').toLocaleDateString(locale);
@@ -290,7 +305,7 @@ function _generateDocReport(studentId, classId, fromDate, toDate, format) {
   const skipTahfidh = student.course === 'murajaah';
   const isAr        = getLang() === 'ar';
   const locale      = isAr ? 'ar-SA' : 'en-US';
-  const records     = _getRecords(studentId, fromDate, toDate);
+  const records     = _getRecords(studentId, fromDate, toDate, classId);
   const fromLabel   = new Date(fromDate + 'T00:00:00').toLocaleDateString(locale);
   const toLabel     = new Date(toDate   + 'T00:00:00').toLocaleDateString(locale);
   const periodLabel = fromLabel + ' – ' + toLabel;
