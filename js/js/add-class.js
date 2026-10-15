@@ -5,7 +5,7 @@
 
   var teacherPhotoBase64 = '';
 
-  // ── Gender / Time / Theme toggles ────────────────────────────────────────
+  // ── Gender ────────────────────────────────────────────────────────────────
   window.selectGender = function(val) {
     qs('teacherGender').value = val;
     qs('genderMale').className = 'btn ' + (val === 'male' ? 'btn-primary' : 'btn-secondary');
@@ -25,6 +25,7 @@
     }
   };
 
+  // ── Card theme ────────────────────────────────────────────────────────────
   window.selectCardTheme = function(theme) {
     qs('cardTheme').value = theme;
     ['none','pink','green','greenlight','purple'].forEach(function(k) {
@@ -33,6 +34,7 @@
     });
   };
 
+  // ── Time mode ─────────────────────────────────────────────────────────────
   window.selectTimeMode = function(mode) {
     qs('modeSalah').className  = 'btn ' + (mode === 'salah'  ? 'btn-primary' : 'btn-secondary');
     qs('modeCustom').className = 'btn ' + (mode === 'custom' ? 'btn-primary' : 'btn-secondary');
@@ -55,6 +57,7 @@
     });
   };
 
+  // ── Photo ─────────────────────────────────────────────────────────────────
   window.handleTeacherPhoto = function(input) {
     const file = input.files[0];
     if (!file) return;
@@ -73,56 +76,6 @@
     qs('teacherPhotoClearBtn').style.display = 'none';
     qs('teacherPhotoInput').value = '';
   };
-
-  // ── Class days ────────────────────────────────────────────────────────────
-  var selectedDays = []; // array of day numbers 0=Sun,1=Mon,...,6=Sat
-
-  window.toggleDay = function(day) {
-    var idx = selectedDays.indexOf(day);
-    if (idx >= 0) {
-      selectedDays.splice(idx, 1);
-    } else {
-      selectedDays.push(day);
-    }
-    updateDayButtons();
-  };
-
-  function updateDayButtons() {
-    for (var d = 0; d <= 6; d++) {
-      var btn = document.getElementById('day-' + d);
-      if (!btn) continue;
-      btn.className = 'btn ' + (selectedDays.includes(d) ? 'btn-primary' : 'btn-secondary');
-    }
-  }
-
-  // ── Class days ────────────────────────────────────────────────────────────
-  var selectedDays = []; // array of day numbers 0=Sun, 1=Mon ... 6=Sat
-
-  window.toggleDay = function(day) {
-    const idx = selectedDays.indexOf(day);
-    if (idx >= 0) {
-      selectedDays.splice(idx, 1);
-    } else {
-      selectedDays.push(day);
-    }
-    updateDayButtons();
-  };
-
-  function updateDayButtons() {
-    [0,1,2,3,4,5,6].forEach(function(d) {
-      var btn = document.getElementById('day-' + d);
-      if (!btn) return;
-      if (selectedDays.includes(d)) {
-        btn.className = 'btn btn-primary';
-        btn.style.background = '';
-        btn.style.color = '';
-      } else {
-        btn.className = 'btn btn-secondary';
-        btn.style.background = '';
-        btn.style.color = '';
-      }
-    });
-  }
 
   // ── Class days ────────────────────────────────────────────────────────────
   const ALL_DAYS = ['sat','sun','mon','tue','wed','thu','fri'];
@@ -162,7 +115,7 @@
     });
   };
 
-  // ── Load existing class for edit ─────────────────────────────────────────
+  // ── Load existing class for edit ──────────────────────────────────────────
   if (isEdit) {
     const h = getHalaqahById(classId);
     if (h) {
@@ -171,8 +124,9 @@
       qs("teacherName").value       = h.teacher || "";
       if (qs("notes")) qs("notes").value = h.notes || "";
       qs("btnDelete").style.display = "block";
-      if (h.cardTheme) selectCardTheme(h.cardTheme);
+      if (h.cardTheme)     selectCardTheme(h.cardTheme);
       if (h.teacherGender) selectGender(h.teacherGender);
+
       var rawTime = h.classTime || 'dhuhr';
       if (rawTime === 'morning') rawTime = 'dhuhr';
       if (rawTime === 'evening') rawTime = 'maghrib';
@@ -183,16 +137,11 @@
         selectTimeMode('salah');
         selectSalahTime(rawTime);
       }
+
       if (h.teacherPhoto) {
         teacherPhotoBase64 = h.teacherPhoto;
         qs('teacherPhotoPreview').src = h.teacherPhoto;
         qs('teacherPhotoClearBtn').style.display = 'block';
-      }
-
-      // Load class days
-      if (h.classDays && h.classDays.length) {
-        selectedDays = h.classDays.slice();
-        updateDayButtons();
       }
 
       // Load class days
@@ -214,7 +163,7 @@
   }
 
   // ── Save ──────────────────────────────────────────────────────────────────
-  qs("btnSave").onclick = () => {
+  qs("btnSave").onclick = function() {
     const name = qs("className").value.trim();
     if (!name) { alert(t('enterClassName')); return; }
 
@@ -222,7 +171,7 @@
 
     const halaqah = {
       id:              isEdit ? classId : uid(),
-      name,
+      name:            name,
       teacher:         qs("teacherName").value.trim(),
       teacherGender:   qs("teacherGender").value,
       classTime:       qs("classTime").value,
@@ -231,10 +180,8 @@
       teacherPhoto:    teacherPhotoBase64 || '',
       notes:           qs("notes") ? qs("notes").value.trim() : '',
       classDays:       getSelectedDays(),
-      classDays:       selectedDays.slice(),
-      // Fee system
       feesEnabled:     feesEnabled,
-      feePeriod:       feesEnabled ? qs("feePeriod").value       : '',
+      feePeriod:       feesEnabled ? qs("feePeriod").value          : '',
       feeCurrency:     feesEnabled ? qs("feeCurrency").value.trim() : '',
       feeBankName:     feesEnabled ? qs("feeBankName").value.trim() : '',
       feeBankAccount:  feesEnabled ? qs("feeBankAccount").value.trim() : '',
@@ -242,18 +189,18 @@
     };
 
     saveClass(halaqah);
-    location.href = isEdit ? `class.html?classId=${halaqah.id}` : "index.html";
+    location.href = isEdit ? 'class.html?classId=' + halaqah.id : 'index.html';
   };
 
-  qs("btnDelete").onclick = () => {
+  qs("btnDelete").onclick = function() {
     const h = getHalaqahById(classId);
     if (confirm(t('confirmDeleteClassFull').replace('$1', h ? h.name : ''))) {
       deleteClass(classId);
-      location.href = "index.html";
+      location.href = 'index.html';
     }
   };
 
-  // Initialize
+  // ── Init ──────────────────────────────────────────────────────────────────
   if (!isEdit) {
     selectSalahTime('dhuhr');
     selectFeePeriod('monthly');
