@@ -22,14 +22,17 @@
 
 <main class="main-content">
   <section class="card">
+
     <div class="form-group">
       <label class="form-label" data-i18n="className">اسم الحلقة *</label>
-      <input id="className" class="form-input" data-i18n-ph="classNamePh" placeholder="مثال: الصفوف الأولية" required />
+      <input id="className" class="form-input" placeholder="مثال: الصفوف الأولية" required />
     </div>
+
     <div class="form-group">
       <label class="form-label" data-i18n="teacherNameLabel">اسم المعلم</label>
-      <input id="teacherName" class="form-input" data-i18n-ph="teacherNamePh" placeholder="مثال: عبدالله" />
+      <input id="teacherName" class="form-input" placeholder="مثال: عبدالله" />
     </div>
+
     <div class="form-group">
       <label class="form-label" data-i18n="teacherPhotoLabel">شعار الحلقة (اختياري)</label>
       <div style="display:flex; align-items:center; gap:14px; margin-top:6px;">
@@ -39,14 +42,14 @@
           <label class="btn btn-secondary" for="teacherPhotoInput"
             style="cursor:pointer; padding:0.4rem 1rem; font-size:0.85rem; text-align:center; display:block; margin:0;"
             data-i18n="uploadPhoto">رفع صورة</label>
-          <input type="file" id="teacherPhotoInput" accept="image/*" style="display:none;"
-            onchange="handleTeacherPhoto(this)" />
+          <input type="file" id="teacherPhotoInput" accept="image/*" style="display:none;" onchange="handleTeacherPhoto(this)" />
           <button type="button" id="teacherPhotoClearBtn" class="btn" onclick="clearTeacherPhoto()"
             style="display:none; padding:0.4rem 1rem; font-size:0.85rem; background:#FEE2E2; color:#DC2626; margin:0;"
             data-i18n="removePhoto">حذف الصورة</button>
         </div>
       </div>
     </div>
+
     <div class="form-group">
       <label class="form-label" data-i18n="teacherGender">جنس المعلم</label>
       <div style="display:flex; gap:10px;">
@@ -60,20 +63,6 @@
         </button>
       </div>
       <input type="hidden" id="teacherGender" value="male" />
-    </div>
-    <!-- Class Days -->
-    <div class="form-group">
-      <label class="form-label">أيام الحلقة | Class Days</label>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;">
-        <button type="button" id="day-0" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay(0)">الأحد</button>
-        <button type="button" id="day-1" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay(1)">الاثنين</button>
-        <button type="button" id="day-2" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay(2)">الثلاثاء</button>
-        <button type="button" id="day-3" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay(3)">الأربعاء</button>
-        <button type="button" id="day-4" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay(4)">الخميس</button>
-        <button type="button" id="day-5" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay(5)">الجمعة</button>
-        <button type="button" id="day-6" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay(6)">السبت</button>
-      </div>
-      <div style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">اتركه فارغاً إذا كانت الحلقة يومية | Leave empty for daily</div>
     </div>
 
     <div class="form-group">
@@ -94,6 +83,8 @@
       </div>
       <input type="hidden" id="classTime" value="dhuhr" />
     </div>
+
+    <!-- Card Theme -->
     <div class="form-group">
       <label class="form-label">تصميم بطاقة الحلقة</label>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;">
@@ -120,32 +111,30 @@
       <input type="hidden" id="cardTheme" value="none" />
     </div>
 
-    <!-- Class Days -->
-    <div class="form-group">
-      <label class="form-label">📅 أيام الحلقة <span style="color:var(--text-muted);font-size:0.8rem;">(اختر أيام الدراسة)</span></label>
-      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
-        <button type="button" id="day-0" class="btn btn-secondary" style="flex:1; min-width:calc(25% - 6px); padding:0.5rem 0.2rem; font-size:0.82rem;" onclick="toggleDay(0)">الأحد</button>
-        <button type="button" id="day-1" class="btn btn-secondary" style="flex:1; min-width:calc(25% - 6px); padding:0.5rem 0.2rem; font-size:0.82rem;" onclick="toggleDay(1)">الاثنين</button>
-        <button type="button" id="day-2" class="btn btn-secondary" style="flex:1; min-width:calc(25% - 6px); padding:0.5rem 0.2rem; font-size:0.82rem;" onclick="toggleDay(2)">الثلاثاء</button>
-        <button type="button" id="day-3" class="btn btn-secondary" style="flex:1; min-width:calc(25% - 6px); padding:0.5rem 0.2rem; font-size:0.82rem;" onclick="toggleDay(3)">الأربعاء</button>
-        <button type="button" id="day-4" class="btn btn-secondary" style="flex:1; min-width:calc(25% - 6px); padding:0.5rem 0.2rem; font-size:0.82rem;" onclick="toggleDay(4)">الخميس</button>
-        <button type="button" id="day-5" class="btn btn-secondary" style="flex:1; min-width:calc(25% - 6px); padding:0.5rem 0.2rem; font-size:0.82rem;" onclick="toggleDay(5)">الجمعة</button>
-        <button type="button" id="day-6" class="btn btn-secondary" style="flex:1; min-width:calc(25% - 6px); padding:0.5rem 0.2rem; font-size:0.82rem;" onclick="toggleDay(6)">السبت</button>
+    <!-- Class Days — SINGLE SECTION -->
+    <div class="form-group" style="border-top:2px solid var(--border); padding-top:16px; margin-top:8px;">
+      <label class="form-label" style="margin-bottom:10px; display:block;">📅 أيام الحلقة | Class Days</label>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" id="day-sat" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay('sat')">السبت</button>
+        <button type="button" id="day-sun" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay('sun')">الأحد</button>
+        <button type="button" id="day-mon" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay('mon')">الاثنين</button>
+        <button type="button" id="day-tue" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay('tue')">الثلاثاء</button>
+        <button type="button" id="day-wed" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay('wed')">الأربعاء</button>
+        <button type="button" id="day-thu" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay('thu')">الخميس</button>
+        <button type="button" id="day-fri" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem; font-size:0.82rem;" onclick="toggleDay('fri')">الجمعة</button>
       </div>
       <input type="hidden" id="classDays" value="[]" />
-      <div style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">اتركها فارغة إذا كانت الحلقة يومية</div>
+      <div style="font-size:0.75rem; color:var(--text-muted); margin-top:8px;">اتركها فارغة إذا كانت الحلقة يومية | Leave empty for daily</div>
     </div>
 
-    
-    <!-- Fee System Section -->
+    <!-- Fee System -->
     <div class="form-group" style="border-top:2px solid var(--border); padding-top:16px; margin-top:8px;">
       <div style="display:flex; align-items:center; justify-content:space-between;">
         <label class="form-label" style="margin:0; display:flex; align-items:center; gap:6px;">
           <img src="icons/fee icon.svg" style="width:18px;height:18px;vertical-align:middle;"> نظام الرسوم
         </label>
         <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-          <input type="checkbox" id="feesEnabled" onchange="toggleFeeSection(this.checked)"
-            style="width:20px; height:20px; cursor:pointer;" />
+          <input type="checkbox" id="feesEnabled" onchange="toggleFeeSection(this.checked)" style="width:20px; height:20px; cursor:pointer;" />
           <span style="font-size:0.88rem; color:var(--text-muted);">تفعيل</span>
         </label>
       </div>
@@ -155,18 +144,10 @@
       <div class="form-group">
         <label class="form-label">دورية الرسوم</label>
         <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <button type="button" id="feePeriod-monthly" class="btn btn-primary"
-            style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;"
-            onclick="selectFeePeriod('monthly')">شهري</button>
-          <button type="button" id="feePeriod-weekly" class="btn btn-secondary"
-            style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;"
-            onclick="selectFeePeriod('weekly')">أسبوعي</button>
-          <button type="button" id="feePeriod-term" class="btn btn-secondary"
-            style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;"
-            onclick="selectFeePeriod('term')">فصل دراسي</button>
-          <button type="button" id="feePeriod-custom" class="btn btn-secondary"
-            style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;"
-            onclick="selectFeePeriod('custom')">مخصص</button>
+          <button type="button" id="feePeriod-monthly" class="btn btn-primary" style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;" onclick="selectFeePeriod('monthly')">شهري</button>
+          <button type="button" id="feePeriod-weekly"  class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;" onclick="selectFeePeriod('weekly')">أسبوعي</button>
+          <button type="button" id="feePeriod-term"    class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;" onclick="selectFeePeriod('term')">فصل دراسي</button>
+          <button type="button" id="feePeriod-custom"  class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px); padding:0.5rem; font-size:0.85rem;" onclick="selectFeePeriod('custom')">مخصص</button>
         </div>
         <input type="hidden" id="feePeriod" value="monthly" />
       </div>
@@ -176,7 +157,7 @@
       </div>
       <div class="form-group">
         <label class="form-label">💳 التحويل البنكي (اختياري)</label>
-        <input id="feeBankName"    class="form-input" placeholder="اسم البنك"           style="margin-bottom:8px;" />
+        <input id="feeBankName"    class="form-input" placeholder="اسم البنك" style="margin-bottom:8px;" />
         <input id="feeBankAccount" class="form-input" placeholder="رقم الحساب / IBAN" />
       </div>
       <div class="form-group">
@@ -185,13 +166,12 @@
       </div>
     </div>
 
-    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.05rem; padding:0.85rem; margin-top:6px;" data-i18n="saveClass">
-      حفظ الحلقة
-    </button>
+    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.05rem; padding:0.85rem; margin-top:6px;" data-i18n="saveClass">حفظ الحلقة</button>
     <button id="btnDelete" class="btn btn-full" style="background:#FEE2E2; color:#DC2626; margin-top:10px; display:none; gap:8px;">
       <img src="icons/delete icon.svg" style="width:18px; height:18px;" alt="">
       <span data-i18n="deleteClass">حذف الحلقة</span>
     </button>
+
   </section>
 </main>
 
