@@ -1,5 +1,5 @@
-// Service Worker – Tahfidh Tracker v58
-const CACHE = 'tahfidh-v58';
+// Service Worker – Tahfidh Tracker v59
+const CACHE = 'tahfidh-v59';
 
 // ── ESSENTIAL files only — must exist on server ───────────────────────────
 const PRECACHE = [
@@ -14,20 +14,20 @@ const PRECACHE = [
   'quran.html',
   'contact.html',
   'css/style.css',
-  'js/js/db.js',
-  'js/js/i18n.js',
-  'js/js/ui.js',
-  'js/js/home.js',
-  'js/js/class.js',
-  'js/js/add-class.js',
-  'js/js/add-student.js',
-  'js/js/student-detail.js',
-  'js/js/fees.js',
-  'js/js/settings.js',
-  'js/js/quran.js',
-  'js/js/records.js',
-  'js/js/reports.js',
-  'js/js/export.js',
+  'js/db.js',
+  'js/i18n.js',
+  'js/ui.js',
+  'js/home.js',
+  'js/class.js',
+  'js/add-class.js',
+  'js/add-student.js',
+  'js/student-detail.js',
+  'js/fees.js',
+  'js/settings.js',
+  'js/quran.js',
+  'js/records.js',
+  'js/reports.js',
+  'js/export.js',
 ];
 
 // ── OPTIONAL files — cached if they exist, ignored if not ─────────────────
@@ -60,7 +60,6 @@ const OPTIONAL = [
   'icons/whatsapp icon.svg',
   'themes/Pink_theme.png',
   'themes/green_theme.png',
-  'themes/greenlight_theme.png',
   'themes/puple_theme.png',
   'kfgqpc_hafs_smart_data/hafs_smart_v8.json',
   'kfgqpc_hafs_smart_font/HafsSmart_08.ttf',

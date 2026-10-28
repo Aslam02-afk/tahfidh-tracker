@@ -1,7 +1,7 @@
 {
-  "name": "tahfidh-tracker",
+  "name": "tahfidh-tracker-api",
   "version": "1.3.0",
-  "description": "Tahfidh Tracker – Quran memorization management PWA",
+  "description": "Tahfidh Tracker – Backend API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

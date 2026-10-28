@@ -1,27 +1,35 @@
-// Tahfidh Tracker – Backend Server
-// Serves static PWA files + /api/send-rating → Telegram
-// Deploy to Render (free): https://render.com
-// Start: node server.js   |   requires Node 18+
+// Tahfidh Tracker – Backend API Server
+// Deploy to Render: https://render.com
+// Start: node server.js | requires Node 18+
 
 require('dotenv').config();
 const express = require('express');
-const path    = require('path');
 
 const app = express();
 app.use(express.json());
 
-// ── CORS (allows PWA on any origin during dev) ──────────────────────────────
+// ── CORS — allow requests from Railway frontend ────────────────────────────
+const ALLOWED_ORIGINS = [
+  process.env.FRONTEND_URL || '*',  // set this in Render env vars
+];
+
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin',  '*');
+  const origin = req.headers.origin;
+  if (!origin || ALLOWED_ORIGINS.includes('*') || ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  }
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
   next();
 });
 
-// ── /api/config ─────────────────────────────────────────────────────────────
-// Returns Telegram credentials safely from environment variables
-// Token never appears in frontend code or GitHub
+// ── Health check ───────────────────────────────────────────────────────────
+app.get('/', (req, res) => {
+  res.json({ ok: true, service: 'Tahfidh Tracker API', version: '1.3.0' });
+});
+
+// ── /api/config ────────────────────────────────────────────────────────────
 app.get('/api/config', (req, res) => {
   const BOT_TOKEN = process.env.BOT_TOKEN;
   const USER_ID   = process.env.USER_ID;
@@ -30,18 +38,13 @@ app.get('/api/config', (req, res) => {
     return res.status(500).json({ ok: false, error: 'Server not configured (BOT_TOKEN / USER_ID missing)' });
   }
 
-  res.json({
-    ok:       true,
-    botToken: BOT_TOKEN,
-    userId:   USER_ID
-  });
+  res.json({ ok: true, botToken: BOT_TOKEN, userId: USER_ID });
 });
 
-// ── /api/send-rating ────────────────────────────────────────────────────────
+// ── /api/send-rating ───────────────────────────────────────────────────────
 app.post('/api/send-rating', async (req, res) => {
   const { rating, comment, timestamp } = req.body;
 
-  // Validate
   const num = Number(rating);
   if (!num || num < 1 || num > 5) {
     return res.status(400).json({ ok: false, error: 'rating must be 1–5' });
@@ -51,12 +54,12 @@ app.post('/api/send-rating', async (req, res) => {
   const USER_ID   = process.env.USER_ID;
 
   if (!BOT_TOKEN || !USER_ID) {
-    return res.status(500).json({ ok: false, error: 'Server not configured (BOT_TOKEN / USER_ID missing)' });
+    return res.status(500).json({ ok: false, error: 'Server not configured' });
   }
 
-  const stars     = '⭐'.repeat(num);
-  const feedback  = (comment && comment.trim()) ? comment.trim() : 'No comment';
-  const time      = timestamp || new Date().toISOString();
+  const stars    = '⭐'.repeat(num);
+  const feedback = (comment && comment.trim()) ? comment.trim() : 'No comment';
+  const time     = timestamp || new Date().toISOString();
 
   const text = [
     '━━━━━━━━━━━━━━━━━━',
@@ -82,7 +85,6 @@ app.post('/api/send-rating', async (req, res) => {
     );
     const data = await tgRes.json();
     if (!data.ok) throw new Error(data.description || 'Telegram error');
-
     res.json({ ok: true });
   } catch (err) {
     console.error('[send-rating]', err.message);
@@ -90,16 +92,8 @@ app.post('/api/send-rating', async (req, res) => {
   }
 });
 
-// ── Serve static PWA files ───────────────────────────────────────────────────
-app.use(express.static(path.join(__dirname)));
-
-// Fallback: serve index.html for any unknown route
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// ── Start ────────────────────────────────────────────────────────────────────
+// ── Start ──────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Tahfidh Tracker server running on http://localhost:${PORT}`);
+  console.log(`✅ Tahfidh Tracker API running on port ${PORT}`);
 });
