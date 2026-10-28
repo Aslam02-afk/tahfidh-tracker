@@ -35,14 +35,22 @@
   <!-- Background Theme -->
   <section class="card">
     <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="themeSection">خلفية التطبيق</div>
-    <div class="theme-grid" style="grid-template-columns: repeat(2, 1fr);">
+    <div class="theme-grid" >
       <button class="theme-btn" data-theme="none" onclick="setTheme('none')">
         <div class="theme-preview" style="background-image: radial-gradient(circle, rgba(201,162,77,0.15) 2px, transparent 2px); background-size: 24px 24px;"></div>
         <div class="theme-label" data-i18n="themeNone">بلا خلفية</div>
       </button>
-      <button class="theme-btn" data-theme="bg" onclick="setTheme('bg')">
-        <div class="theme-preview" style="background-image: url('themes/BG.svg'); background-size: cover;"></div>
-        <div class="theme-label" data-i18n="themeBg">خلفية كاملة</div>
+      <button class="theme-btn" data-theme="green" onclick="setTheme('green')">
+        <div class="theme-preview" style="background-image: url('themes/green_theme.png');"></div>
+        <div class="theme-label" data-i18n="themeGreen">أخضر</div>
+      </button>
+      <button class="theme-btn" data-theme="pink" onclick="setTheme('pink')">
+        <div class="theme-preview" style="background-image: url('themes/Pink_theme.png');"></div>
+        <div class="theme-label" data-i18n="themePink">وردي</div>
+      </button>
+      <button class="theme-btn" data-theme="purple" onclick="setTheme('purple')">
+        <div class="theme-preview" style="background-image: url('themes/puple_theme.png');"></div>
+        <div class="theme-label" data-i18n="themePurple">بنفسجي</div>
       </button>
     </div>
   </section>
