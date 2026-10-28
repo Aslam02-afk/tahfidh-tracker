@@ -1,14 +1,11 @@
 {
-  "name": "tahfidh-tracker-api",
+  "name": "tahfidh-tracker",
   "version": "1.3.0",
-  "description": "Tahfidh Tracker – Backend API",
+  "description": "Tahfidh Tracker – Quran memorization management PWA",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
-  },
-  "engines": {
-    "node": ">=18"
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

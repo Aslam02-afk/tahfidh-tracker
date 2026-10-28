@@ -1,16 +1,17 @@
-// Tahfidh Tracker – Backend API Server
+// Tahfidh Tracker – Server (Static PWA + Backend API)
 // Deploy to Render: https://render.com
 // Start: node server.js | requires Node 18+
 
-require('dotenv').config();
+try { require('dotenv').config(); } catch (_) {}
 const express = require('express');
+const path    = require('path');
 
 const app = express();
 app.use(express.json());
 
-// ── CORS — allow requests from Railway frontend ────────────────────────────
+// ── CORS — allow requests from any origin (dev / Railway / PWA) ──────────────
 const ALLOWED_ORIGINS = [
-  process.env.FRONTEND_URL || '*',  // set this in Render env vars
+  process.env.FRONTEND_URL || '*',
 ];
 
 app.use((req, res, next) => {
@@ -25,7 +26,7 @@ app.use((req, res, next) => {
 });
 
 // ── Health check ───────────────────────────────────────────────────────────
-app.get('/', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.json({ ok: true, service: 'Tahfidh Tracker API', version: '1.3.0' });
 });
 
@@ -92,8 +93,16 @@ app.post('/api/send-rating', async (req, res) => {
   }
 });
 
+// ── Serve static PWA files ───────────────────────────────────────────────────
+app.use(express.static(path.join(__dirname)));
+
+// Fallback: serve index.html for any unknown route
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // ── Start ──────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Tahfidh Tracker API running on port ${PORT}`);
+  console.log(`✅ Tahfidh Tracker running on port ${PORT}`);
 });

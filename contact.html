@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -8,98 +9,101 @@
   <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
   <link rel="manifest" href="manifest.json" />
 </head>
+
 <body>
 
-<header class="app-header">
-  <button class="menu-btn" onclick="history.back()">←</button>
-  <div style="text-align:center;">
-    <div class="app-title">Tahfidh Tracker</div>
-    <div class="app-subtitle" data-i18n="contactAlHudaa">التواصل مع برنامج الهدى</div>
-  </div>
-  <div style="display:flex; gap:4px;">
-    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">🌐</button>
-    <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
-  </div>
-</header>
-
-<main class="main-content">
-
-  <section class="card">
-    <h3 style="margin-bottom:8px;" data-i18n="contactUsTitle">تواصل معنا</h3>
-    <p style="color:var(--text-muted); line-height:1.7;" data-i18n="contactUsDesc">
-      إذا كان لديك اقتراح، مشكلة تقنية، أو طلب خاص، يسعدنا تواصلك مع برنامج الهدى.
-    </p>
-  </section>
-
-  <section class="card">
-    <div class="form-group">
-      <label class="form-label" data-i18n="teacherNameOptional">اسم المعلم (اختياري)</label>
-      <input id="teacherName" class="form-input" data-i18n-ph="teacherNameContactPh" placeholder="اكتب اسمك" />
+  <header class="app-header">
+    <button class="menu-btn" onclick="history.back()">←</button>
+    <div style="text-align:center;">
+      <div class="app-title">Tahfidh Tracker</div>
+      <div class="app-subtitle" data-i18n="contactAlHudaa">التواصل مع برنامج الهدى</div>
     </div>
-
-    <div class="form-group">
-      <label class="form-label" data-i18n="subject">الموضوع</label>
-      <select id="subject" class="form-select">
-        <option data-i18n="subjectSuggestion">اقتراح تطوير</option>
-        <option data-i18n="subjectBug">مشكلة تقنية</option>
-        <option data-i18n="subjectDataInquiry">استفسار عن البيانات</option>
-        <option data-i18n="subjectSupport">طلب دعم</option>
-        <option data-i18n="subjectOther">أخرى</option>
-      </select>
+    <div style="display:flex; gap:4px;">
+      <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">🌐</button>
+      <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg"
+          style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
     </div>
+  </header>
 
-    <div class="form-group">
-      <label class="form-label" data-i18n="message">الرسالة</label>
-      <textarea id="message" class="form-input" rows="5"
-        data-i18n-ph="messagePh" placeholder="اكتب رسالتك هنا..."></textarea>
-    </div>
+  <main class="main-content">
 
-    <button class="btn btn-primary btn-full" onclick="sendMessage()" data-i18n="sendMessage">
-      إرسال الرسالة
-    </button>
-  </section>
+    <section class="card">
+      <h3 style="margin-bottom:8px;" data-i18n="contactUsTitle">تواصل معنا</h3>
+      <p style="color:var(--text-muted); line-height:1.7;" data-i18n="contactUsDesc">
+        إذا كان لديك اقتراح، مشكلة تقنية، أو طلب خاص، يسعدنا تواصلك مع برنامج الهدى.
+      </p>
+    </section>
 
-  <section class="card" style="text-align:center;">
-    <p style="font-size:0.85rem; color:var(--text-muted);" data-i18n="emailNote">
-      سيتم فتح تطبيق البريد الإلكتروني لإرسال الرسالة مباشرة
-    </p>
-    <p style="font-size:0.85rem;">
-      <b>markazalhudaa143@gmail.com</b>
-    </p>
-  </section>
+    <section class="card">
+      <div class="form-group">
+        <label class="form-label" data-i18n="teacherNameOptional">اسم المعلم (اختياري)</label>
+        <input id="teacherName" class="form-input" data-i18n-ph="teacherNameContactPh" placeholder="اكتب اسمك" />
+      </div>
 
-</main>
+      <div class="form-group">
+        <label class="form-label" data-i18n="subject">الموضوع</label>
+        <select id="subject" class="form-select">
+          <option data-i18n="subjectSuggestion">اقتراح تطوير</option>
+          <option data-i18n="subjectBug">مشكلة تقنية</option>
+          <option data-i18n="subjectDataInquiry">استفسار عن البيانات</option>
+          <option data-i18n="subjectSupport">طلب دعم</option>
+          <option data-i18n="subjectOther">أخرى</option>
+        </select>
+      </div>
 
-<footer class="branding-footer" data-i18n="footer">
-  Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى
-</footer>
+      <div class="form-group">
+        <label class="form-label" data-i18n="message">الرسالة</label>
+        <textarea id="message" class="form-input" rows="5" data-i18n-ph="messagePh"
+          placeholder="اكتب رسالتك هنا..."></textarea>
+      </div>
 
-<script src="js/db.js"></script>
-<script src="js/i18n.js"></script>
-<script src="js/ui.js"></script>
-<script>
-function sendMessage() {
-  const name = document.getElementById("teacherName").value || t('notMentioned');
-  const subject = document.getElementById("subject").value;
-  const message = document.getElementById("message").value;
+      <button class="btn btn-primary btn-full" onclick="sendMessage()" data-i18n="sendMessage">
+        إرسال الرسالة
+      </button>
+    </section>
 
-  if (!message.trim()) {
-    alert(t('pleaseWriteMessage'));
-    return;
-  }
+    <section class="card" style="text-align:center;">
+      <p style="font-size:0.85rem; color:var(--text-muted);" data-i18n="emailNote">
+        سيتم فتح تطبيق البريد الإلكتروني لإرسال الرسالة مباشرة
+      </p>
+      <p style="font-size:0.85rem;">
+        <b>markazalhudaa143@gmail.com</b>
+      </p>
+    </section>
 
-  const email = "markazalhudaa143@gmail.com";
-  const mailSubject = encodeURIComponent("Tahfidh Tracker – " + subject);
-  const body = encodeURIComponent(
-    t('teacherNameEmail') + ": " + name + "\n\n" +
-    t('messageEmail') + ":\n" + message + "\n\n" +
-    "— " + t('sentFromApp')
-  );
+  </main>
 
-  window.location.href =
-    "mailto:" + email + "?subject=" + mailSubject + "&body=" + body;
-}
-</script>
+  <footer class="branding-footer" data-i18n="footer">
+    Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى
+  </footer>
+
+  <script src="js/db.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    function sendMessage() {
+      const name = document.getElementById("teacherName").value || t('notMentioned');
+      const subject = document.getElementById("subject").value;
+      const message = document.getElementById("message").value;
+
+      if (!message.trim()) {
+        alert(t('pleaseWriteMessage'));
+        return;
+      }
+
+      const email = "markazalhudaa143@gmail.com";
+      const mailSubject = encodeURIComponent("Tahfidh Tracker – " + subject);
+      const body = encodeURIComponent(
+        t('teacherNameEmail') + ": " + name + "\n\n" +
+        t('messageEmail') + ":\n" + message + "\n\n" +
+        "— " + t('sentFromApp')
+      );
+
+      window.location.href =
+        "mailto:" + email + "?subject=" + mailSubject + "&body=" + body;
+    }
+  </script>
 
 </body>
+
 </html>
