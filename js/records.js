@@ -40,17 +40,10 @@
     ['present','absent','late','excused'].forEach(function(s) {
       var btn = document.getElementById('att' + s.charAt(0).toUpperCase() + s.slice(1));
       if (!btn) return;
-      if (s === status) {
-        btn.className = 'btn';
-        btn.style.background = ATT_COLORS[s];
-        btn.style.color = '#fff';
-        btn.style.borderColor = ATT_COLORS[s];
-      } else {
-        btn.className = 'btn btn-secondary';
-        btn.style.background = '';
-        btn.style.color = '';
-        btn.style.borderColor = '';
-      }
+      btn.className = 'btn ' + (s === status ? 'btn-primary' : 'btn-secondary');
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
     });
     // Hide all course sections when absent or excused, show otherwise
     var courseSection = document.getElementById('courseSection');

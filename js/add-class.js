@@ -8,20 +8,19 @@
   // ── Gender ────────────────────────────────────────────────────────────────
   window.selectGender = function(val) {
     qs('teacherGender').value = val;
-    qs('genderMale').className = 'btn ' + (val === 'male' ? 'btn-primary' : 'btn-secondary');
-    qs('genderMale').style.background = '';
-    qs('genderMale').style.color = '';
-    qs('genderMale').style.borderColor = '';
-    if (val === 'female') {
-      qs('genderFemale').className = 'btn';
-      qs('genderFemale').style.background = '#EC4899';
-      qs('genderFemale').style.color = '#fff';
-      qs('genderFemale').style.borderColor = '#EC4899';
-    } else {
-      qs('genderFemale').className = 'btn btn-secondary';
-      qs('genderFemale').style.background = '';
-      qs('genderFemale').style.color = '';
-      qs('genderFemale').style.borderColor = '';
+    var maleBtn = qs('genderMale');
+    var femaleBtn = qs('genderFemale');
+    if (maleBtn) {
+      maleBtn.className = 'btn ' + (val === 'male' ? 'btn-primary' : 'btn-secondary');
+      maleBtn.style.background = '';
+      maleBtn.style.color = '';
+      maleBtn.style.borderColor = '';
+    }
+    if (femaleBtn) {
+      femaleBtn.className = 'btn ' + (val === 'female' ? 'btn-primary' : 'btn-secondary');
+      femaleBtn.style.background = '';
+      femaleBtn.style.color = '';
+      femaleBtn.style.borderColor = '';
     }
   };
 

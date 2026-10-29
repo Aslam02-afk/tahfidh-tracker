@@ -209,12 +209,12 @@
         </button>
         <button class="btn btn-secondary btn-full" style="margin-bottom:8px; padding:0.85rem; font-size:1rem; display:flex; align-items:center; justify-content:center; gap:8px;"
           onclick="markReportSent('monthly'); showReportFormatModal('monthly', '${studentId}', '${classId}')">
-          <img src="icons/share icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="">
+          <img src="icons/share icon.svg" style="width:20px; height:20px;" alt="">
           ${t('sendMonthlyReport')}
         </button>
         <button class="btn btn-secondary btn-full" style="margin-bottom:8px; padding:0.85rem; font-size:1rem; display:flex; align-items:center; justify-content:center; gap:8px;"
           onclick="location.href='add-student.html?classId=${classId}&studentId=${studentId}'">
-          <img src="icons/edit icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="">
+          <img src="icons/edit icon.svg" style="width:20px; height:20px;" alt="">
           ${t('editStudent')}
         </button>
         ${halaqah && halaqah.feesEnabled ? `

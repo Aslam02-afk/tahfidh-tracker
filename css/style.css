@@ -195,15 +195,58 @@ textarea.form-input {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(13,44,84,0.2);
+  background: #0D2D53;
+  color: #FFFFFF;
+  border: 1px solid #0D2D53;
+  box-shadow: 0 4px 12px rgba(13, 45, 83, 0.2);
+}
+
+.btn-primary:hover:not(:active) {
+  background: #09203C;
+  color: #FFFFFF;
+  border-color: #09203C;
+}
+
+.btn-primary:active {
+  background: #0D2D53;
+  color: #FFFFFF;
+  border-color: #0D2D53;
 }
 
 .btn-secondary {
-  background: var(--primary);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(13,44,84,0.15);
+  background: #EDEDED;
+  color: #1F2937;
+  border: 1px solid #D6D6D6;
+  box-shadow: none;
+}
+
+.btn-secondary:hover:not(:active) {
+  background: #E2E8F0;
+  color: #111827;
+  border-color: #CBD5E1;
+}
+
+.btn-secondary:active {
+  background: #EDEDED;
+  color: #1F2937;
+  border-color: #D6D6D6;
+}
+
+.btn-primary img:not([src*="theme"]) {
+  filter: brightness(0) invert(1) !important;
+}
+
+.btn-secondary img:not([src*="theme"]) {
+  filter: none !important;
+}
+
+button[id^="cardTheme-"].btn-primary {
+  outline: 3px solid #0D2D53;
+  outline-offset: 2px;
+}
+
+button[id^="cardTheme-"].btn-secondary {
+  outline: none;
 }
 
 .btn-success {
@@ -370,7 +413,10 @@ html.dark .form-select:focus {
   box-shadow: 0 0 0 3px rgba(15,118,110,0.2);
 }
 
-html.dark .btn-secondary { background: #1E3A5F; color: #fff; }
+html.dark .btn-primary { background: #0D2D53; color: #FFFFFF; border: 1px solid #0D2D53; }
+html.dark .btn-secondary { background: #EDEDED; color: #1F2937; border: 1px solid #D6D6D6; }
+html.dark .btn-primary img:not([src*="theme"]) { filter: brightness(0) invert(1) !important; }
+html.dark .btn-secondary img:not([src*="theme"]) { filter: none !important; }
 html.dark .bottom-nav { background: #1E293B; border-color: var(--border); box-shadow: 0 -4px 16px rgba(0,0,0,0.3); }
 html.dark .nav-btn { color: var(--text-muted); }
 html.dark .nav-btn.active { color: #60A5FA; }
