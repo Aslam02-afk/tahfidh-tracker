@@ -15,30 +15,34 @@
     ═══════════════════════════════════════════ */
 
     :root {
-      --mushaf-bg:      #FBF6E9;
-      --mushaf-border:  #C9A24D;
-      --mushaf-text:    #1A1A1A;
-      --mushaf-muted:   #7A6A50;
-      --mushaf-header:  #0D2C54;
-      --mushaf-frame:   #C9A24D;
-      --ayah-marker:    #C9A24D;
-      --basmalah-color: #0D2C54;
+      --mushaf-bg:      #F4EDE5;
+      --mushaf-border:  #D4C7B8;
+      --mushaf-text:    #2C2B26;
+      --mushaf-muted:   #78716C;
+      --mushaf-header:  #0D2D53;
+      --mushaf-frame:   #529B88;
+      --ayah-marker:    #529B88;
+      --basmalah-color: #2C2B26;
     }
 
     html.dark {
-      --mushaf-bg:     #1C1A14;
-      --mushaf-border: #C9A24D;
-      --mushaf-text:   #F0E8D0;
-      --mushaf-muted:  #A89070;
-      --mushaf-header: #C9A24D;
+      --mushaf-bg:     #18181B;
+      --mushaf-border: #3F3F46;
+      --mushaf-text:   #F4F4F5;
+      --mushaf-muted:  #A1A1AA;
+      --mushaf-header: #E4E4E7;
+      --mushaf-frame:  #5EEAD4;
+      --ayah-marker:   #5EEAD4;
+      --basmalah-color:#F4F4F5;
     }
 
     body {
-      background: #2C2C2C;
+      background: var(--mushaf-bg);
+      color: var(--mushaf-text);
       animation: none;
     }
 
-    html.dark body { background: #0A0A0A; }
+    html.dark body { background: var(--mushaf-bg); }
 
     /* ── App header ── */
     .quran-app-header {
@@ -56,45 +60,52 @@
 
     /* ── Page navigator ── */
     .page-nav {
-      background: #1A1A1A;
+      background: var(--mushaf-bg);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 14px;
+      padding: 6px 14px;
       position: sticky;
       top: 52px;
       z-index: 199;
       gap: 8px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
     }
 
-    html.dark .page-nav { background: #111; }
+    html.dark .page-nav {
+      background: var(--mushaf-bg);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
 
     .page-nav-btn {
-      background: rgba(201,162,77,0.15);
-      border: 1px solid var(--mushaf-border);
-      color: var(--mushaf-border);
+      background: rgba(82, 155, 136, 0.12);
+      border: 1px solid rgba(82, 155, 136, 0.3);
+      color: var(--mushaf-text);
       border-radius: 10px;
       padding: 6px 14px;
       font-size: 1.1rem;
-      font-weight: 900;
+      font-weight: 800;
       cursor: pointer;
       transition: background 0.2s, transform 0.15s;
       min-width: 44px;
     }
 
+    .page-nav-btn:hover:not(:disabled) {
+      background: rgba(82, 155, 136, 0.22);
+    }
+
     .page-nav-btn:active {
-      background: rgba(201,162,77,0.3);
       transform: scale(0.94);
     }
 
     .page-nav-btn:disabled {
-      opacity: 0.3;
+      opacity: 0.25;
       cursor: not-allowed;
     }
 
     .page-number-display {
-      color: #fff;
-      font-size: 0.9rem;
+      color: var(--mushaf-text);
+      font-size: 0.92rem;
       font-weight: 700;
       text-align: center;
       flex: 1;
@@ -102,7 +113,8 @@
     }
 
     .page-number-display span {
-      color: var(--mushaf-border);
+      color: var(--ayah-marker);
+      font-weight: 800;
       font-size: 1rem;
     }
 
@@ -143,99 +155,53 @@
     /* ── Main scroll area ── */
     .mushaf-scroll {
       overflow-y: auto;
-      padding: 12px;
-      padding-bottom: 5rem;
+      padding: 8px 14px;
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
       min-height: calc(100vh - 110px);
+      background: var(--mushaf-bg);
     }
 
-    /* ── Mushaf page ── */
+    /* ── Mushaf page (Clean Modern Parchment) ── */
     .mushaf-page {
       background: var(--mushaf-bg);
-      border-radius: 4px;
+      border-radius: 0;
       border: none;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-      max-width: 480px;
+      box-shadow: none;
+      max-width: 520px;
       margin: 0 auto;
       position: relative;
-      overflow: hidden;
-    }
-
-    /* Decorative corner ornaments */
-    .mushaf-page::before,
-    .mushaf-page::after {
-      content: '';
-      position: absolute;
-      width: 24px;
-      height: 24px;
-      border-color: var(--mushaf-border);
-      border-style: solid;
-      opacity: 0.6;
-    }
-
-    .mushaf-page::before {
-      top: 6px;
-      right: 6px;
-      border-width: 2px 2px 0 0;
-      border-radius: 0 4px 0 0;
-    }
-
-    .mushaf-page::after {
-      top: 6px;
-      left: 6px;
-      border-width: 2px 0 0 2px;
-      border-radius: 4px 0 0 0;
     }
 
     .mushaf-page-inner {
-      padding: 20px 18px 16px;
+      padding: 8px 6px 14px;
       position: relative;
     }
 
-    /* Bottom corner ornaments via JS-injected divs */
-    .corner-bl, .corner-br {
-      position: absolute;
-      width: 24px;
-      height: 24px;
-      border-color: var(--mushaf-border);
-      border-style: solid;
-      opacity: 0.6;
-      bottom: 6px;
-    }
-
-    .corner-bl {
-      left: 6px;
-      border-width: 0 0 2px 2px;
-      border-radius: 0 0 0 4px;
-    }
-
-    .corner-br {
-      right: 6px;
-      border-width: 0 2px 2px 0;
-      border-radius: 0 0 4px 0;
-    }
-
-    /* ── Page header — hidden ── */
+    /* ── Page header (From reference image) ── */
     .mushaf-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 6px 10px;
-      border-bottom: 1px solid rgba(201,162,77,0.25);
-      margin-bottom: 10px;
-      direction: rtl;
+      padding: 4px 4px 12px;
+      margin-bottom: 6px;
+      direction: ltr;
+      border-bottom: none;
     }
 
     .mushaf-header-surah {
-      font-size: 0.78rem;
-      font-weight: 700;
+      font-size: 0.9rem;
+      font-weight: 500;
       color: var(--mushaf-muted);
-      font-family: 'KFGQPC Hafs', serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      letter-spacing: 0.2px;
     }
 
     .mushaf-header-juz {
-      font-size: 0.78rem;
-      font-weight: 700;
+      font-size: 0.9rem;
+      font-weight: 500;
       color: var(--mushaf-muted);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      letter-spacing: 0.2px;
     }
 
     /* ── Surah frame — 3 layered SVGs ── */
@@ -338,32 +304,31 @@
 
     html.dark .basmalah { color: var(--mushaf-border); }
 
-    /* ── Quran text lines ── */
+    /* ── Quran text lines (Clean, High Contrast) ── */
     .mushaf-lines {
       direction: rtl;
     }
 
     .mushaf-line {
       font-family: 'KFGQPC Hafs', serif;
-      font-size: 1.22rem;
-      line-height: 2.1;
+      font-size: 1.35rem;
+      line-height: 2.22;
       color: var(--mushaf-text);
       text-align: justify;
       text-align-last: center;
       width: 100%;
       display: block;
+      word-spacing: 0;
     }
 
-    /* Ayah number marker */
+    /* Ayah number marker (Signature soft sage-teal circle badge) */
     .ayah-marker {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      display: inline;
       color: var(--ayah-marker);
       font-family: 'KFGQPC Hafs', serif;
-      font-size: 0.85rem;
-      vertical-align: middle;
-      margin: 0 1px;
+      font-size: 1.05em;
+      vertical-align: baseline;
+      margin: 0 2px;
     }
 
     /* Surah Al-Fatiha / Al-Ikhlas centered */
@@ -372,16 +337,17 @@
       text-align-last: center;
     }
 
-    /* ── Page footer ── */
+    /* ── Page footer (Clean bottom-left number from reference image) ── */
     .mushaf-footer {
-      text-align: center;
-      padding: 8px 4px 0;
-      border-top: 1px solid rgba(201,162,77,0.3);
+      text-align: left;
+      padding: 14px 4px 4px;
       margin-top: 10px;
-      font-size: 0.75rem;
+      font-size: 0.92rem;
       color: var(--mushaf-muted);
-      font-weight: 700;
+      font-weight: 500;
+      border-top: none;
       direction: ltr;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     /* ── Loading state ── */

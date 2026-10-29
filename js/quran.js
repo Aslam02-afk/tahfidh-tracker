@@ -285,22 +285,22 @@ function renderPage(pageNum) {
   // Get unique surahs on this page
   const surahsOnPage = [...new Set(verses.map(v => FIELDS.surahField ? v[FIELDS.surahField] : null).filter(Boolean))];
 
-  // Header surah name from data
-  const firstSurahName = verses.find(v => v[FIELDS.surahField] === surahsOnPage[0])?.[FIELDS.surahArField] || getSurahName(surahsOnPage[0]);
-  const lastSurahName  = verses.find(v => v[FIELDS.surahField] === surahsOnPage[surahsOnPage.length-1])?.[FIELDS.surahArField] || getSurahName(surahsOnPage[surahsOnPage.length-1]);
-  const headerName = surahsOnPage[0] === surahsOnPage[surahsOnPage.length-1]
-    ? `سورة ${firstSurahName}`
-    : `${firstSurahName} – ${lastSurahName}`;
+  // Header surah name from data (matches clean modern layout)
+  const firstSurahObj = verses.find(v => v[FIELDS.surahField] === surahsOnPage[0]);
+  const firstSurahEn  = firstSurahObj?.sura_name_en || '';
+  const firstSurahAr  = firstSurahObj?.[FIELDS.surahArField] || getSurahName(surahsOnPage[0]);
+  const surahLabel    = firstSurahEn ? `Surah ${firstSurahEn}` : `سورة ${firstSurahAr}`;
+  const juzLabel      = `Juz' ${juz}`;
 
   // Build page HTML
   let html = `
     <div class="mushaf-page">
       <div class="mushaf-page-inner">
 
-        <!-- Header — Mushaf Madani style: surah name left, juz+hizb right -->
+        <!-- Header (Clean Surah name left, Juz right as in reference image) -->
         <div class="mushaf-header">
-          <span class="mushaf-header-surah">${firstSurahName}</span>
-          <span class="mushaf-header-juz">الجزء ${juz}</span>
+          <span class="mushaf-header-surah">${surahLabel}</span>
+          <span class="mushaf-header-juz">${juzLabel}</span>
         </div>
 
         <div class="mushaf-lines">
@@ -349,9 +349,9 @@ function renderPage(pageNum) {
       lastSurahNum = surahNum;
     }
 
-    // aya_text already contains the ayah end marker embedded in the text
-    // No need to add a separate marker — just use text as-is
-    lineBuffer += text + ' ';
+    // Wrap ayah end marker glyph (PUA range U+E95A - U+EA77) in .ayah-marker for soft sage-teal circle badge
+    const formattedText = text.replace(/([\uE95A-\uEA77])/g, '<span class="ayah-marker">$1</span>');
+    lineBuffer += formattedText + ' ';
   }
 
   // Flush remaining buffer
