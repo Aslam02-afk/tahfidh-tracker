@@ -363,11 +363,11 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     if (r === 'جيد جدًا'    || r === 'Very Good')         return '#0369A1';
     if (r === 'جيد'          || r === 'Good')              return '#D97706';
     if (r === 'مقبول'        || r === 'Acceptable')        return '#B45309';
-    if (r === 'يحتاج تحسين' || r === 'Needs Improvement') return '#DC2626';
-    return '#DC2626';
+    if (r === 'يحتاج تحسين' || r === 'Needs Improvement') return '#FF0000';
+    return '#FF0000';
   }
 
-  const thStyle = 'background:#0D2C54;color:#fff;padding:10px 8px;font-size:0.82rem;font-weight:700;';
+  const thStyle = 'background:#0D2D53;color:#fff;padding:10px 8px;font-size:0.82rem;font-weight:700;';
 
   // ── Tahfidh rows ──────────────────────────────────────────────────────────
   var hifdhRows = '';
@@ -376,17 +376,17 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
       if (isAbsent(r)) {
         // Red row — absent
         hifdhRows += '<tr>'
-          + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + getDayName(r.date) + '</td>'
-          + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + fmtDate(r.date) + '</td>'
-          + '<td colspan="3" style="background:#FEE2E2;text-align:center;color:#DC2626;font-weight:700;">🔴 ' + absentLbl + '</td>'
+          + '<td style="background:#FEE2E2;color:#FF0000;font-weight:700;">' + getDayName(r.date) + '</td>'
+          + '<td style="background:#FEE2E2;color:#FF0000;font-weight:700;">' + fmtDate(r.date) + '</td>'
+          + '<td colspan="3" style="background:#FEE2E2;text-align:center;color:#FF0000;font-weight:700;">🔴 ' + absentLbl + '</td>'
           + '<td style="background:#FEE2E2;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
           + '</tr>';
       } else if (isExcused(r)) {
         // Purple row — excused
         hifdhRows += '<tr>'
-          + '<td style="background:#F3E8FF;color:#7C3AED;font-weight:700;">' + getDayName(r.date) + '</td>'
-          + '<td style="background:#F3E8FF;color:#7C3AED;font-weight:700;">' + fmtDate(r.date) + '</td>'
-          + '<td colspan="3" style="background:#F3E8FF;text-align:center;color:#7C3AED;font-weight:700;">🟣 ' + excusedLbl + '</td>'
+          + '<td style="background:#F3E8FF;color:#8018D6;font-weight:700;">' + getDayName(r.date) + '</td>'
+          + '<td style="background:#F3E8FF;color:#8018D6;font-weight:700;">' + fmtDate(r.date) + '</td>'
+          + '<td colspan="3" style="background:#F3E8FF;text-align:center;color:#8018D6;font-weight:700;">🟣 ' + excusedLbl + '</td>'
           + '<td style="background:#F3E8FF;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
           + '</tr>';
       } else if (tahfidhOff(r)) {
@@ -431,16 +431,16 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
   records.forEach(function(r) {
     if (isAbsent(r)) {
       mRows += '<tr>'
-        + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + getDayName(r.date) + '</td>'
-        + '<td style="background:#FEE2E2;color:#DC2626;font-weight:700;">' + fmtDate(r.date) + '</td>'
-        + '<td colspan="3" style="background:#FEE2E2;text-align:center;color:#DC2626;font-weight:700;">🔴 ' + absentLbl + '</td>'
+        + '<td style="background:#FEE2E2;color:#FF0000;font-weight:700;">' + getDayName(r.date) + '</td>'
+        + '<td style="background:#FEE2E2;color:#FF0000;font-weight:700;">' + fmtDate(r.date) + '</td>'
+        + '<td colspan="3" style="background:#FEE2E2;text-align:center;color:#FF0000;font-weight:700;">🔴 ' + absentLbl + '</td>'
         + '<td style="background:#FEE2E2;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
         + '</tr>';
     } else if (isExcused(r)) {
       mRows += '<tr>'
-        + '<td style="background:#F3E8FF;color:#7C3AED;font-weight:700;">' + getDayName(r.date) + '</td>'
-        + '<td style="background:#F3E8FF;color:#7C3AED;font-weight:700;">' + fmtDate(r.date) + '</td>'
-        + '<td colspan="3" style="background:#F3E8FF;text-align:center;color:#7C3AED;font-weight:700;">🟣 ' + excusedLbl + '</td>'
+        + '<td style="background:#F3E8FF;color:#8018D6;font-weight:700;">' + getDayName(r.date) + '</td>'
+        + '<td style="background:#F3E8FF;color:#8018D6;font-weight:700;">' + fmtDate(r.date) + '</td>'
+        + '<td colspan="3" style="background:#F3E8FF;text-align:center;color:#8018D6;font-weight:700;">🟣 ' + excusedLbl + '</td>'
         + '<td style="background:#F3E8FF;color:#6B7280;font-size:0.78rem;">' + (r.teacherComments ? '<img src="icons/comments icon.svg" style="width:13px;height:13px;vertical-align:middle;margin-left:3px;margin-right:3px;"> ' + r.teacherComments : '') + '</td>'
         + '</tr>';
     } else if (murajaahOff(r)) {
@@ -478,8 +478,8 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
   });
 
   const logoHtml = logoSrc
-    ? '<img src="' + logoSrc + '" alt="" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:4px solid #0D2C54;display:block;margin:0 auto 10px;">'
-    : '<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0D2C54,#0F766E);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:2rem;color:#fff;">📖</div>';
+    ? '<img src="' + logoSrc + '" alt="" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:4px solid #0D2D53;display:block;margin:0 auto 10px;">'
+    : '<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0D2D53,#0F766E);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:2rem;color:#fff;">📖</div>';
 
   const shareLabel = isAr ? '📤 مشاركة' : '📤 Share';
   const overallColor = ratingColor(overallRating);
@@ -506,13 +506,13 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     + 'table{width:100%;border-collapse:collapse;margin-bottom:20px;}'
     + 'tr:nth-child(even) td{background:#F8FAFC;}'
     + 'td{padding:9px 8px;font-size:0.82rem;border-bottom:1px solid #E5E7EB;}'
-    + '.summary-box{background:linear-gradient(135deg,#0D2C54,#0F766E);color:#fff;border-radius:14px;padding:20px;margin:20px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;print-color-adjust:exact;-webkit-print-color-adjust:exact;}'
+    + '.summary-box{background:linear-gradient(135deg,#0D2D53,#0F766E);color:#fff;border-radius:14px;padding:20px;margin:20px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;print-color-adjust:exact;-webkit-print-color-adjust:exact;}'
     + '.summary-item .val{font-size:1.6rem;font-weight:900;}'
     + '.summary-item .lbl{font-size:0.75rem;opacity:0.85;margin-top:4px;}'
-    + 'h2{color:#0D2C54;border-bottom:3px solid #0D2C54;padding-bottom:6px;font-size:1rem;margin-top:24px;}'
+    + 'h2{color:#0D2D53;border-bottom:3px solid #0D2D53;padding-bottom:6px;font-size:1rem;margin-top:24px;}'
     + '.action-bar{position:sticky;top:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(4px);padding:10px 20px;display:flex;gap:10px;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);z-index:100;}'
     + '.action-bar button{padding:8px 22px;border:none;border-radius:8px;font-size:0.9rem;cursor:pointer;font-family:inherit;font-weight:700;}'
-    + '.btn-print{background:#0D2C54;color:#fff;}'
+    + '.btn-print{background:#0D2D53;color:#fff;}'
     + '.btn-close{background:#F3F4F6;color:#374151;}'
     + '</style></head><body>'
     + '<div class="action-bar no-print">'
@@ -522,7 +522,7 @@ function buildReportHTML(student, halaqah, records, skipTahfidh, isAr, locale, t
     + '<div class="page">'
     + '<div style="text-align:center;padding:24px 0 16px;">'
     + logoHtml
-    + '<h1 style="margin:0;font-size:1.5rem;color:#0D2C54;font-weight:900;">' + title + '</h1>'
+    + '<h1 style="margin:0;font-size:1.5rem;color:#0D2D53;font-weight:900;">' + title + '</h1>'
     + (className   ? '<div style="color:#0F766E;font-weight:700;font-size:0.95rem;margin-top:4px;">' + className + '</div>' : '')
     + (teacherName ? '<div style="color:#6B7280;font-size:0.88rem;margin-top:2px;">' + (isAr ? 'المعلم: ' : 'Teacher: ') + teacherName + '</div>' : '')
     + '</div>'

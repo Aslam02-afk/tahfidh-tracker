@@ -16,6 +16,7 @@
 :root {
   --primary:     #0D2D53;
   --secondary:   #0F766E;
+  --female:      #FF5C77;
   --accent:      #C9A24D;
   --bg:          #F4F6F8;
   --card-bg:     #FFFFFF;
@@ -273,6 +274,89 @@ button[id^="cardTheme-"].btn-secondary {
   outline: none;
 }
 
+.btn-female {
+  background: #FF5C77 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #FF5C77 !important;
+  box-shadow: 0 4px 12px rgba(255, 92, 119, 0.25);
+}
+
+.btn-female:hover:not(:active) {
+  background: #E84C66 !important;
+  color: #FFFFFF !important;
+  border-color: #E84C66 !important;
+}
+
+.btn-female:active {
+  background: #FF5C77 !important;
+  color: #FFFFFF !important;
+  border-color: #FF5C77 !important;
+}
+
+.btn-female img:not([src*="theme"]) {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* Attendance Status Buttons */
+.btn-att-present {
+  background: #18D66D !important;
+  color: #FFFFFF !important;
+  border: 1px solid #18D66D !important;
+  box-shadow: 0 4px 12px rgba(24, 214, 109, 0.25) !important;
+}
+
+.btn-att-present:hover:not(:active) {
+  background: #15BE60 !important;
+  color: #FFFFFF !important;
+}
+
+.btn-att-absent {
+  background: #FF0000 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #FF0000 !important;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.25) !important;
+}
+
+.btn-att-absent:hover:not(:active) {
+  background: #E60000 !important;
+  color: #FFFFFF !important;
+}
+
+.btn-att-excused {
+  background: #8018D6 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #8018D6 !important;
+  box-shadow: 0 4px 12px rgba(128, 24, 214, 0.25) !important;
+}
+
+.btn-att-excused:hover:not(:active) {
+  background: #7114BE !important;
+  color: #FFFFFF !important;
+}
+
+.btn-att-late {
+  background: #D97706 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #D97706 !important;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25) !important;
+}
+
+.btn-att-late:hover:not(:active) {
+  background: #B45309 !important;
+  color: #FFFFFF !important;
+}
+
+.badge-female {
+  background: rgba(255, 92, 119, 0.12) !important;
+  color: #FF5C77 !important;
+  border: 1px solid rgba(255, 92, 119, 0.35) !important;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+
 .btn-success {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
@@ -473,6 +557,19 @@ html.dark .btn-primary { background: #0D2D53; color: #FFFFFF; border: 1px solid 
 html.dark .btn-secondary { background: #EDEDED; color: #1F2937; border: 1px solid #D6D6D6; }
 html.dark .btn-primary img:not([src*="theme"]) { filter: brightness(0) invert(1) !important; }
 html.dark .btn-secondary img:not([src*="theme"]) { filter: none !important; }
+
+html.dark .btn-female {
+  background: #FF5C77 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #FF5C77 !important;
+}
+html.dark .btn-female img:not([src*="theme"]) {
+  filter: brightness(0) invert(1) !important;
+}
+html.dark .btn-att-present { background: #18D66D !important; color: #FFFFFF !important; border-color: #18D66D !important; }
+html.dark .btn-att-absent  { background: #FF0000 !important; color: #FFFFFF !important; border-color: #FF0000 !important; }
+html.dark .btn-att-excused { background: #8018D6 !important; color: #FFFFFF !important; border-color: #8018D6 !important; }
+html.dark .btn-att-late    { background: #D97706 !important; color: #FFFFFF !important; border-color: #D97706 !important; }
 html.dark .bottom-nav { background: #1E293B; border-color: var(--border); box-shadow: 0 -4px 16px rgba(0,0,0,0.3); }
 html.dark .form-input::placeholder,
 html.dark textarea.form-input::placeholder { color: var(--text-muted); opacity: 0.65; }

@@ -146,7 +146,7 @@
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.88rem;">
           <div style="background:#F3F6FA; padding:10px; border-radius:10px;">
             <div style="color:var(--text-muted); font-size:0.78rem;">${t('gender')}</div>
-            <div style="font-weight:700; margin-top:2px;">${student.gender || t('male')}</div>
+            <div style="font-weight:700; margin-top:2px; ${(student.gender === 'أنثى' || student.gender === 'Female') ? 'color:#FF5C77;' : ''}">${student.gender || t('male')}</div>
           </div>
           <div style="background:#F3F6FA; padding:10px; border-radius:10px;">
             <div style="color:var(--text-muted); font-size:0.78rem;">${t('phoneLabel')}</div>
@@ -285,16 +285,16 @@
             <div style="color:#16A34A; font-size:0.78rem;">${t('present')}</div>
           </div>
           <div style="background:#FEE2E2; padding:10px; border-radius:10px; text-align:center;">
-            <div style="font-size:1.3rem; font-weight:900; color:#DC2626;">${absentCount}</div>
-            <div style="color:#DC2626; font-size:0.78rem;">${t('absent')}</div>
+            <div style="font-size:1.3rem; font-weight:900; color:#FF0000;">${absentCount}</div>
+            <div style="color:#FF0000; font-size:0.78rem;">${t('absent')}</div>
           </div>
           <div style="background:#FEF3C7; padding:10px; border-radius:10px; text-align:center;">
             <div style="font-size:1.3rem; font-weight:900; color:#D97706;">${lateCount}</div>
             <div style="color:#D97706; font-size:0.78rem;">${t('lateLabel')}</div>
           </div>
           <div style="background:#EFF6FF; padding:10px; border-radius:10px; text-align:center;">
-            <div style="font-size:1.3rem; font-weight:900; color:#2563EB;">${excusedCount}</div>
-            <div style="color:#2563EB; font-size:0.78rem;">${t('excused')}</div>
+            <div style="font-size:1.3rem; font-weight:900; color:#8018D6;">${excusedCount}</div>
+            <div style="color:#8018D6; font-size:0.78rem;">${t('excused')}</div>
           </div>
         </div>
         <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:4px;">${t('present')} ${presentRate}% / ${totalDays} ${isAr ? 'يوم' : 'days'}</div>

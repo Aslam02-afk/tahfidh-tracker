@@ -50,12 +50,14 @@
       const courseKey = s.course === 'talqin' ? 'courseTalqin' : s.course === 'murajaah' ? 'courseMurajaah' : s.course === 'qaida' ? 'courseQaida' : 'courseHifdh';
       const courseBg  = s.course === 'murajaah' ? '#E0F2FE' : s.course === 'talqin' ? '#F3E8FF' : s.course === 'qaida' ? '#FEF9C3' : '#DCFCE7';
       const courseClr = s.course === 'murajaah' ? '#0369A1' : s.course === 'talqin' ? '#7C3AED' : s.course === 'qaida' ? '#92400E' : '#166534';
-      const studentIconSrc = (s.gender === 'أنثى' || s.gender === 'Female')
+      const isFemale = (s.gender === 'أنثى' || s.gender === 'Female');
+      const studentIconSrc = isFemale
         ? 'icons/female teacher icon.svg' : 'icons/male teacher icon.svg';
       const studentImgSrc = s.studentPhoto || studentIconSrc;
+      const avatarBorder = isFemale ? '#FF5C77' : 'var(--border)';
       const studentImgStyle = s.studentPhoto
-        ? 'width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid var(--border); flex-shrink:0; cursor:pointer;'
-        : 'width:44px; height:44px; border-radius:50%; border:2px solid var(--border); padding:8px; background:var(--bg); flex-shrink:0; cursor:pointer;';
+        ? `width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid ${avatarBorder}; flex-shrink:0; cursor:pointer;`
+        : `width:44px; height:44px; border-radius:50%; border:2px solid ${avatarBorder}; padding:8px; background:var(--bg); flex-shrink:0; cursor:pointer;`;
 
       // Report badge
       const reportBadge = reportSent

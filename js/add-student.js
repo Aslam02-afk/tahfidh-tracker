@@ -23,7 +23,7 @@
       maleBtn.style.borderColor = '';
     }
     if (femaleBtn) {
-      femaleBtn.className = 'btn ' + (val === 'female' ? 'btn-primary' : 'btn-secondary');
+      femaleBtn.className = 'btn ' + (val === 'female' ? 'btn-female' : 'btn-secondary');
       femaleBtn.style.background = '';
       femaleBtn.style.color = '';
       femaleBtn.style.borderColor = '';

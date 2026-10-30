@@ -54,9 +54,11 @@ function renderClasses() {
     const salahLabel = h.classTime === 'custom' && h.classTimeCustom
       ? h.classTimeCustom
       : (t(h.classTime) !== h.classTime ? t(h.classTime) : '');
+    const isTeacherFemale = h.teacherGender === 'female';
+    const teacherBorder = isTeacherFemale ? '#FF5C77' : 'var(--border)';
     const teacherImgHtml = h.teacherPhoto
-      ? `<img src="${h.teacherPhoto}" alt="" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--border); flex-shrink:0;">`
-      : `<img src="icons/${genderIcon}.svg" alt="" style="width:52px; height:52px; border-radius:50%; border:2px solid var(--border); padding:10px; background:var(--card-bg); flex-shrink:0;">`;
+      ? `<img src="${h.teacherPhoto}" alt="" style="width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid ${teacherBorder}; flex-shrink:0;">`
+      : `<img src="icons/${genderIcon}.svg" alt="" style="width:52px; height:52px; border-radius:50%; border:2px solid ${teacherBorder}; padding:10px; background:var(--card-bg); flex-shrink:0;">`;
 
     return `
       <article class="card" style="cursor:pointer; position:relative; ${cardBgStyle}" onclick="location.href='class.html?classId=${h.id}'">
