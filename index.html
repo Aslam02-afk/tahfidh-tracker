@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0D2C54" />
+  <meta name="theme-color" content="#0D2D53" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>متتبع التحفيظ | Tahfidh Tracker</title>
@@ -20,9 +20,14 @@
 <body>
 
   <!-- ══════════════════════════════════════
-       SPLASH SCREEN
+       SPLASH SCREEN (Seamless Handoff from Android)
   ══════════════════════════════════════ -->
-  <div id="splashScreen" style="display:none;">
+  <div id="splashScreen">
+    <script>
+      if (sessionStorage.getItem('splashShown')) {
+        document.getElementById('splashScreen').style.display = 'none';
+      }
+    </script>
     <img class="splash-logo" src="assets_icons/appicon.svg" alt="Tahfidh Tracker" />
     <div class="splash-arabic">متتبع التحفيظ</div>
     <div class="splash-english">Tahfidh Tracker</div>
@@ -101,26 +106,17 @@
       }
     });
 
-    // ── Splash screen — show once per session ─────────────────────────────
+    // ── Splash screen — seamless handoff from Android (show once per session) ──
     (function () {
       const splash = document.getElementById('splashScreen');
-      if (!splash) return;
+      if (!splash || splash.style.display === 'none') return;
 
-      if (sessionStorage.getItem('splashShown')) {
-        splash.style.display = 'none';
-        return;
-      }
-
-      // First visit — show splash
-      splash.style.display = 'flex';
       sessionStorage.setItem('splashShown', '1');
 
-      // "Developed by Al Hudaa Program" = 30 chars
-      // typing starts at 1000ms, ~55ms per char = ~1650ms to finish
-      // + 1000ms pause after typing = total ~3650ms before fade
-      // We use 4500ms to give comfortable margin
-      const SPLASH_DURATION = 4500;  // ms — enough for full typing + pause
-      const FADE_DURATION   = 650;   // ms — fade out
+      // Typing starts at 300ms, completes in 1200ms (1500ms total)
+      // + 700ms comfortable reading pause = 2200ms total before smooth fade
+      const SPLASH_DURATION = 2200;
+      const FADE_DURATION   = 500;
 
       setTimeout(function () {
         splash.classList.add('hide');
