@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#0D2D53" />
   <title>القرآن الكريم – Tahfidh Tracker</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=68" />
   <link rel="icon" type="image/svg+xml" href="assets_icons/appicon.svg" />
   <link rel="manifest" href="manifest.json" />
   <style>
@@ -783,8 +783,11 @@
 
   <script src="js/db.js"></script>
   <script src="js/i18n.js"></script>
-  <script src="js/ui.js"></script>
+  <script src="js/ui.js?v=68"></script>
   <script src="js/quran.js"></script>
+<script>
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+  </script>
 </body>
 
 </html>

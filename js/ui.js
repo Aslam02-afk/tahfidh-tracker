@@ -150,7 +150,8 @@ function setupAutoHidingNav(nav) {
   // Handle nested scrollable containers (e.g. .mushaf-scroll in Quran reader)
   document.addEventListener('scroll', function(e) {
     const target = e.target;
-    if (!target || target === document || target === window) return;
+    if (!target || target === document || target === window || target === document.documentElement || target === document.body) return;
+    if (target.tagName === 'TEXTAREA' || target.tagName === 'INPUT' || target.tagName === 'SELECT') return;
     if (typeof target.scrollTop !== 'number') return;
     if (target.scrollHeight <= target.clientHeight) return;
     // Don't hide nav when scrolling inside modals/popups

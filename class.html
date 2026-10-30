@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>طلاب الحلقة – Tahfidh Tracker</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=68" />
   <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/appicon-64.png" />
   <link rel="manifest" href="manifest.json" />
 </head>
@@ -53,30 +53,18 @@
   <img src="icons/add icon.svg" style="width:28px; height:28px; filter:brightness(0) invert(1);" alt="Add">
 </button>
 
-<nav class="bottom-nav">
-  <button class="nav-btn" onclick="location.href='index.html'">
-    <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
-    <div class="nav-text" data-i18n="home">الرئيسية</div>
-  </button>
-  <button class="nav-btn" onclick="location.href='quran.html'">
-    <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
-    <div class="nav-text" data-i18n="quran">القرآن</div>
-  </button>
-  <button class="nav-btn" onclick="location.href='settings.html'">
-    <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
-    <div class="nav-text" data-i18n="settings">الإعدادات</div>
-  </button>
-</nav>
-
 <footer class="branding-footer" data-i18n="footer">Made by Al Hudaa Program | صُنع بواسطة برنامج الهدى</footer>
 
 <!-- xlsx from CDN (requires internet for Excel export only) -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <script src="js/db.js"></script>
 <script src="js/i18n.js"></script>
-<script src="js/ui.js"></script>
+<script src="js/ui.js?v=68"></script>
 <script src="js/reports.js"></script>
 <script src="js/export.js"></script>
 <script src="js/class.js"></script>
+<script>
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+</script>
 </body>
 </html>
