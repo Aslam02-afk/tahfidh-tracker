@@ -207,12 +207,17 @@ async function loadQuranData() {
       pagesByNum[pg].push(v);
     }
 
-    // Extract real Basmalah from surah 1 verse 1
+    // Extract real Basmalah from surah 1 verse 1, stripping the ayah 1 end marker
+    // so opening headers in Surahs 2–114 are unnumbered.
     const fatihaV1 = verses.find(v =>
       v[FIELDS.surahField] === 1 && v[FIELDS.ayahField] === 1
     );
     if (fatihaV1 && FIELDS.textField) {
-      BASMALAH_TEXT = fatihaV1[FIELDS.textField] || BASMALAH_TEXT;
+      const rawFatihaV1 = fatihaV1[FIELDS.textField] || '';
+      BASMALAH_TEXT = rawFatihaV1
+        .replace(/[\uE95A-\uEA77]/g, '')
+        .replace(/[\s\u200B-\u200F]+$/g, '')
+        .trim() || BASMALAH_TEXT;
     }
 
     quranData = pagesByNum;

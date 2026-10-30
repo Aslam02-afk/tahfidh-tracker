@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
@@ -9,31 +10,30 @@
   <link rel="icon" type="image/svg+xml" href="assets_icons/appicon.svg" />
   <link rel="manifest" href="manifest.json" />
   <style>
-
     /* ═══════════════════════════════════════════
        MUSHAF MADANI DIGITAL — Page Layout
     ═══════════════════════════════════════════ */
 
     :root {
-      --mushaf-bg:      #F4EDE5;
-      --mushaf-border:  #D4C7B8;
-      --mushaf-text:    #2C2B26;
-      --mushaf-muted:   #78716C;
-      --mushaf-header:  #0D2D53;
-      --mushaf-frame:   #529B88;
-      --ayah-marker:    #529B88;
+      --mushaf-bg: #F4EDE5;
+      --mushaf-border: #D4C7B8;
+      --mushaf-text: #2C2B26;
+      --mushaf-muted: #78716C;
+      --mushaf-header: #0D2D53;
+      --mushaf-frame: #529B88;
+      --ayah-marker: #529B88;
       --basmalah-color: #2C2B26;
     }
 
     html.dark {
-      --mushaf-bg:     #18181B;
+      --mushaf-bg: #18181B;
       --mushaf-border: #3F3F46;
-      --mushaf-text:   #F4F4F5;
-      --mushaf-muted:  #A1A1AA;
+      --mushaf-text: #F4F4F5;
+      --mushaf-muted: #A1A1AA;
       --mushaf-header: #E4E4E7;
-      --mushaf-frame:  #5EEAD4;
-      --ayah-marker:   #5EEAD4;
-      --basmalah-color:#F4F4F5;
+      --mushaf-frame: #5EEAD4;
+      --ayah-marker: #5EEAD4;
+      --basmalah-color: #F4F4F5;
     }
 
     body {
@@ -42,7 +42,9 @@
       animation: none;
     }
 
-    html.dark body { background: var(--mushaf-bg); }
+    html.dark body {
+      background: var(--mushaf-bg);
+    }
 
     /* ── App header ── */
     .quran-app-header {
@@ -56,7 +58,7 @@
       position: sticky;
       top: 0;
       z-index: 200;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
       width: 100%;
     }
 
@@ -66,6 +68,7 @@
         margin-inline: auto;
         border-radius: 0 0 16px 16px;
       }
+
       .page-nav {
         max-width: 640px;
         margin-inline: auto;
@@ -83,12 +86,12 @@
       top: 52px;
       z-index: 199;
       gap: 8px;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     }
 
     html.dark .page-nav {
       background: var(--mushaf-bg);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .page-nav-btn {
@@ -141,7 +144,9 @@
       align-items: center;
     }
 
-    .goto-bar.show { display: flex; }
+    .goto-bar.show {
+      display: flex;
+    }
 
     .goto-bar input {
       flex: 1;
@@ -273,7 +278,7 @@
       border-radius: 6px;
       padding: 6px 24px;
       position: relative;
-      background: rgba(201,162,77,0.05);
+      background: rgba(201, 162, 77, 0.05);
     }
 
     /* Side ornaments on surah frame */
@@ -288,8 +293,14 @@
       opacity: 0.7;
     }
 
-    .surah-frame-inner::before { right: 6px; }
-    .surah-frame-inner::after  { left: 6px; transform: translateY(-50%) scaleX(-1); }
+    .surah-frame-inner::before {
+      right: 6px;
+    }
+
+    .surah-frame-inner::after {
+      left: 6px;
+      transform: translateY(-50%) scaleX(-1);
+    }
 
     .surah-name {
       font-family: 'KFGQPC Hafs', serif;
@@ -316,7 +327,9 @@
       line-height: 1.8;
     }
 
-    html.dark .basmalah { color: var(--mushaf-border); }
+    html.dark .basmalah {
+      color: var(--mushaf-border);
+    }
 
     /* ── Quran text lines (Clean, High Contrast) ── */
     .mushaf-lines {
@@ -385,13 +398,18 @@
       margin: 0 3px;
     }
 
-    .mushaf-loading-dot:nth-child(2) { animation-delay: 0.2s; }
-    .mushaf-loading-dot:nth-child(3) { animation-delay: 0.4s; }
+    .mushaf-loading-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .mushaf-loading-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
 
     /* ── Swipe hint ── */
     .swipe-hint {
       text-align: center;
-      color: rgba(201,162,77,0.5);
+      color: rgba(201, 162, 77, 0.5);
       font-size: 0.7rem;
       padding: 8px;
       letter-spacing: 1px;
@@ -403,22 +421,31 @@
     }
 
     @keyframes pageAppear {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* ── Surah selector modal ── */
     .surah-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.7);
       z-index: 9000;
       display: none;
       align-items: flex-end;
       backdrop-filter: blur(3px);
     }
 
-    .surah-modal.show { display: flex; }
+    .surah-modal.show {
+      display: flex;
+    }
 
     .surah-modal-box {
       background: var(--card-bg);
@@ -428,12 +455,17 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      animation: slideUp 0.3s cubic-bezier(0.34,1.2,0.64,1) both;
+      animation: slideUp 0.3s cubic-bezier(0.34, 1.2, 0.64, 1) both;
     }
 
     @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to   { transform: translateY(0); }
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
     }
 
     .surah-modal-header {
@@ -478,7 +510,9 @@
       transition: background 0.15s;
     }
 
-    .surah-modal-item:active { background: rgba(13,44,84,0.08); }
+    .surah-modal-item:active {
+      background: rgba(13, 44, 84, 0.08);
+    }
 
     .surah-modal-item .snum {
       width: 30px;
@@ -515,7 +549,7 @@
       width: 22px;
       height: 36px;
       background: #529B88;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
       clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
       z-index: 10;
       cursor: pointer;
@@ -523,7 +557,9 @@
       transition: opacity 0.2s, transform 0.15s;
     }
 
-    .bookmark-ribbon:active { transform: scale(0.9); }
+    .bookmark-ribbon:active {
+      transform: scale(0.9);
+    }
 
     .bookmark-ribbon .bk-icon {
       position: absolute;
@@ -552,8 +588,8 @@
 
     /* ── Bookmark button in header ── */
     .bk-header-btn {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: #fff;
       padding: 0.45rem 0.7rem;
       border-radius: 12px;
@@ -562,21 +598,29 @@
       transition: background 0.2s, transform 0.15s;
     }
 
-    .bk-header-btn:active { transform: scale(0.9); }
-    .bk-header-btn.active { background: #529B88; color: #fff; }
+    .bk-header-btn:active {
+      transform: scale(0.9);
+    }
+
+    .bk-header-btn.active {
+      background: #529B88;
+      color: #fff;
+    }
 
     /* ── Bookmarks modal ── */
     .bk-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0, 0, 0, 0.6);
       z-index: 9500;
       display: none;
       align-items: flex-end;
       backdrop-filter: blur(3px);
     }
 
-    .bk-modal.show { display: flex; }
+    .bk-modal.show {
+      display: flex;
+    }
 
     .bk-modal-box {
       background: var(--card-bg);
@@ -586,7 +630,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      animation: slideUp 0.3s cubic-bezier(0.34,1.2,0.64,1) both;
+      animation: slideUp 0.3s cubic-bezier(0.34, 1.2, 0.64, 1) both;
     }
 
     .bk-modal-header {
@@ -600,7 +644,10 @@
       font-weight: 800;
     }
 
-    .bk-list { overflow-y: auto; flex: 1; }
+    .bk-list {
+      overflow-y: auto;
+      flex: 1;
+    }
 
     .bk-item {
       display: flex;
@@ -613,7 +660,9 @@
       direction: rtl;
     }
 
-    .bk-item:active { background: rgba(13,44,84,0.08); }
+    .bk-item:active {
+      background: rgba(13, 44, 84, 0.08);
+    }
 
     .bk-item .bk-pg {
       font-size: 1.1rem;
@@ -622,9 +671,21 @@
       min-width: 40px;
     }
 
-    .bk-item .bk-info { flex: 1; padding: 0 10px; }
-    .bk-item .bk-name { font-weight: 700; font-size: 0.95rem; }
-    .bk-item .bk-time { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+    .bk-item .bk-info {
+      flex: 1;
+      padding: 0 10px;
+    }
+
+    .bk-item .bk-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .bk-item .bk-time {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
 
     .bk-item .bk-del {
       color: #DC2626;
@@ -642,84 +703,88 @@
       color: var(--text-muted);
       font-size: 0.9rem;
     }
-
   </style>
 </head>
+
 <body>
 
-<!-- App Header -->
-<header class="quran-app-header">
-  <button class="menu-btn" onclick="history.back()">←</button>
-  <div style="text-align:center;">
-    <div class="app-title">القرآن الكريم</div>
-  </div>
-  <div style="display:flex;gap:6px;">
-    <button class="bk-header-btn" id="bkBtn" onclick="toggleBookmark()" title="إشارة مرجعية">🔖</button>
-    <button class="menu-btn" onclick="openSurahModal()" title="اختر سورة">☰</button>
-    <button class="menu-btn" onclick="toggleDarkMode()">
-      <img src="icons/day time icon.svg" id="darkToggle" style="width:18px;height:18px;filter:brightness(0) invert(1);" alt="">
-    </button>
-  </div>
-</header>
+  <!-- App Header -->
+  <header class="quran-app-header">
+    <button class="menu-btn" onclick="history.back()">←</button>
+    <div style="text-align:center;">
+      <div class="app-title">القرآن الكريم</div>
+    </div>
+    <div style="display:flex;gap:6px;">
+      <button class="bk-header-btn" id="bkBtn" onclick="toggleBookmark()" title="إشارة مرجعية">🔖</button>
+      <button class="menu-btn" onclick="openSurahModal()" title="اختر سورة">☰</button>
+      <button class="menu-btn" onclick="toggleDarkMode()">
+        <img src="icons/day time icon.svg" id="darkToggle"
+          style="width:18px;height:18px;filter:brightness(0) invert(1);" alt="">
+      </button>
+    </div>
+  </header>
 
-<!-- Page Navigator — RTL Arabic book: right button = next, left button = prev -->
-<div class="page-nav">
-  <button class="page-nav-btn" id="btnNext" onclick="goPage(currentPage + 1)">‹</button>
-  <div class="page-number-display" onclick="toggleGoto()">
-    صفحة <span id="pageNum">1</span> <span style="color:#888;font-size:0.75rem;">/ 604</span>
+  <!-- Page Navigator — RTL Arabic book: right button = next, left button = prev -->
+  <div class="page-nav">
+    <button class="page-nav-btn" id="btnNext" onclick="goPage(currentPage + 1)">‹</button>
+    <div class="page-number-display" onclick="toggleGoto()">
+      صفحة <span id="pageNum">1</span> <span style="color:#888;font-size:0.75rem;">/ 604</span>
+    </div>
+    <button class="page-nav-btn" id="btnPrev" onclick="goPage(currentPage - 1)">›</button>
   </div>
-  <button class="page-nav-btn" id="btnPrev" onclick="goPage(currentPage - 1)">›</button>
-</div>
 
-<!-- Go To Page Bar -->
-<div class="goto-bar" id="gotoBar">
-  <input type="number" id="gotoInput" min="1" max="604" placeholder="رقم الصفحة (1-604)"
-    onkeydown="if(event.key==='Enter') doGoto()" />
-  <button onclick="doGoto()">اذهب</button>
-</div>
+  <!-- Go To Page Bar -->
+  <div class="goto-bar" id="gotoBar">
+    <input type="number" id="gotoInput" min="1" max="604" placeholder="رقم الصفحة (1-604)"
+      onkeydown="if(event.key==='Enter') doGoto()" />
+    <button onclick="doGoto()">اذهب</button>
+  </div>
 
-<!-- Mushaf Scroll Area -->
-<div class="mushaf-scroll" id="mushafScroll">
-  <div class="mushaf-loading" id="loadingState">
-    <div style="color:var(--ayah-marker);font-size:0.9rem;margin-bottom:8px;">جاري تحميل المصحف...</div>
-    <div>
-      <span class="mushaf-loading-dot"></span>
-      <span class="mushaf-loading-dot"></span>
-      <span class="mushaf-loading-dot"></span>
+  <!-- Mushaf Scroll Area -->
+  <div class="mushaf-scroll" id="mushafScroll">
+    <div class="mushaf-loading" id="loadingState">
+      <div style="color:var(--ayah-marker);font-size:0.9rem;margin-bottom:8px;">جاري تحميل المصحف...</div>
+      <div>
+        <span class="mushaf-loading-dot"></span>
+        <span class="mushaf-loading-dot"></span>
+        <span class="mushaf-loading-dot"></span>
+      </div>
+    </div>
+    <div id="mushafPage" style="display:none;"></div>
+    <div class="swipe-hint">← اسحب للتنقل بين الصفحات →</div>
+  </div>
+
+  <!-- Surah Selector Modal -->
+  <div class="surah-modal" id="surahModal" onclick="if(event.target===this) closeSurahModal()">
+    <div class="surah-modal-box">
+      <div class="surah-modal-header">
+        <span style="font-weight:800;">اختر سورة</span>
+        <button onclick="closeSurahModal()"
+          style="background:rgba(255,255,255,0.2);border:none;color:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:1rem;">✕</button>
+      </div>
+      <div class="surah-modal-search">
+        <input type="text" id="surahSearch" placeholder="ابحث عن سورة..." oninput="filterSurahs(this.value)" />
+      </div>
+      <div class="surah-modal-list" id="surahList"></div>
     </div>
   </div>
-  <div id="mushafPage" style="display:none;"></div>
-  <div class="swipe-hint">← اسحب للتنقل بين الصفحات →</div>
-</div>
 
-<!-- Surah Selector Modal -->
-<div class="surah-modal" id="surahModal" onclick="if(event.target===this) closeSurahModal()">
-  <div class="surah-modal-box">
-    <div class="surah-modal-header">
-      <span style="font-weight:800;">اختر سورة</span>
-      <button onclick="closeSurahModal()" style="background:rgba(255,255,255,0.2);border:none;color:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:1rem;">✕</button>
+  <!-- Bookmarks Modal -->
+  <div class="bk-modal" id="bkModal" onclick="if(event.target===this) closeBkModal()">
+    <div class="bk-modal-box">
+      <div class="bk-modal-header">
+        <span>🔖 الإشارات المرجعية | Bookmarks</span>
+        <button onclick="closeBkModal()"
+          style="background:rgba(255,255,255,0.2);border:none;color:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;">✕</button>
+      </div>
+      <div class="bk-list" id="bkList"></div>
     </div>
-    <div class="surah-modal-search">
-      <input type="text" id="surahSearch" placeholder="ابحث عن سورة..." oninput="filterSurahs(this.value)" />
-    </div>
-    <div class="surah-modal-list" id="surahList"></div>
   </div>
-</div>
 
-<!-- Bookmarks Modal -->
-<div class="bk-modal" id="bkModal" onclick="if(event.target===this) closeBkModal()">
-  <div class="bk-modal-box">
-    <div class="bk-modal-header">
-      <span>🔖 الإشارات المرجعية | Bookmarks</span>
-      <button onclick="closeBkModal()" style="background:rgba(255,255,255,0.2);border:none;color:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;">✕</button>
-    </div>
-    <div class="bk-list" id="bkList"></div>
-  </div>
-</div>
-
-<script src="js/db.js"></script>
-<script src="js/i18n.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/quran.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/quran.js"></script>
 </body>
+
 </html>
