@@ -422,6 +422,11 @@ button[id^="cardTheme-"].btn-secondary {
   will-change: transform;
 }
 
+.bottom-nav.nav-hidden {
+  transform: translateY(calc(100% + 20px)) !important;
+  pointer-events: none;
+}
+
 @media (min-width: 641px) {
   .bottom-nav {
     border-radius: 16px 16px 0 0;

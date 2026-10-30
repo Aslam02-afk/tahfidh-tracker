@@ -70,145 +70,145 @@ function setTheme(theme) {
 
 initTheme();
 
-// ===== Bottom Nav — auto inject on every page =====
-(function injectBottomNav() {
-  if (document.querySelector('.bottom-nav')) return;
+// ===== Bottom Nav — YouTube-Style Auto-Hiding Navigation =====
+function setupAutoHidingNav(nav) {
+  if (!nav || nav._hasAutoHiding) return;
+  nav._hasAutoHiding = true;
 
-  const page = location.pathname.split('/').pop() || 'index.html';
+  const SCROLL_THRESHOLD = 8;  // px — ignore tiny scroll jitter
+  const PAUSE_DELAY      = 400; // ms — YouTube-style reappear after pause
 
-  const nav = document.createElement('nav');
-  nav.className = 'bottom-nav';
-  nav.innerHTML = `
-    <button class="nav-btn ${page === 'index.html' || page === '' ? 'active' : ''}" onclick="location.href='index.html'">
-      <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="home">الرئيسية</div>
-    </button>
-    <button class="nav-btn ${page === 'quran.html' ? 'active' : ''}" onclick="location.href='quran.html'">
-      <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="quran">القرآن</div>
-    </button>
-    <button class="nav-btn ${page === 'settings.html' ? 'active' : ''}" onclick="location.href='settings.html'">
-      <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="settings">الإعدادات</div>
-    </button>
-  `;
-  document.body.appendChild(nav);
+  let lastScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+  let ticking     = false;
+  let pauseTimer  = null;
+  let isNavHidden = false;
 
-  // ── YouTube-style hide on scroll ──────────────────────────────────────
-  const THRESHOLD  = 8;    // px — ignore tiny scroll jitter
-  const NAV_HEIGHT = 64;   // px — height of nav bar
-
-  let lastScrollY   = window.scrollY;
-  let ticking       = false;
-  let navHidden     = false;
-
-  function updateNav() {
-    const currentScrollY = window.scrollY;
-    const delta = currentScrollY - lastScrollY;
-
-    // At the very top — always show
-    if (currentScrollY <= 10) {
-      showNav();
-      lastScrollY = currentScrollY;
-      ticking = false;
-      return;
+  function showNav() {
+    if (isNavHidden) {
+      isNavHidden = false;
+      nav.classList.remove('nav-hidden');
+      nav.style.transform = '';
     }
-
-    // Scrolling DOWN past threshold → hide
-    if (delta > THRESHOLD && !navHidden) {
-      hideNav();
-    }
-    // Scrolling UP past threshold → show
-    else if (delta < -THRESHOLD && navHidden) {
-      showNav();
-    }
-
-    lastScrollY = currentScrollY;
-    ticking = false;
   }
 
   function hideNav() {
-    navHidden = true;
-    nav.style.transform = `translateY(${NAV_HEIGHT + 2}px)`;
+    if (!isNavHidden) {
+      isNavHidden = true;
+      nav.classList.add('nav-hidden');
+    }
   }
 
-  function showNav() {
-    navHidden = false;
-    nav.style.transform = 'translateY(0)';
+  function onScrollStop() {
+    // YouTube behavior: if scrolling stops for ~400ms, bring nav back
+    showNav();
+    lastScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
   }
 
-  // Use requestAnimationFrame for smooth performance
+  function handleScroll(currentY) {
+    if (pauseTimer) {
+      clearTimeout(pauseTimer);
+    }
+    pauseTimer = setTimeout(onScrollStop, PAUSE_DELAY);
+
+    // At the top of the page — always show
+    if (currentY <= 15) {
+      showNav();
+      lastScrollY = currentY;
+      return;
+    }
+
+    const delta = currentY - lastScrollY;
+
+    // Scrolling DOWN past threshold → smoothly hide
+    if (delta > SCROLL_THRESHOLD) {
+      if (!isNavHidden) {
+        hideNav();
+      }
+      lastScrollY = currentY;
+    }
+    // Scrolling UP past threshold → immediately show
+    else if (delta < -SCROLL_THRESHOLD) {
+      if (isNavHidden) {
+        showNav();
+      }
+      lastScrollY = currentY;
+    }
+  }
+
+  // Window / Document scroll listener with requestAnimationFrame
   window.addEventListener('scroll', function() {
+    const currentY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     if (!ticking) {
-      requestAnimationFrame(updateNav);
+      requestAnimationFrame(function() {
+        handleScroll(currentY);
+        ticking = false;
+      });
       ticking = true;
     }
   }, { passive: true });
 
-  // Also handle scrollable divs inside the page (e.g. mushaf-scroll)
+  // Handle nested scrollable containers (e.g. .mushaf-scroll in Quran reader)
   document.addEventListener('scroll', function(e) {
-    if (e.target !== window && e.target.scrollTop !== undefined) {
-      const el = e.target;
-      const delta = el.scrollTop - (el._lastScrollTop || 0);
+    const target = e.target;
+    if (!target || target === document || target === window) return;
+    if (typeof target.scrollTop !== 'number') return;
+    if (target.scrollHeight <= target.clientHeight) return;
+    // Don't hide nav when scrolling inside modals/popups
+    if (target.closest && (target.closest('.surah-modal') || target.closest('.bk-modal') || target.closest('.tt-modal'))) return;
 
-      if (el.scrollTop <= 10) {
-        showNav();
-      } else if (delta > THRESHOLD && !navHidden) {
-        hideNav();
-      } else if (delta < -THRESHOLD && navHidden) {
-        showNav();
-      }
+    const currentY = target.scrollTop;
+    const lastY = target._lastScrollTop !== undefined ? target._lastScrollTop : currentY;
+    const delta = currentY - lastY;
 
-      el._lastScrollTop = el.scrollTop;
+    if (pauseTimer) {
+      clearTimeout(pauseTimer);
+    }
+    pauseTimer = setTimeout(function() {
+      onScrollStop();
+      target._lastScrollTop = target.scrollTop;
+    }, PAUSE_DELAY);
+
+    if (currentY <= 15) {
+      showNav();
+      target._lastScrollTop = currentY;
+      return;
+    }
+
+    if (delta > SCROLL_THRESHOLD) {
+      if (!isNavHidden) hideNav();
+      target._lastScrollTop = currentY;
+    } else if (delta < -SCROLL_THRESHOLD) {
+      if (isNavHidden) showNav();
+      target._lastScrollTop = currentY;
     }
   }, { passive: true, capture: true });
 
-})();
+  // Ensure nav is visible when switching tabs, pageshow, or tab visibility change
+  window.addEventListener('pageshow', showNav);
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+      showNav();
+    }
+  });
 
-// ===== Bottom Nav — inject on every page =====
-(function injectBottomNav() {
-  // Don't inject if already exists
-  if (document.querySelector('.bottom-nav')) return;
+  nav.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      showNav();
+    });
+  });
+}
 
-  const page = window.location.pathname.split('/').pop() || 'index.html';
-
-  const nav = document.createElement('nav');
-  nav.className = 'bottom-nav';
-  nav.innerHTML = `
-    <button class="nav-btn ${page === 'index.html' || page === '' ? 'active' : ''}" onclick="location.href='index.html'">
-      <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="home">الرئيسية</div>
-    </button>
-    <button class="nav-btn ${page === 'quran.html' ? 'active' : ''}" onclick="location.href='quran.html'">
-      <div class="nav-icon"><img src="icons/Quran icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="quran">القرآن</div>
-    </button>
-    <button class="nav-btn ${page === 'settings.html' ? 'active' : ''}" onclick="location.href='settings.html'">
-      <div class="nav-icon"><img src="icons/setting icon.svg" alt=""></div>
-      <div class="nav-text" data-i18n="settings">الإعدادات</div>
-    </button>
-  `;
-
-  // Insert before closing body tag
-  document.body.appendChild(nav);
-
-  // Apply active icon color for dark mode
-  updateDarkIcon();
-})();
-
-// ===== Bottom Nav — inject on every page =====
-(function injectBottomNav() {
-  // Don't inject if already exists in HTML
-  if (document.querySelector('.bottom-nav')) return;
-
+function initBottomNav() {
+  let nav = document.querySelector('.bottom-nav');
   const page = window.location.pathname.split('/').pop() || 'index.html';
   const isHome     = page === 'index.html' || page === '';
   const isQuran    = page === 'quran.html';
   const isSettings = page === 'settings.html';
 
-  const nav = document.createElement('nav');
-  nav.className = 'bottom-nav';
-  nav.innerHTML = `
+  if (!nav) {
+    nav = document.createElement('nav');
+    nav.className = 'bottom-nav';
+    nav.innerHTML = `
     <button class="nav-btn ${isHome ? 'active' : ''}" onclick="location.href='index.html'">
       <div class="nav-icon"><img src="icons/home icon.svg" alt=""></div>
       <div class="nav-text" data-i18n="home">الرئيسية</div>
@@ -222,12 +222,21 @@ initTheme();
       <div class="nav-text" data-i18n="settings">الإعدادات</div>
     </button>
   `;
+    document.body.appendChild(nav);
 
-  document.body.appendChild(nav);
+    if (typeof applyI18n === 'function') {
+      applyI18n();
+    }
+  }
 
-  // Re-apply i18n to new nav elements if available
-  if (typeof applyI18n === 'function') applyI18n();
-})();
+  setupAutoHidingNav(nav);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initBottomNav);
+} else {
+  initBottomNav();
+}
 
 // ===== Surah List =====
 const SURAHS = [
