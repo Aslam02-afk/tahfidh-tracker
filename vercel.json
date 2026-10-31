@@ -1,3 +1,7 @@
 {
-  "cleanUrls": false
+  "functions": {
+    "app.js": {
+      "includeFiles": "{*.html,manifest.json,sw.js,css/**,js/**,icons/**,assets_icons/**,themes/**,kfgqpc_hafs_smart_data/**,kfgqpc_hafs_smart_font/**}"
+    }
+  }
 }

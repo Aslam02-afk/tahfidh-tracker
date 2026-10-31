@@ -96,6 +96,14 @@ app.post('/api/send-rating', async (req, res) => {
 // ── Serve static PWA files ───────────────────────────────────────────────────
 app.use(express.static(path.join(__dirname)));
 
+// Specifically handle all .html pages
+app.get('/:page.html', (req, res, next) => {
+  const filePath = path.join(__dirname, req.params.page + '.html');
+  res.sendFile(filePath, err => {
+    if (err) next();
+  });
+});
+
 // Fallback: serve index.html for any unknown route
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
