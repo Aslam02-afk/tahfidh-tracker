@@ -1,5 +1,5 @@
-// Service Worker – Tahfidh Tracker v68
-const CACHE = 'tahfidh-v68';
+// Service Worker – Tahfidh Tracker v69
+const CACHE = 'tahfidh-v69';
 
 // ── ESSENTIAL files only — must exist on server ───────────────────────────
 const PRECACHE = [
@@ -71,6 +71,7 @@ const NETWORK_ONLY = [
   '/api/',
   'api.telegram.org',
   'wa.me',
+  'cloudflareinsights.com',
 ];
 
 // ── INSTALL ────────────────────────────────────────────────────────────────
