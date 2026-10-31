@@ -228,6 +228,17 @@ function initBottomNav() {
     if (typeof applyI18n === 'function') {
       applyI18n();
     }
+  } else {
+    // If nav already exists in HTML, synchronize active class
+    const btns = nav.querySelectorAll('.nav-btn');
+    if (btns.length >= 3) {
+      btns[0].classList.toggle('active', isHome);
+      btns[1].classList.toggle('active', isQuran);
+      btns[2].classList.toggle('active', isSettings);
+    }
+    if (typeof applyI18n === 'function') {
+      applyI18n();
+    }
   }
 
   setupAutoHidingNav(nav);

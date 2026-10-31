@@ -1,5 +1,5 @@
-// Service Worker – Tahfidh Tracker v69
-const CACHE = 'tahfidh-v69';
+// Service Worker – Tahfidh Tracker v70
+const CACHE = 'tahfidh-v70';
 
 // ── ESSENTIAL files only — must exist on server ───────────────────────────
 const PRECACHE = [
@@ -133,7 +133,7 @@ self.addEventListener('fetch', e => {
 
   // Cache-first, fallback to network, fallback to index.html
   e.respondWith(
-    caches.match(e.request).then(cached => {
+    caches.match(e.request, { ignoreSearch: true }).then(cached => {
       if (cached) return cached;
 
       return fetch(e.request).then(res => {
@@ -144,7 +144,7 @@ self.addEventListener('fetch', e => {
         return res;
       }).catch(() => {
         if (e.request.mode === 'navigate') {
-          return caches.match('index.html');
+          return caches.match('index.html', { ignoreSearch: true });
         }
       });
     })
