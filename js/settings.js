@@ -1,9 +1,8 @@
 // js/settings.js
 
 // ── Backend API URL — update after deploying to Render ───────────────────
-const API_BASE = window.location.hostname === 'localhost'
-  ? ''  // local dev — relative path
-  : 'https://tahfidh-tracker.onrender.com'; // ← replace with your actual Render URL
+// ── Backend API URL (same-origin for Vercel, Render, & localhost)
+const API_BASE = '';
 
 function updateDarkBtn() {
   const isDark = document.documentElement.classList.contains('dark');
