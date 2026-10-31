@@ -64,19 +64,74 @@ async function shareApp() {
   }
 }
 
-function sendContactMessage() {
-  const name    = qs('contactTeacherName').value || t('notMentioned');
-  const subject = qs('contactSubject').value;
-  const message = qs('contactMessage').value;
-  if (!message.trim()) { alert(t('pleaseWriteMessage')); return; }
-  const email       = "markazalhudaa143@gmail.com";
-  const mailSubject = encodeURIComponent("Tahfidh Tracker – " + subject);
-  const body        = encodeURIComponent(
-    t('teacherNameEmail') + ": " + name + "\n\n" +
-    t('messageEmail') + ":\n" + message + "\n\n" +
-    "— " + t('sentFromApp')
-  );
-  window.location.href = "mailto:" + email + "?subject=" + mailSubject + "&body=" + body;
+async function sendContactMessage() {
+  const name    = qs('contactTeacherName')?.value?.trim() || t('notMentioned');
+  const email   = qs('contactEmail')?.value?.trim() || '';
+  const subject = qs('contactSubject')?.value || 'عام / General';
+  const message = qs('contactMessage')?.value?.trim() || '';
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
+    alert(t('invalidEmail'));
+    qs('contactEmail')?.focus();
+    return;
+  }
+
+  if (!message) {
+    alert(t('pleaseWriteMessage'));
+    qs('contactMessage')?.focus();
+    return;
+  }
+
+  const btn = qs('contactSubmitBtn');
+  const originalText = btn ? btn.textContent : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = t('contactSending');
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/api/send-contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        email,
+        subject,
+        message,
+        timestamp: new Date().toLocaleString(getLang() === 'ar' ? 'ar-SA' : 'en-GB', { timeZone: 'Asia/Riyadh' })
+      })
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.ok) {
+      throw new Error(data.error || 'Failed to send');
+    }
+
+    alert(t('contactSentSuccess'));
+    if (qs('contactMessage')) qs('contactMessage').value = '';
+  } catch (err) {
+    console.error('[send-contact]', err);
+    const shouldFallback = confirm(
+      t('contactSendError') + '\n\n' +
+      (getLang() === 'ar' ? 'هل تود فتح تطبيق البريد لإرسالها كبديل؟' : 'Would you like to open your email client as fallback?')
+    );
+    if (shouldFallback) {
+      const mailSubject = encodeURIComponent("Tahfidh Tracker – " + subject);
+      const body = encodeURIComponent(
+        t('teacherNameEmail') + ": " + name + "\n" +
+        "Email: " + email + "\n\n" +
+        t('messageEmail') + ":\n" + message + "\n\n" +
+        "— " + t('sentFromApp')
+      );
+      window.location.href = "mailto:markazalhudaa143@gmail.com?subject=" + mailSubject + "&body=" + body;
+    }
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  }
 }
 
 /* =========================

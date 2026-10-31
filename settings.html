@@ -94,6 +94,10 @@
       <input id="contactTeacherName" class="form-input" placeholder="اكتب اسمك" />
     </div>
     <div class="form-group">
+      <label class="form-label" data-i18n="contactEmailLabel">البريد الإلكتروني للرد عليك</label>
+      <input id="contactEmail" type="email" class="form-input" data-i18n-ph="contactEmailPh" placeholder="example@email.com" dir="ltr" required />
+    </div>
+    <div class="form-group">
       <label class="form-label" data-i18n="subject">الموضوع</label>
       <select id="contactSubject" class="form-select">
         <option data-i18n="subjectSuggestion">اقتراح تطوير</option>
@@ -107,8 +111,11 @@
       <label class="form-label" data-i18n="message">الرسالة</label>
       <textarea id="contactMessage" class="form-input" rows="4" placeholder="اكتب رسالتك هنا..."></textarea>
     </div>
-    <button class="btn btn-primary btn-full" onclick="sendContactMessage()" data-i18n="sendMessage">إرسال الرسالة</button>
-    <p style="font-size:0.82rem; color:var(--text-muted); margin-top:10px; text-align:center;">
+    <button id="contactSubmitBtn" class="btn btn-primary btn-full" onclick="sendContactMessage()" data-i18n="sendMessage">إرسال الرسالة</button>
+    <p style="font-size:0.82rem; color:var(--text-muted); margin-top:10px; text-align:center; line-height:1.6;" data-i18n="contactDirectNote">
+      سيتم إرسال رسالتك مباشرة إلى فريق التطبيق، وسنرد عليك عبر بريدك الإلكتروني.
+    </p>
+    <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px; text-align:center;">
       <b>markazalhudaa143@gmail.com</b>
     </p>
   </section>

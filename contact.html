@@ -41,6 +41,11 @@
       </div>
 
       <div class="form-group">
+        <label class="form-label" data-i18n="contactEmailLabel">البريد الإلكتروني للرد عليك</label>
+        <input id="userEmail" type="email" class="form-input" data-i18n-ph="contactEmailPh" placeholder="example@email.com" dir="ltr" required />
+      </div>
+
+      <div class="form-group">
         <label class="form-label" data-i18n="subject">الموضوع</label>
         <select id="subject" class="form-select">
           <option data-i18n="subjectSuggestion">اقتراح تطوير</option>
@@ -57,16 +62,16 @@
           placeholder="اكتب رسالتك هنا..."></textarea>
       </div>
 
-      <button class="btn btn-primary btn-full" onclick="sendMessage()" data-i18n="sendMessage">
+      <button id="sendBtn" class="btn btn-primary btn-full" onclick="sendMessage()" data-i18n="sendMessage">
         إرسال الرسالة
       </button>
     </section>
 
     <section class="card" style="text-align:center;">
-      <p style="font-size:0.85rem; color:var(--text-muted);" data-i18n="emailNote">
-        سيتم فتح تطبيق البريد الإلكتروني لإرسال الرسالة مباشرة
+      <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.6;" data-i18n="contactDirectNote">
+        سيتم إرسال رسالتك مباشرة إلى فريق التطبيق، وسنرد عليك عبر بريدك الإلكتروني.
       </p>
-      <p style="font-size:0.85rem;">
+      <p style="font-size:0.85rem; margin-top:6px;">
         <b>markazalhudaa143@gmail.com</b>
       </p>
     </section>
@@ -81,34 +86,77 @@
   <script src="js/i18n.js"></script>
   <script src="js/ui.js"></script>
   <script>
-    function sendMessage() {
-      const name = document.getElementById("teacherName").value || t('notMentioned');
+    async function sendMessage() {
+      const name = document.getElementById("teacherName").value.trim() || t('notMentioned');
+      const email = document.getElementById("userEmail").value.trim();
       const subject = document.getElementById("subject").value;
-      const message = document.getElementById("message").value;
+      const message = document.getElementById("message").value.trim();
 
-      if (!message.trim()) {
-        alert(t('pleaseWriteMessage'));
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        alert(t('invalidEmail'));
+        document.getElementById("userEmail").focus();
         return;
       }
 
-      const email = "markazalhudaa143@gmail.com";
-      const mailSubject = encodeURIComponent("Tahfidh Tracker – " + subject);
-      const body = encodeURIComponent(
-        t('teacherNameEmail') + ": " + name + "\n\n" +
-        t('messageEmail') + ":\n" + message + "\n\n" +
-        "— " + t('sentFromApp')
-      );
+      if (!message) {
+        alert(t('pleaseWriteMessage'));
+        document.getElementById("message").focus();
+        return;
+      }
 
-      window.location.href =
-        "mailto:" + email + "?subject=" + mailSubject + "&body=" + body;
+      const btn = document.getElementById("sendBtn");
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = t('contactSending');
+
+      try {
+        const res = await fetch('/api/send-contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            subject,
+            message,
+            timestamp: new Date().toLocaleString(getLang() === 'ar' ? 'ar-SA' : 'en-GB', { timeZone: 'Asia/Riyadh' })
+          })
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || 'Failed to send');
+        }
+
+        alert(t('contactSentSuccess'));
+        document.getElementById("message").value = '';
+      } catch (err) {
+        console.error('Contact error:', err);
+        const shouldFallback = confirm(
+          t('contactSendError') + '\n\n' +
+          (getLang() === 'ar' ? 'هل تود فتح تطبيق البريد لإرسالها كبديل؟' : 'Would you like to open your email client as fallback?')
+        );
+        if (shouldFallback) {
+          const mailSubject = encodeURIComponent("Tahfidh Tracker – " + subject);
+          const body = encodeURIComponent(
+            t('teacherNameEmail') + ": " + name + "\n" +
+            "Email: " + email + "\n\n" +
+            t('messageEmail') + ":\n" + message + "\n\n" +
+            "— " + t('sentFromApp')
+          );
+          window.location.href = "mailto:markazalhudaa143@gmail.com?subject=" + mailSubject + "&body=" + body;
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
     }
   </script>
 
-
-<script>
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-</script>
-<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71f9ed97099f494188baa74934972078"}'></script><!-- End Cloudflare Web Analytics -->
+  <script>
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+  </script>
+  <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71f9ed97099f494188baa74934972078"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 
 </html>
