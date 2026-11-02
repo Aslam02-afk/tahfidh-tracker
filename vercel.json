@@ -3,5 +3,15 @@
     "app.js": {
       "includeFiles": "{*.html,manifest.json,sw.js,css/**,js/**,icons/**,assets_icons/**,themes/**,kfgqpc_hafs_smart_data/**,kfgqpc_hafs_smart_font/**}"
     }
-  }
+  },
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Pragma", "value": "no-cache" },
+        { "key": "Expires", "value": "0" }
+      ]
+    }
+  ]
 }

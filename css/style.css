@@ -425,11 +425,12 @@ button[id^="cardTheme-"].btn-secondary {
   background: #fff;
   display: flex;
   justify-content: space-around;
-  padding: 0.4rem 0;
-  padding-bottom: calc(0.4rem + constant(safe-area-inset-bottom, 0px));
-  padding-bottom: calc(0.4rem + env(safe-area-inset-bottom, 0px));
+  padding: 0.45rem 0;
+  padding-bottom: max(0.65rem, calc(0.45rem + constant(safe-area-inset-bottom, 0px)));
+  padding-bottom: max(0.65rem, calc(0.45rem + env(safe-area-inset-bottom, 0px)));
   border-top: 1px solid var(--border);
-  z-index: 100;
+  z-index: 900;
+  touch-action: manipulation;
   box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
   transform: translateY(0);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),

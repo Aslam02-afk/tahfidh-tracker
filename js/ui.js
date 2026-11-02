@@ -135,22 +135,20 @@ function setupAutoHidingNav(nav) {
     }
   }
 
-  // Window / Document scroll listener with requestAnimationFrame
-  window.addEventListener('scroll', function() {
+  // Window / Document scroll listener — direct and instant (no stale frames)
+  function onPageScroll() {
     const currentY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    if (!ticking) {
-      requestAnimationFrame(function() {
-        handleScroll(currentY);
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
+    handleScroll(currentY);
+  }
+
+  window.addEventListener('scroll', onPageScroll, { passive: true });
 
   // Handle nested scrollable containers (e.g. .mushaf-scroll in Quran reader)
   document.addEventListener('scroll', function(e) {
     const target = e.target;
-    if (!target || target === document || target === window || target === document.documentElement || target === document.body) return;
+    if (!target || target === document || target === window || target === document.documentElement || target === document.body) {
+      return;
+    }
     if (target.tagName === 'TEXTAREA' || target.tagName === 'INPUT' || target.tagName === 'SELECT') return;
     if (typeof target.scrollTop !== 'number') return;
     if (target.scrollHeight <= target.clientHeight) return;
@@ -201,10 +199,11 @@ function setupAutoHidingNav(nav) {
 
 function initBottomNav() {
   let nav = document.querySelector('.bottom-nav');
-  const page = window.location.pathname.split('/').pop() || 'index.html';
-  const isHome     = page === 'index.html' || page === '';
-  const isQuran    = page === 'quran.html';
-  const isSettings = page === 'settings.html';
+  const rawPage = window.location.pathname.split('/').pop() || 'index.html';
+  const page = rawPage.replace(/\.html$/, '');
+  const isHome     = page === 'index' || page === '';
+  const isQuran    = page === 'quran';
+  const isSettings = page === 'settings';
 
   if (!nav) {
     nav = document.createElement('nav');
