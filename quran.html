@@ -253,16 +253,25 @@
       transform: none;
     }
 
-    /* سورة label — upper portion of frame */
+    /* Name & label are sized by HEIGHT (relative to the frame) so every
+       one of the 114 surah names keeps its proportions and stays inside. */
+
+    /* سورة label — small, on the right side of the frame */
     .surah-layer-label {
-      max-width: 80px;
-      top: 28%;
+      width: auto;
+      height: 38%;
+      max-width: none;
+      top: 50%;
+      left: 67%;
     }
 
-    /* Surah name — center of frame */
+    /* Surah name — centered inside the frame */
     .surah-layer-name {
-      max-width: 200px;
-      top: 62%;
+      width: auto;
+      height: 58%;
+      max-width: 48%;
+      object-fit: contain;
+      top: 50%;
     }
 
     /* ── Surah name frame ── */
