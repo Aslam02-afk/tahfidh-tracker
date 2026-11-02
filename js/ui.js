@@ -291,3 +291,21 @@ function surahSearchInput(id, selected) {
     ${SURAHS.map((s, i) => `<option value="${s}">${i + 1}. ${s}</option>`).join('')}
   </datalist>`;
 }
+
+// ===== Auto-update: reload once when a new service worker takes control =====
+(function setupAutoUpdate() {
+  if (!('serviceWorker' in navigator)) return;
+  const hadController = !!navigator.serviceWorker.controller;
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (!hadController || reloaded) return; // skip first-ever install
+    reloaded = true;
+    location.reload();
+  });
+  navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(function (reg) {
+    reg.update().catch(function () {});
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') reg.update().catch(function () {});
+    });
+  }).catch(function () {});
+})();

@@ -1,5 +1,5 @@
-// Service Worker – Tahfidh Tracker v74
-const CACHE = 'tahfidh-v74';
+// Service Worker – Tahfidh Tracker v75
+const CACHE = 'tahfidh-v75';
 
 // ── ESSENTIAL files only — must exist on server ───────────────────────────
 const PRECACHE = [
@@ -82,7 +82,7 @@ self.addEventListener('install', e => {
       // Cache essential files one by one
       for (const url of PRECACHE) {
         try {
-          await cache.add(url);
+          await cache.add(new Request(url, { cache: 'reload' }));
           console.log('[SW] Cached:', url);
         } catch (err) {
           console.error('[SW] Failed to cache essential file:', url, err);
@@ -91,7 +91,7 @@ self.addEventListener('install', e => {
       // Cache optional files — skip silently if missing
       for (const url of OPTIONAL) {
         try {
-          await cache.add(url);
+          await cache.add(new Request(url, { cache: 'reload' }));
         } catch (err) {
           console.warn('[SW] Optional file not cached:', url);
         }
@@ -117,6 +117,15 @@ self.addEventListener('activate', e => {
 });
 
 // ── FETCH ──────────────────────────────────────────────────────────────────
+// App shell (HTML / JS / CSS / manifest) → NETWORK-FIRST so updates show up
+// immediately; falls back to cache when offline.
+// Heavy static assets (icons, fonts, Quran data, themes) → CACHE-FIRST.
+function isAppShell(url, req) {
+  if (req.mode === 'navigate') return true;
+  return /\.(html|js|css|json)$/i.test(url.pathname) &&
+         !url.pathname.includes('kfgqpc_hafs_smart_data');
+}
+
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
 
@@ -131,11 +140,31 @@ self.addEventListener('fetch', e => {
   // Skip cross-origin requests
   if (url.origin !== self.location.origin) return;
 
-  // Cache-first, fallback to network, fallback to index.html
+  if (isAppShell(url, e.request)) {
+    // Network-first
+    e.respondWith(
+      fetch(e.request, { cache: 'no-cache' }).then(res => {
+        if (res && res.status === 200) {
+          const clone = res.clone();
+          caches.open(CACHE).then(cache => cache.put(e.request, clone));
+        }
+        return res;
+      }).catch(() =>
+        caches.match(e.request, { ignoreSearch: true }).then(cached => {
+          if (cached) return cached;
+          if (e.request.mode === 'navigate') {
+            return caches.match('index.html', { ignoreSearch: true });
+          }
+        })
+      )
+    );
+    return;
+  }
+
+  // Cache-first for static assets
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then(cached => {
       if (cached) return cached;
-
       return fetch(e.request).then(res => {
         if (res && res.status === 200) {
           const clone = res.clone();

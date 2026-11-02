@@ -62,11 +62,11 @@
       // Report badge
       const reportBadge = reportSent
         ? `<div style="margin-top:6px; display:flex; align-items:center; gap:5px; font-size:0.78rem; color:#16A34A; font-weight:700;">
-            <span>✅</span>
+            <img src="icons/check-circle icon.svg" style="width:14px; height:14px;" alt="">
             <span>${getLang() === 'ar' ? 'تم إرسال التقرير الأسبوعي' : 'Weekly report sent'}</span>
            </div>`
         : `<div style="margin-top:6px; display:flex; align-items:center; gap:5px; font-size:0.78rem; color:#D97706; font-weight:700;">
-            <span>⚠️</span>
+            <img src="icons/clock icon.svg" style="width:14px; height:14px;" alt="">
             <span>${getLang() === 'ar' ? 'لم يُرسل التقرير بعد' : 'Report not sent yet'}</span>
            </div>`;
 
@@ -113,7 +113,9 @@
             </div>
             <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
               ${feeIcon}
-              <div style="font-size:1.5rem; cursor:pointer;" onclick="event.stopPropagation(); toggleStar('${s.id}')">${s.starred ? '★' : '☆'}</div>
+              <button style="background:none; border:none; padding:2px; cursor:pointer; display:flex; align-items:center;" onclick="event.stopPropagation(); toggleStar('${s.id}')">
+                <img src="icons/${s.starred ? 'star-gold icon.svg' : 'star-outline icon.svg'}" style="width:20px; height:20px;" alt="Star">
+              </button>
               <a href="add-student.html?classId=${classId}&studentId=${s.id}"
                 style="display:flex; align-items:center; opacity:0.45;"
                 onclick="event.stopPropagation()">
@@ -122,8 +124,11 @@
             </div>
           </div>
           <div style="display:flex; gap:8px; margin-top:10px;">
-            <button class="btn btn-success" style="flex:1;"
-              onclick="event.stopPropagation(); location.href='record.html?classId=${classId}&studentId=${s.id}'">${t('takeRecord')}</button>
+            <button class="btn btn-success" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px;"
+              onclick="event.stopPropagation(); location.href='record.html?classId=${classId}&studentId=${s.id}'">
+              <img src="icons/file icon.svg" style="width:16px; height:16px; filter:brightness(0) invert(1);" alt="">
+              <span>${t('takeRecord')}</span>
+            </button>
             <button class="btn" style="background:#FEE2E2; display:flex; align-items:center; justify-content:center; padding:0.5rem 0.75rem;"
               onclick="event.stopPropagation(); confirmDeleteStudent('${s.id}', '${s.name.replace(/'/g, "\\'")}')"><img src="icons/delete icon.svg" style="width:18px; height:18px;" alt=""></button>
           </div>

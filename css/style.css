@@ -106,7 +106,14 @@ body {
   border-radius: 12px;
   font-size: 1rem;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: background 0.2s, transform 0.15s;
+}
+
+html[dir="rtl"] .icon-back {
+  transform: scaleX(-1);
 }
 
 .menu-btn:active,

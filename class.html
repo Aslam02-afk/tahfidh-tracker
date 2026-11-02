@@ -11,13 +11,13 @@
 <body>
 
 <header class="app-header">
-  <button class="menu-btn" onclick="location.href='index.html'">←</button>
+  <button class="menu-btn" onclick="location.href='index.html'" title="Back"><img src="icons/back icon.svg" class="icon-back" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Back"></button>
   <div style="text-align:center;">
     <div id="className" class="app-title"></div>
     <div style="font-size:0.82rem; opacity:0.9;"><span data-i18n="teacherLabel">المعلم:</span> <span id="teacherName"></span></div>
   </div>
   <div style="display:flex; gap:4px;">
-    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">🌐</button>
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();" title="Language"><img src="icons/globe icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Language"></button>
     <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
   </div>
 </header>
@@ -30,17 +30,20 @@
         <div id="studentCount" style="font-size:1.8rem; font-weight:900;">0</div>
       </div>
       <div style="display:flex; flex-direction:column; gap:8px;">
-        <button id="weeklyReportBtn" class="btn btn-warning" style="font-size:0.82rem; padding:0.45rem 0.9rem;" data-i18n="weeklyReport">تقرير أسبوعي</button>
-        <button id="monthlyReportBtn" class="btn" style="font-size:0.82rem; padding:0.45rem 0.9rem; background:rgba(255,255,255,0.2); color:#fff;" data-i18n="monthlyReport">تقرير شهري</button>
+        <button id="weeklyReportBtn" class="btn btn-warning" style="font-size:0.82rem; padding:0.45rem 0.9rem; display:flex; align-items:center; justify-content:center; gap:6px;"><img src="icons/calendar icon.svg" style="width:16px; height:16px;" alt=""><span data-i18n="weeklyReport">تقرير أسبوعي</span></button>
+        <button id="monthlyReportBtn" class="btn" style="font-size:0.82rem; padding:0.45rem 0.9rem; background:rgba(255,255,255,0.2); color:#fff; display:flex; align-items:center; justify-content:center; gap:6px;"><img src="icons/calendar icon.svg" style="width:16px; height:16px; filter:brightness(0) invert(1);" alt=""><span data-i18n="monthlyReport">تقرير شهري</span></button>
       </div>
     </div>
-    <button id="exportBtn" class="btn btn-secondary" style="margin-top:12px; width:100%; font-size:0.85rem;" data-i18n="exportExcel">تصدير Excel</button>
+    <button id="exportBtn" class="btn btn-secondary" style="margin-top:12px; width:100%; font-size:0.85rem; display:flex; align-items:center; justify-content:center; gap:8px;"><img src="icons/excel icon.svg" style="width:18px; height:18px;" alt=""><span data-i18n="exportExcel">تصدير Excel</span></button>
   </section>
 
   <section class="card">
     <div class="form-group" style="margin-bottom:0;">
       <label class="form-label" data-i18n="searchStudent">بحث عن طالب</label>
-      <input id="searchInput" class="form-input" data-i18n-ph="searchPlaceholder" placeholder="اكتب اسم الطالب..." />
+      <div style="position:relative;">
+        <input id="searchInput" class="form-input" data-i18n-ph="searchPlaceholder" placeholder="اكتب اسم الطالب..." style="padding-inline-start:2.4rem;" />
+        <img src="icons/search icon.svg" style="position:absolute; inset-inline-start:10px; top:50%; transform:translateY(-50%); width:18px; height:18px; opacity:0.4; pointer-events:none;" alt="">
+      </div>
     </div>
   </section>
 

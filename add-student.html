@@ -12,10 +12,10 @@
 <body>
 
 <header class="app-header">
-  <button class="menu-btn" onclick="history.back()">←</button>
+  <button class="menu-btn" onclick="history.back()" title="Back"><img src="icons/back icon.svg" class="icon-back" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Back"></button>
   <div class="app-title" id="pageTitle" data-i18n="addStudent">إضافة طالب</div>
   <div style="display:flex; gap:4px;">
-    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">🌐</button>
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();" title="Language"><img src="icons/globe icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Language"></button>
     <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
   </div>
 </header>
@@ -109,8 +109,9 @@
       </div>
     </div>
 
-    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.05rem; padding:0.85rem; margin-top:6px;" data-i18n="saveStudent">
-      حفظ الطالب
+    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.05rem; padding:0.85rem; margin-top:6px; display:flex; align-items:center; justify-content:center; gap:8px;">
+      <img src="icons/save icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="">
+      <span data-i18n="saveStudent">حفظ الطالب</span>
     </button>
     <button id="btnDelete" class="btn btn-danger-soft btn-full" style="margin-top:10px; display:none; gap:8px;">
       <img src="icons/delete icon.svg" style="width:18px; height:18px;" alt="">

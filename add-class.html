@@ -12,10 +12,10 @@
 <body>
 
 <header class="app-header">
-  <button class="menu-btn" onclick="history.back()">←</button>
+  <button class="menu-btn" onclick="history.back()" title="Back"><img src="icons/back icon.svg" class="icon-back" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Back"></button>
   <div class="app-title" id="pageTitle" data-i18n="addNewClass">إضافة حلقة جديدة</div>
   <div style="display:flex; gap:4px;">
-    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">🌐</button>
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();" title="Language"><img src="icons/globe icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Language"></button>
     <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
   </div>
 </header>
@@ -72,11 +72,11 @@
         <button type="button" id="modeCustom" class="btn btn-secondary" style="flex:1; padding:0.55rem;" onclick="selectTimeMode('custom')" data-i18n="customTime">وقت مخصص</button>
       </div>
       <div id="salahButtons" style="display:flex; gap:8px; flex-wrap:wrap;">
-        <button type="button" id="salahFajr"    class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('fajr')"    data-i18n="fajr">الفجر</button>
-        <button type="button" id="salahDhuhr"   class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('dhuhr')"   data-i18n="dhuhr">الظهر</button>
-        <button type="button" id="salahAsr"     class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('asr')"     data-i18n="asr">العصر</button>
-        <button type="button" id="salahMaghrib" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('maghrib')" data-i18n="maghrib">المغرب</button>
-        <button type="button" id="salahIsha"    class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem;" onclick="selectSalahTime('isha')"    data-i18n="isha">العشاء</button>
+        <button type="button" id="salahFajr" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem; display:flex; align-items:center; justify-content:center; gap:4px;" onclick="selectSalahTime('fajr')"><img src="icons/salah-fajr.svg" style="width:16px; height:16px;" alt=""><span data-i18n="fajr">الفجر</span></button>
+        <button type="button" id="salahDhuhr" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem; display:flex; align-items:center; justify-content:center; gap:4px;" onclick="selectSalahTime('dhuhr')"><img src="icons/salah-dhuhr.svg" style="width:16px; height:16px;" alt=""><span data-i18n="dhuhr">الظهر</span></button>
+        <button type="button" id="salahAsr" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem; display:flex; align-items:center; justify-content:center; gap:4px;" onclick="selectSalahTime('asr')"><img src="icons/salah-asr.svg" style="width:16px; height:16px;" alt=""><span data-i18n="asr">العصر</span></button>
+        <button type="button" id="salahMaghrib" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem; display:flex; align-items:center; justify-content:center; gap:4px;" onclick="selectSalahTime('maghrib')"><img src="icons/salah-maghrib.svg" style="width:16px; height:16px;" alt=""><span data-i18n="maghrib">المغرب</span></button>
+        <button type="button" id="salahIsha" class="btn btn-secondary" style="flex:1; min-width:calc(33% - 8px); padding:0.5rem 0.3rem; font-size:0.85rem; display:flex; align-items:center; justify-content:center; gap:4px;" onclick="selectSalahTime('isha')"><img src="icons/salah-isha.svg" style="width:16px; height:16px;" alt=""><span data-i18n="isha">العشاء</span></button>
       </div>
       <div id="customTimeWrap" style="display:none; margin-top:8px;">
         <input type="time" id="classTimeCustom" class="form-input" />
@@ -152,17 +152,17 @@
         <input id="feeCurrency" class="form-input" placeholder="مثال: SAR، USD، KES، ريال" />
       </div>
       <div class="form-group">
-        <label class="form-label">💳 التحويل البنكي (اختياري)</label>
+        <label class="form-label" style="display:flex; align-items:center; gap:6px;"><img src="icons/bank icon.svg" style="width:16px; height:16px;" alt=""> التحويل البنكي (اختياري)</label>
         <input id="feeBankName"    class="form-input" placeholder="اسم البنك" style="margin-bottom:8px;" />
         <input id="feeBankAccount" class="form-input" placeholder="رقم الحساب / IBAN" />
       </div>
       <div class="form-group">
-        <label class="form-label">👛 المحفظة الإلكترونية (اختياري)</label>
+        <label class="form-label" style="display:flex; align-items:center; gap:6px;"><img src="icons/wallet icon.svg" style="width:16px; height:16px;" alt=""> المحفظة الإلكترونية (اختياري)</label>
         <input id="feeStcNumber" class="form-input" placeholder="رقم الجوال أو المحفظة" />
       </div>
     </div>
 
-    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.05rem; padding:0.85rem; margin-top:6px;" data-i18n="saveClass">حفظ الحلقة</button>
+    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.05rem; padding:0.85rem; margin-top:6px; display:flex; align-items:center; justify-content:center; gap:8px;"><img src="icons/save icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""><span data-i18n="saveClass">حفظ الحلقة</span></button>
     <button id="btnDelete" class="btn btn-danger-soft btn-full" style="margin-top:10px; display:none; gap:8px;">
       <img src="icons/delete icon.svg" style="width:18px; height:18px;" alt="">
       <span data-i18n="deleteClass">حذف الحلقة</span>

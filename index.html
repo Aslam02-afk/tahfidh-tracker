@@ -45,7 +45,9 @@
        MAIN APP
   ══════════════════════════════════════ -->
   <header class="app-header">
-    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); if(typeof renderClasses==='function') renderClasses();">🌐</button>
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); if(typeof renderClasses==='function') renderClasses();" title="Language">
+      <img src="icons/globe icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Language">
+    </button>
     <div style="text-align:center;">
       <div class="app-title" data-i18n="appTitle">متتبع التحفيظ</div>
       <div style="font-size:0.75rem; opacity:0.85;" data-i18n="appSub">نظام إدارة التحفيظ</div>
@@ -58,12 +60,18 @@
   <main class="main-content">
     <div class="card" style="display:flex; justify-content:space-between; align-items:center; padding:0.8rem 1rem; margin-bottom:0.5rem;">
       <div style="text-align:center; flex:1;">
-        <div style="font-size:0.72rem; color:var(--text-muted);" data-i18n="hijriDate">التاريخ الهجري</div>
+        <div style="font-size:0.72rem; color:var(--text-muted); display:flex; align-items:center; justify-content:center; gap:4px;">
+          <img src="icons/crescent icon.svg" style="width:14px; height:14px;" alt="">
+          <span data-i18n="hijriDate">التاريخ الهجري</span>
+        </div>
         <div id="hijriDate" style="font-size:0.9rem; font-weight:700; margin-top:2px;"></div>
       </div>
       <div style="width:1px; height:30px; background:var(--border);"></div>
       <div style="text-align:center; flex:1;">
-        <div style="font-size:0.72rem; color:var(--text-muted);" data-i18n="gregorianDate">التاريخ الميلادي</div>
+        <div style="font-size:0.72rem; color:var(--text-muted); display:flex; align-items:center; justify-content:center; gap:4px;">
+          <img src="icons/calendar icon.svg" style="width:14px; height:14px; opacity:0.7;" alt="">
+          <span data-i18n="gregorianDate">التاريخ الميلادي</span>
+        </div>
         <div id="gregorianDate" style="font-size:0.9rem; font-weight:700; margin-top:2px;"></div>
       </div>
     </div>
@@ -129,7 +137,9 @@
   <!-- Rate Prompt Modal -->
   <div class="tt-modal" id="ratePromptModal" onclick="if(event.target===this) document.getElementById('ratePromptModal').classList.remove('show')">
     <div class="tt-modal-box" style="text-align:center; max-width:360px;">
-      <div style="font-size:3rem; margin-bottom:8px;">⭐</div>
+      <div style="margin-bottom:8px;">
+        <img src="icons/star-gold icon.svg" style="width:52px; height:52px;" alt="Star">
+      </div>
       <div style="font-size:1.1rem; font-weight:900; color:var(--primary); margin-bottom:6px;">
         هل أعجبك التطبيق؟
       </div>
@@ -145,9 +155,10 @@
           onclick="document.getElementById('ratePromptModal').classList.remove('show')">
           لاحقاً / Later
         </button>
-        <button class="btn btn-primary" style="flex:1;"
+        <button class="btn btn-primary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px;"
           onclick="document.getElementById('ratePromptModal').classList.remove('show'); location.href='settings.html#rate'">
-          تقييم / Rate ⭐
+          <img src="icons/star-gold icon.svg" style="width:18px; height:18px; filter:brightness(0) invert(1);" alt="">
+          <span>تقييم / Rate</span>
         </button>
       </div>
     </div>
