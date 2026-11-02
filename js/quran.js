@@ -321,8 +321,8 @@ function renderPage(pageNum) {
     const ayahNum   = FIELDS.ayahField  ? v[FIELDS.ayahField]  : null;
     const text      = FIELDS.textField  ? v[FIELDS.textField]  : '';
 
-    // New surah starts on this page
-    if (surahNum !== lastSurahNum) {
+    // A surah begins ONLY when ayahNum === 1
+    if (Number(ayahNum) === 1) {
       // Flush buffer
       if (lineBuffer) {
         html += `<span class="mushaf-line">${lineBuffer}</span>`;
@@ -347,7 +347,7 @@ function renderPage(pageNum) {
       `;
 
       // Basmalah (except Al-Fatiha page 1 and At-Tawbah)
-      if (!NO_BASMALAH.includes(surahNum) && ayahNum === 1) {
+      if (!NO_BASMALAH.includes(surahNum)) {
         html += `<div class="basmalah">${BASMALAH_TEXT}</div>`;
       }
 
