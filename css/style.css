@@ -353,6 +353,13 @@ button[id^="cardTheme-"].btn-secondary {
   color: #FFFFFF !important;
 }
 
+.btn-att-present img,
+.btn-att-absent img,
+.btn-att-excused img,
+.btn-att-late img {
+  filter: brightness(0) invert(1) !important;
+}
+
 .badge-female {
   background: rgba(255, 92, 119, 0.12) !important;
   color: #FF5C77 !important;

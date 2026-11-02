@@ -13,13 +13,13 @@
 <body>
 
   <header class="app-header">
-    <button class="menu-btn" onclick="history.back()">←</button>
+    <button class="menu-btn" onclick="history.back()" title="Back"><img src="icons/back icon.svg" class="icon-back" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Back"></button>
     <div style="text-align:center;">
       <div class="app-title">Tahfidh Tracker</div>
       <div class="app-subtitle" data-i18n="contactAlHudaa">التواصل مع برنامج الهدى</div>
     </div>
     <div style="display:flex; gap:4px;">
-      <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">🌐</button>
+      <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();" title="Language"><img src="icons/globe icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Language"></button>
       <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg"
           style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
     </div>
@@ -62,8 +62,9 @@
           placeholder="اكتب رسالتك هنا..."></textarea>
       </div>
 
-      <button id="sendBtn" class="btn btn-primary btn-full" onclick="sendMessage()" data-i18n="sendMessage">
-        إرسال الرسالة
+      <button id="sendBtn" class="btn btn-primary btn-full" onclick="sendMessage()" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+        <img src="icons/send icon.svg" style="width:18px; height:18px; filter:brightness(0) invert(1);" alt="">
+        <span data-i18n="sendMessage">إرسال الرسالة</span>
       </button>
     </section>
 

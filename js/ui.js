@@ -285,7 +285,7 @@ function surahSearchInput(id, selected) {
       placeholder="${t('chooseSurah')}"
       value="${selected || ''}" autocomplete="off"
       style="padding-inline-end:2.4rem;" />
-    <span style="position:absolute;inset-inline-end:10px;top:50%;transform:translateY(-50%);opacity:0.35;pointer-events:none;">🔍</span>
+    <img src="icons/search icon.svg" style="position:absolute;inset-inline-end:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;opacity:0.35;pointer-events:none;" alt="">
   </div>
   <datalist id="${listId}">
     ${SURAHS.map((s, i) => `<option value="${s}">${i + 1}. ${s}</option>`).join('')}

@@ -12,13 +12,13 @@
 <body>
 
 <header class="app-header">
-  <button class="menu-btn" onclick="history.back()">←</button>
+  <button class="menu-btn" onclick="history.back()" title="Back"><img src="icons/back icon.svg" class="icon-back" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Back"></button>
   <div style="text-align:center;">
     <div class="app-title" data-i18n="takeRecord">تسجيل يومي</div>
     <div id="studentNameDisplay" style="font-size:0.85rem; opacity:0.9;"></div>
   </div>
   <div style="display:flex; gap:4px;">
-    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">🌐</button>
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();" title="Language"><img src="icons/globe icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Language"></button>
     <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
   </div>
 </header>
@@ -35,10 +35,10 @@
   <section class="card">
     <div style="font-weight:800; margin-bottom:10px;" data-i18n="attendance">الحضور</div>
     <div style="display:flex; gap:8px; flex-wrap:wrap;">
-      <button id="attPresent" class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px);" onclick="setAtt('present')" data-i18n="present">حاضر</button>
-      <button id="attAbsent"  class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px);" onclick="setAtt('absent')"  data-i18n="absent">غائب</button>
-      <button id="attLate"    class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px);" onclick="setAtt('late')"    data-i18n="lateLabel">متأخر</button>
-      <button id="attExcused" class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px);" onclick="setAtt('excused')" data-i18n="excused">معذور</button>
+      <button id="attPresent" class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px); display:flex; align-items:center; justify-content:center; gap:6px;" onclick="setAtt('present')"><img src="icons/check-circle icon.svg" style="width:18px; height:18px;" alt=""><span data-i18n="present">حاضر</span></button>
+      <button id="attAbsent"  class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px); display:flex; align-items:center; justify-content:center; gap:6px;" onclick="setAtt('absent')"><img src="icons/x-circle icon.svg" style="width:18px; height:18px;" alt=""><span data-i18n="absent">غائب</span></button>
+      <button id="attLate"    class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px); display:flex; align-items:center; justify-content:center; gap:6px;" onclick="setAtt('late')"><img src="icons/clock icon.svg" style="width:18px; height:18px;" alt=""><span data-i18n="lateLabel">متأخر</span></button>
+      <button id="attExcused" class="btn btn-secondary" style="flex:1; min-width:calc(50% - 8px); display:flex; align-items:center; justify-content:center; gap:6px;" onclick="setAtt('excused')"><img src="icons/shield-check icon.svg" style="width:18px; height:18px;" alt=""><span data-i18n="excused">معذور</span></button>
     </div>
   </section>
 
@@ -56,7 +56,7 @@
 
   <!-- Save -->
   <section class="card">
-    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.1rem; padding:0.9rem;" data-i18n="saveRecord">حفظ سجل اليوم</button>
+    <button id="btnSave" class="btn btn-success btn-full" style="font-size:1.1rem; padding:0.9rem; display:flex; align-items:center; justify-content:center; gap:8px;"><img src="icons/save icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""><span data-i18n="saveRecord">حفظ سجل اليوم</span></button>
   </section>
 
 </main>

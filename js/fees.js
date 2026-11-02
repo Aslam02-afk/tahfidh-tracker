@@ -325,7 +325,7 @@
     }
 
     // Update page title
-    qs('pageTitle').textContent = `💰 ${_student.name}`;
+    qs('pageTitle').textContent = _student.name;
 
     const isAr    = getLang() === 'ar';
     const summary = getTotalBalance(_student, _halaqah);
@@ -358,13 +358,13 @@
     // ── Action buttons ──
     html += `
       <section class="card" style="display:flex; gap:8px;">
-        <button class="btn btn-success" style="flex:1; padding:0.75rem; font-size:0.9rem;"
+        <button class="btn btn-success" style="flex:1; padding:0.75rem; font-size:0.9rem; display:flex; align-items:center; justify-content:center; gap:6px;"
           onclick="openPaymentModal()">
-          ✅ ${isAr ? 'تسجيل دفعة' : 'Record Payment'}
+          <img src="icons/wallet icon.svg" style="width:16px; height:16px; filter:brightness(0) invert(1);" alt=""> <span>${isAr ? 'تسجيل دفعة' : 'Record Payment'}</span>
         </button>
-        <button class="btn" style="flex:1; padding:0.75rem; font-size:0.9rem; background:#FEF3C7; color:#92400E;"
+        <button class="btn" style="flex:1; padding:0.75rem; font-size:0.9rem; background:#FEF3C7; color:#92400E; display:flex; align-items:center; justify-content:center; gap:6px;"
           onclick="sendFeeReminder()">
-          📨 ${isAr ? 'إرسال تذكير' : 'Send Reminder'}
+          <img src="icons/bell icon.svg" style="width:16px; height:16px;" alt=""> <span>${isAr ? 'إرسال تذكير' : 'Send Reminder'}</span>
         </button>
       </section>`;
 
@@ -397,7 +397,7 @@
 
         html += `
           <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--border);">
-            <div style="font-size:1.3rem;">${isPaid ? '✅' : '❌'}</div>
+            <div><img src="icons/${isPaid ? 'check-circle icon.svg' : 'x-circle icon.svg'}" style="width:22px; height:22px;" alt=""></div>
             <div style="flex:1;">
               <div style="font-size:0.88rem; font-weight:700;">${label}</div>
               ${paymentInfo}
@@ -428,7 +428,7 @@
         const dateStr   = new Date(p.date + 'T00:00:00').toLocaleDateString(isAr ? 'ar-SA' : 'en-US', { year:'numeric', month:'short', day:'numeric' });
         html += `
           <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--border);">
-            <div style="font-size:1.2rem;">💰</div>
+            <div><img src="icons/receipt icon.svg" style="width:20px; height:20px;" alt=""></div>
             <div style="flex:1;">
               <div style="font-size:0.88rem; font-weight:700;">${p.amount} ${currency}</div>
               <div style="font-size:0.75rem; color:var(--text-muted);">${dateStr} · ${methodMap[p.method] || p.method}</div>

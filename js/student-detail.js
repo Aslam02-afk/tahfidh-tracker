@@ -56,7 +56,7 @@
         .toLocaleDateString(isAr ? 'ar-SA' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric' });
       badges += `
         <div style="display:flex; align-items:center; gap:6px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:8px 12px; margin-bottom:6px;">
-          <span style="font-size:1.1rem;">✅</span>
+          <img src="icons/check-circle icon.svg" style="width:20px; height:20px;" alt="">
           <div>
             <div style="font-size:0.82rem; font-weight:700; color:#16A34A;">${isAr ? 'تم إرسال التقرير الأسبوعي' : 'Weekly report sent'}</div>
             <div style="font-size:0.72rem; color:#16A34A; opacity:0.8;">${date}</div>
@@ -68,7 +68,7 @@
         .toLocaleDateString(isAr ? 'ar-SA' : 'en-US', { month: 'long', day: 'numeric' });
       badges += `
         <div style="display:flex; align-items:center; gap:6px; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px; padding:8px 12px; margin-bottom:6px;">
-          <span style="font-size:1.1rem;">✅</span>
+          <img src="icons/check-circle icon.svg" style="width:20px; height:20px;" alt="">
           <div>
             <div style="font-size:0.82rem; font-weight:700; color:#2563EB;">${isAr ? 'تم إرسال التقرير الشهري' : 'Monthly report sent'}</div>
             <div style="font-size:0.72rem; color:#2563EB; opacity:0.8;">${date}</div>
@@ -122,16 +122,19 @@
     html += `
       <div style="display:flex; background:var(--card-bg); border-bottom:2px solid var(--border); margin-bottom:4px;">
         <button id="tabBtn-overview" onclick="showTab('overview')"
-          style="flex:1; padding:0.75rem; border:none; background:none; font-weight:700; font-size:0.85rem; cursor:pointer; color:var(--primary); border-bottom:2px solid var(--primary); margin-bottom:-2px;">
-          ${t('tabOverview')}
+          style="flex:1; padding:0.75rem; border:none; background:none; font-weight:700; font-size:0.85rem; cursor:pointer; color:var(--primary); border-bottom:2px solid var(--primary); margin-bottom:-2px; display:flex; align-items:center; justify-content:center; gap:6px;">
+          <img src="icons/user icon.svg" style="width:16px; height:16px;" alt="">
+          <span>${t('tabOverview')}</span>
         </button>
         <button id="tabBtn-records" onclick="showTab('records')"
-          style="flex:1; padding:0.75rem; border:none; background:none; font-weight:700; font-size:0.85rem; cursor:pointer; color:var(--text-muted); border-bottom:2px solid transparent; margin-bottom:-2px;">
-          ${t('tabRecords')}
+          style="flex:1; padding:0.75rem; border:none; background:none; font-weight:700; font-size:0.85rem; cursor:pointer; color:var(--text-muted); border-bottom:2px solid transparent; margin-bottom:-2px; display:flex; align-items:center; justify-content:center; gap:6px;">
+          <img src="icons/history icon.svg" style="width:16px; height:16px;" alt="">
+          <span>${t('tabRecords')}</span>
         </button>
         <button id="tabBtn-progress" onclick="showTab('progress')"
-          style="flex:1; padding:0.75rem; border:none; background:none; font-weight:700; font-size:0.85rem; cursor:pointer; color:var(--text-muted); border-bottom:2px solid transparent; margin-bottom:-2px;">
-          ${t('tabProgress')}
+          style="flex:1; padding:0.75rem; border:none; background:none; font-weight:700; font-size:0.85rem; cursor:pointer; color:var(--text-muted); border-bottom:2px solid transparent; margin-bottom:-2px; display:flex; align-items:center; justify-content:center; gap:6px;">
+          <img src="icons/chart icon.svg" style="width:16px; height:16px;" alt="">
+          <span>${t('tabProgress')}</span>
         </button>
       </div>`;
 

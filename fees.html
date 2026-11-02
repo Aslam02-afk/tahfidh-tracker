@@ -11,10 +11,10 @@
 <body>
 
 <header class="app-header">
-  <button class="menu-btn" id="backBtn">←</button>
+  <button class="menu-btn" id="backBtn" title="Back"><img src="icons/back icon.svg" class="icon-back" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Back"></button>
   <div class="app-title" id="pageTitle">سجل الرسوم</div>
   <div style="display:flex; gap:4px;">
-    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">🌐</button>
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();" title="Language"><img src="icons/globe icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Language"></button>
     <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()">
       <img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="">
     </button>
@@ -28,7 +28,7 @@
 <!-- Payment Modal -->
 <div id="paymentModal" class="tt-modal" onclick="if(event.target===this) closePaymentModal()" style="display:none; align-items:flex-end;">
   <div class="tt-modal-box" style="border-radius:20px 20px 0 0; max-height:90vh; overflow-y:auto;">
-    <div style="font-size:1.1rem; font-weight:800; margin-bottom:16px;">💰 تسجيل دفعة جديدة</div>
+    <div style="font-size:1.1rem; font-weight:800; margin-bottom:16px; display:flex; align-items:center; gap:8px;"><img src="icons/wallet icon.svg" style="width:22px; height:22px;" alt=""> تسجيل دفعة جديدة</div>
 
     <!-- Amount input -->
     <div class="form-group">
@@ -49,12 +49,12 @@
     <div class="form-group">
       <label class="form-label">طريقة الدفع</label>
       <div style="display:flex; gap:8px;">
-        <button type="button" id="methodBank" class="btn btn-primary" style="flex:1; padding:0.5rem; font-size:0.85rem;"
-          onclick="selectPaymentMethod('bank')">🏦 تحويل بنكي</button>
-        <button type="button" id="methodWallet" class="btn btn-secondary" style="flex:1; padding:0.5rem; font-size:0.85rem;"
-          onclick="selectPaymentMethod('wallet')">📱 Wallet</button>
-        <button type="button" id="methodCash" class="btn btn-secondary" style="flex:1; padding:0.5rem; font-size:0.85rem;"
-          onclick="selectPaymentMethod('cash')">💵 نقداً</button>
+        <button type="button" id="methodBank" class="btn btn-primary" style="flex:1; padding:0.5rem; font-size:0.85rem; display:flex; align-items:center; justify-content:center; gap:4px;"
+          onclick="selectPaymentMethod('bank')"><img src="icons/bank icon.svg" style="width:16px; height:16px; filter:brightness(0) invert(1);" alt=""> تحويل بنكي</button>
+        <button type="button" id="methodWallet" class="btn btn-secondary" style="flex:1; padding:0.5rem; font-size:0.85rem; display:flex; align-items:center; justify-content:center; gap:4px;"
+          onclick="selectPaymentMethod('wallet')"><img src="icons/wallet icon.svg" style="width:16px; height:16px;" alt=""> Wallet</button>
+        <button type="button" id="methodCash" class="btn btn-secondary" style="flex:1; padding:0.5rem; font-size:0.85rem; display:flex; align-items:center; justify-content:center; gap:4px;"
+          onclick="selectPaymentMethod('cash')"><img src="icons/cash icon.svg" style="width:16px; height:16px;" alt=""> نقداً</button>
       </div>
       <input type="hidden" id="paymentMethod" value="bank" />
     </div>
@@ -67,7 +67,7 @@
 
     <div style="display:flex; gap:8px; margin-top:8px;">
       <button class="btn btn-secondary" style="flex:1;" onclick="closePaymentModal()">إلغاء</button>
-      <button class="btn btn-success" style="flex:1;" onclick="savePayment()">💾 حفظ الدفعة</button>
+      <button class="btn btn-success" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="savePayment()"><img src="icons/save icon.svg" style="width:18px; height:18px; filter:brightness(0) invert(1);" alt=""> حفظ الدفعة</button>
     </div>
   </div>
 </div>

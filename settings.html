@@ -12,10 +12,10 @@
 <body>
 
 <header class="app-header">
-  <button class="menu-btn" onclick="location.href='index.html'">←</button>
+  <button class="menu-btn" onclick="location.href='index.html'" title="Back"><img src="icons/back icon.svg" class="icon-back" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Back"></button>
   <div class="app-title" data-i18n="settings">الإعدادات</div>
   <div style="display:flex; gap:4px;">
-    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();">🌐</button>
+    <button id="langToggle" class="lang-switcher" onclick="toggleLang(); location.reload();" title="Language"><img src="icons/globe icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt="Language"></button>
     <button id="darkToggle" class="lang-switcher" onclick="toggleDarkMode()"><img src="icons/day time icon.svg" style="width:20px; height:20px; filter:brightness(0) invert(1);" alt=""></button>
   </div>
 </header>
@@ -58,15 +58,17 @@
   <!-- Backup & Restore -->
   <section class="card">
     <div style="font-weight:900; font-size:1rem; margin-bottom:12px;" data-i18n="backupSection">النسخ الاحتياطي</div>
-    <button class="btn btn-primary btn-full" onclick="exportDB()" style="margin-bottom:10px;" data-i18n="exportData">
-      تصدير البيانات (JSON)
+    <button class="btn btn-primary btn-full" onclick="exportDB()" style="margin-bottom:10px; display:flex; align-items:center; justify-content:center; gap:8px;">
+      <img src="icons/download icon.svg" style="width:18px; height:18px; filter:brightness(0) invert(1);" alt="">
+      <span data-i18n="exportData">تصدير البيانات (JSON)</span>
     </button>
     <div class="form-group" style="margin-bottom:0;">
       <label class="form-label" data-i18n="importBackup">استيراد نسخة احتياطية</label>
       <input id="importFile" type="file" accept=".json" class="form-input" style="padding:0.5rem;" />
     </div>
-    <button class="btn btn-warning btn-full" onclick="doImport()" style="margin-top:10px;" data-i18n="importData">
-      استيراد البيانات
+    <button class="btn btn-warning btn-full" onclick="doImport()" style="margin-top:10px; display:flex; align-items:center; justify-content:center; gap:8px;">
+      <img src="icons/upload icon.svg" style="width:18px; height:18px;" alt="">
+      <span data-i18n="importData">استيراد البيانات</span>
     </button>
   </section>
 
@@ -111,7 +113,7 @@
       <label class="form-label" data-i18n="message">الرسالة</label>
       <textarea id="contactMessage" class="form-input" rows="4" placeholder="اكتب رسالتك هنا..."></textarea>
     </div>
-    <button id="contactSubmitBtn" class="btn btn-primary btn-full" onclick="sendContactMessage()" data-i18n="sendMessage">إرسال الرسالة</button>
+    <button id="contactSubmitBtn" class="btn btn-primary btn-full" onclick="sendContactMessage()" style="display:flex; align-items:center; justify-content:center; gap:8px;"><img src="icons/send icon.svg" style="width:18px; height:18px; filter:brightness(0) invert(1);" alt=""><span data-i18n="sendMessage">إرسال الرسالة</span></button>
     <p style="font-size:0.82rem; color:var(--text-muted); margin-top:10px; text-align:center; line-height:1.6;" data-i18n="contactDirectNote">
       سيتم إرسال رسالتك مباشرة إلى فريق التطبيق، وسنرد عليك عبر بريدك الإلكتروني.
     </p>
@@ -123,13 +125,13 @@
   <!-- Rate Us -->
   <section class="card" id="rate" style="cursor:pointer; border:2px solid rgba(201,162,77,0.3);" onclick="openRateModal()">
     <div style="display:flex; align-items:center; gap:14px;">
-      <div style="width:52px; height:52px; border-radius:16px; background:linear-gradient(135deg,var(--primary),var(--secondary)); display:flex; align-items:center; justify-content:center; font-size:1.6rem; flex-shrink:0;">⭐</div>
+      <div style="width:52px; height:52px; border-radius:16px; background:linear-gradient(135deg,var(--primary),var(--secondary)); display:flex; align-items:center; justify-content:center; flex-shrink:0;"><img src="icons/star-gold icon.svg" style="width:28px; height:28px;" alt=""></div>
       <div style="flex:1;">
         <div style="font-weight:900; font-size:1rem;" id="rateCardTitle" data-i18n="rateCardTitle">قيّم التطبيق</div>
         <div style="font-size:0.8rem; color:var(--text-muted); margin-top:3px;" id="rateCardSubtitle" data-i18n="rateCardSubtitle">ساعدنا في تحسين Tahfidh Tracker</div>
         <div style="font-size:0.75rem; color:var(--accent); margin-top:3px;">Rate the App ⭐</div>
       </div>
-      <div style="color:var(--text-muted); font-size:1.2rem;">›</div>
+      <img src="icons/chevron-left icon.svg" class="icon-back" style="width:18px; height:18px; opacity:0.4;" alt="">
     </div>
   </section>
 

@@ -134,7 +134,7 @@ function _showDateRangeModal(type) {
     <div class="tt-modal-box" style="max-width:340px;">
       <div class="tt-modal-header">
         <div class="tt-modal-title">${isAr ? 'اختر فترة التقرير' : 'Select Report Period'}</div>
-        <button class="tt-icon-btn" onclick="closeDateRangeModal()">✕</button>
+        <button class="tt-icon-btn" onclick="closeDateRangeModal()"><img src="icons/close icon.svg" style="width:16px; height:16px;" alt=""></button>
       </div>
       <div style="padding:12px 0;">
         <div class="form-group">
